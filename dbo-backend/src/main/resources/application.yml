@@ -1,0 +1,24 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dbo_page?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+  redis:
+    host: localhost
+    port: 6379
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.cc.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# 注册参数
+register:
+  open: true # 是否开放注册(true/false)
+  email-check: true # 是否开启邮箱验证(true/false)
+  ip-max-num: 5 # ip注册最大数
+  email-max-num: 5 # 邮箱注册最大数
