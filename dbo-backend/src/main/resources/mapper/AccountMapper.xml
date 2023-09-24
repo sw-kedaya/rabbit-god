@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.mapper.AccountMapper">
+    <resultMap type="com.cc.entity.Account" id="AccountResult">
+        <id property="accountID" column="AccountID"/>
+        <result property="username" column="Username"/>
+        <result property="password" column="Password_hash"/>
+        <result property="accStatus" column="acc_status"/>
+        <result property="email" column="email"/>
+        <result property="mallPoints" column="mallpoints"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="lastLogin" column="last_login"/>
+        <result property="regIp" column="reg_ip"/>
+        <result property="admin" column="admin"/>
+        <result property="isGm" column="isGm"/>
+        <result property="lastServerFarmId" column="lastServerFarmId"/>
+        <result property="founder" column="founder"/>
+        <result property="founderRecv" column="founder_recv"/>
+        <result property="lastIp" column="last_ip"/>
+        <result property="delCharPw" column="del_char_pw"/>
+        <result property="premiumSlots" column="PremiumSlots"/>
+        <result property="eventCoins" column="EventCoins"/>
+        <result property="waguCoins" column="WaguCoins"/>
+        <result property="webIp" column="web_ip"/>
+        <result property="bansCount" column="BansCount"/>
+        <result property="bansEnd" column="bans_end"/>
+        <result property="bz" column="bz"/>
+        <result property="newPlayer" column="NewPlayer"/>
+        <result property="firstCharID" column="firstCharID"/>
+    </resultMap>
+
+    <insert id="register" parameterType="account">
+        insert into accounts(Username, Password_hash, email, reg_ip, web_ip, del_char_pw)
+        values (#{username}, #{password}, #{email}, #{regIp}, #{webIp}, #{delCharPw});
+    </insert>
+
+    <select id="isUserRepeat" resultType="account">
+        select Username from accounts
+        <if test="username != null">where #{username} = Username</if>
+        ;
+    </select>
+
+    <select id="checkUserPwd" resultMap="AccountResult">
+        select Username,acc_status,email,mallpoints,WaguCoins,EventCoins,admin from accounts
+        <if test="username != null">where #{username} = Username</if>
+        <if test="password != null">and #{password} = Password_hash</if>
+        ;
+    </select>
+    <select id="checkIpNum" resultType="java.lang.Integer">
+        select count(web_ip) from accounts
+        <if test="ip != null">where #{ip} = web_ip</if>
+    </select>
+
+    <select id="checkEmailNum" resultType="java.lang.Integer">
+        select count(email) from accounts
+        <if test="email != null">where #{email} = email</if>
+    </select>
+    <select id="getPassword" resultMap="AccountResult">
+        select email,Password_hash from accounts
+        <if test="username != null">where #{username} = Username</if>
+    </select>
+
+    <update id="updatePwd">
+        <if test="newPassword != null">
+        update accounts set Password_hash = #{newPassword}, del_char_pw = #{md5}
+        where username = #{username};
+        </if>
+    </update>
+
+
+</mapper>
