@@ -1,4 +1,4 @@
-package com.cc.controller;
+package com.cc.controller.dboacc;
 
 import com.cc.config.RegisterConfiguration;
 import com.cc.entity.CommonConstant;

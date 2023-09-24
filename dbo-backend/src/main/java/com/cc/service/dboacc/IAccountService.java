@@ -1,4 +1,4 @@
-package com.cc.service;
+package com.cc.service.dboacc;
 
 import com.cc.dto.AccountDTO;
 import com.cc.dto.PasswordDTO;

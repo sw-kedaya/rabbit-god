@@ -1,8 +1,8 @@
-package com.cc.controller;
+package com.cc.controller.dboacc;
 
 import com.cc.dto.AccountDTO;
 import com.cc.dto.PasswordDTO;
-import com.cc.service.IAccountService;
+import com.cc.service.dboacc.IAccountService;
 import com.cc.util.JwtUtils;
 import com.cc.vo.Result;
 import org.springframework.web.bind.annotation.*;

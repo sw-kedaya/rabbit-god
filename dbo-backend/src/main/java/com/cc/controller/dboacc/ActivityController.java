@@ -1,6 +1,6 @@
-package com.cc.controller;
+package com.cc.controller.dboacc;
 
-import com.cc.service.IActivityService;
+import com.cc.service.dboacc.IActivityService;
 import com.cc.vo.Result;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

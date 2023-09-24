@@ -1,4 +1,4 @@
-package com.cc.service.impl;
+package com.cc.service.dboacc.impl;
 
 import com.cc.config.RegisterConfiguration;
 import com.cc.dto.AccountDTO;
@@ -6,8 +6,8 @@ import com.cc.dto.PasswordDTO;
 import com.cc.entity.Account;
 import com.cc.entity.CommonConstant;
 import com.cc.entity.User;
-import com.cc.mapper.AccountMapper;
-import com.cc.service.IAccountService;
+import com.cc.mapper.dboacc.AccountMapper;
+import com.cc.service.dboacc.IAccountService;
 import com.cc.util.JwtUtils;
 import com.cc.vo.Result;
 import org.springframework.beans.BeanUtils;

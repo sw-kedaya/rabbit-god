@@ -1,11 +1,10 @@
-package com.cc.service.impl;
+package com.cc.service.dboacc.impl;
 
 import cn.hutool.json.JSONUtil;
 import com.cc.entity.Activity;
 import com.cc.entity.CommonConstant;
-import com.cc.mapper.ActivityMapper;
-import com.cc.service.IActivityService;
-import org.springframework.beans.BeanUtils;
+import com.cc.mapper.dboacc.ActivityMapper;
+import com.cc.service.dboacc.IActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;

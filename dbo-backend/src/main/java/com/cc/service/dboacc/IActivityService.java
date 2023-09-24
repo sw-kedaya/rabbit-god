@@ -1,9 +1,9 @@
-package com.cc.mapper;
+package com.cc.service.dboacc;
 
 import com.cc.entity.Activity;
 
 import java.util.List;
 
-public interface ActivityMapper {
+public interface IActivityService {
     List<Activity> getActivityList();
 }

@@ -1,4 +1,4 @@
-package com.cc.mapper;
+package com.cc.mapper.dboacc;
 
 import com.cc.dto.PasswordDTO;
 import com.cc.entity.Account;

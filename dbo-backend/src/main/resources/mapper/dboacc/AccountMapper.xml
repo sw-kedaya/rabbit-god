@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cc.mapper.AccountMapper">
+<mapper namespace="com.cc.mapper.dboacc.AccountMapper">
     <resultMap type="com.cc.entity.Account" id="AccountResult">
         <id property="accountID" column="AccountID"/>
         <result property="username" column="Username"/>
@@ -31,12 +31,12 @@
         <result property="firstCharID" column="firstCharID"/>
     </resultMap>
 
-    <insert id="register" parameterType="account">
+    <insert id="register">
         insert into accounts(Username, Password_hash, email, reg_ip, web_ip, del_char_pw)
         values (#{username}, #{password}, #{email}, #{regIp}, #{webIp}, #{delCharPw});
     </insert>
 
-    <select id="isUserRepeat" resultType="account">
+    <select id="isUserRepeat" resultMap="AccountResult">
         select Username from accounts
         <if test="username != null">where #{username} = Username</if>
         ;

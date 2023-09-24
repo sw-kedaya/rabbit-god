@@ -12,7 +12,7 @@ public class DBOChar {
     private Integer accountID;
     // Level-等级
     private Integer level;
-    /**Race-种族(0=人类 1= 那美克 2=魔人)*/
+    /**race-种族(0=人类 1= 那美克 2=魔人)*/
     private Integer race;
     /** Class-职业(
      * 0武道家 1 气功师 2工程师 3那美克战士
