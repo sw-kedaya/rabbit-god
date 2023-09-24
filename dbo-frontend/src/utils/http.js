@@ -7,6 +7,8 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use(config => {
+    config.headers['Rg-Msg'] = 'Online';
+
     return config
 }, e => Promise.reject(e))
 
