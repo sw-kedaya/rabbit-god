@@ -14,7 +14,7 @@ public class DBOCharServiceImpl implements IDBOCharService {
     private DBOCharMapper dboCharMapper;
 
     @Override
-    public Result getDBOCharList() {
-        return Result.ok(dboCharMapper.getDBOCharList());
+    public Result getDBOCharList(Integer accountID) {
+        return Result.ok(dboCharMapper.getDBOCharList(accountID));
     }
 }

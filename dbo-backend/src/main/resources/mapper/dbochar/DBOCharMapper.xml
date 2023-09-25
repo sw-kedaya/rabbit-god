@@ -15,6 +15,7 @@
     </resultMap>
 
     <select id="getDBOCharList" resultMap="DBOCharResult">
-        select CharID,CharName,AccountID,Level,Race,Class,Gender,GuildName from characters;
+        select CharID,CharName,AccountID,Level,Race,Class,Gender,GuildName from characters
+        where AccountID = #{accountID};
     </select>
 </mapper>

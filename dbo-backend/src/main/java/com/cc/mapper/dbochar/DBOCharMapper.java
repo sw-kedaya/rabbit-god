@@ -5,5 +5,5 @@ import com.cc.entity.DBOChar;
 import java.util.List;
 
 public interface DBOCharMapper {
-    List<DBOChar> getDBOCharList();
+    List<DBOChar> getDBOCharList(Integer accountID);
 }

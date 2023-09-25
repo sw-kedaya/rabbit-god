@@ -3,6 +3,7 @@ import {ref, onMounted} from 'vue';
 import {checkApi, updateApi} from "@/apis/account";
 import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
+import {getDBOCharListApi} from "@/apis/dboChar";
 
 // 表单校验
 const confirmPasswordValidator = (rule, value, callback) => {
@@ -33,7 +34,6 @@ const passwordRules = {
 const user = ref()
 const dialogVisible = ref(false);
 
-const tableData = ref([]);
 const router = useRouter()
 const checkQuest = async () => {
   if (user.value != null) {
@@ -57,11 +57,19 @@ const checkQuest = async () => {
   }
 }
 
+// 获取用户角色信息
+const tableData = ref([]);
+const getDBOCharListQuest = async (data) => {
+  const res = await getDBOCharListApi(data)
+  tableData.value = res.data;
+}
+
 let updateFlag = ref(true)
 onMounted(() => {
   // 进入前先判断登录没
   user.value = JSON.parse(localStorage.getItem("user-token"))
   checkQuest()
+  getDBOCharListQuest(user.value.accountID)
 
   // 120秒只能修改一次密码
   const updateTTL = localStorage.getItem("update-ttl");
@@ -73,21 +81,6 @@ onMounted(() => {
     }, Number(updateTTL) - Date.now());
   }
 })
-
-// TODO 获取数据库中的数据，并将其赋值给 tableData
-// 示例数据对象
-const dataFromDatabase = [
-  {
-    name: "九木鈴子",
-    level: 70,
-    race: "人类",
-    job: "鹤仙流",
-    gender: "男",
-    genre: "无",
-  },
-];
-// TODO 将从数据库中获取的数据赋值给 tableData
-tableData.value = dataFromDatabase;
 
 // 修改密码
 // const dialogVisible = ref(false);
@@ -191,16 +184,53 @@ const cancelPassword = () => {
           </div>
         </el-card>
       </el-col>
-      <el-col :span="13" style="padding-left: 10px; padding-right: 10px;">
+      <el-col v-if="tableData != null" :span="13" style="padding-left: 10px; padding-right: 10px;">
         <el-card class="grid-content bg-purple is-always-shadow">
           <div class="el-card__body">
             <el-table :data="tableData" style="width: 100%;" stripe fit>
-              <el-table-column label="角色" prop="name" align="center"></el-table-column>
+              <el-table-column label="角色" prop="charName" align="center"></el-table-column>
               <el-table-column label="等级" prop="level" align="center"></el-table-column>
-              <el-table-column label="种族" prop="race" align="center"></el-table-column>
-              <el-table-column label="职业" prop="job" align="center"></el-table-column>
-              <el-table-column label="性别" prop="gender" align="center"></el-table-column>
-              <el-table-column label="流派" prop="genre" align="center"></el-table-column>
+              <el-table-column label="种族" prop="race" align="center">
+                <template #default="scope">
+                  <span v-if="scope.row.race === 0">人类</span>
+                  <span v-else-if="scope.row.race === 1">娜美克</span>
+                  <span v-else-if="scope.row.race === 2">魔人</span>
+                  <span v-else>未知</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="职业" prop="dboClass" align="center">
+                <template #default="scope">
+                  <span v-if="scope.row.dboClass === 0">武道家</span>
+                  <span v-else-if="scope.row.dboClass === 1">气功师</span>
+                  <span v-else-if="scope.row.dboClass === 2">工程师</span>
+                  <span v-else-if="scope.row.dboClass === 3">那美克战士</span>
+                  <span v-else-if="scope.row.dboClass === 4">那美克龙族</span>
+                  <span v-else-if="scope.row.dboClass === 5">大魔人</span>
+                  <span v-else-if="scope.row.dboClass === 6">意魔人</span>
+                  <span v-else-if="scope.row.dboClass === 7">格斗</span>
+                  <span v-else-if="scope.row.dboClass === 8">剑术</span>
+                  <span v-else-if="scope.row.dboClass === 9">鹤仙流</span>
+                  <span v-else-if="scope.row.dboClass === 10">龟仙流</span>
+                  <span v-else-if="scope.row.dboClass === 13">魔界</span>
+                  <span v-else-if="scope.row.dboClass === 14">魔道</span>
+                  <span v-else-if="scope.row.dboClass === 15">天天</span>
+                  <span v-else-if="scope.row.dboClass === 16">博客</span>
+                  <span v-else-if="scope.row.dboClass === 17">奥迪</span>
+                  <span v-else-if="scope.row.dboClass === 18">葛兰</span>
+                  <span v-else-if="scope.row.dboClass === 19">普利珠</span>
+                  <span v-else-if="scope.row.dboClass === 20">卡尔</span>
+                  <span v-else>未知</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="性别" prop="gender" align="center">
+                <template #default="scope">
+                  <span v-if="scope.row.race === 0">男</span>
+                  <span v-else-if="scope.row.race === 1">女</span>
+                  <span v-else-if="scope.row.race === 2">那美克</span>
+                  <span v-else>未知</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="流派" prop="guildName" align="center"></el-table-column>
             </el-table>
           </div>
         </el-card>

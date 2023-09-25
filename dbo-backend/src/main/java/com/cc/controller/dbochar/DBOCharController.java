@@ -16,7 +16,7 @@ public class DBOCharController {
     private IDBOCharService dboCharService;
 
     @GetMapping("/list")
-    public Result getDBOCharList(){
-        return dboCharService.getDBOCharList();
+    public Result getDBOCharList(Integer accountID){
+        return dboCharService.getDBOCharList(accountID);
     }
 }

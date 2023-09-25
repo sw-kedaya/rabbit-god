@@ -85,6 +85,8 @@ function onLoginClick() {
   loginForm.value.validate((valid) => {
     if (valid) {
       loginQuest()
+      userInfo.value.username = ''
+      userInfo.value.password = ''
     } else {
       // 表单验证不通过，处理错误信息
       ElMessage({

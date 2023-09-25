@@ -43,7 +43,7 @@
     </select>
 
     <select id="checkUserPwd" resultMap="AccountResult">
-        select Username,acc_status,email,mallpoints,WaguCoins,EventCoins,admin from accounts
+        select AccountID,Username,acc_status,email,mallpoints,WaguCoins,EventCoins,admin from accounts
         <if test="username != null">where #{username} = Username</if>
         <if test="password != null">and #{password} = Password_hash</if>
         ;

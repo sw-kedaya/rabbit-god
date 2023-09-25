@@ -3,5 +3,5 @@ package com.cc.service.dbochar;
 import com.cc.vo.Result;
 
 public interface IDBOCharService {
-    Result getDBOCharList();
+    Result getDBOCharList(Integer accountID);
 }
