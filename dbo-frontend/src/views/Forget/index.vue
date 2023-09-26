@@ -15,7 +15,7 @@ const checkQuest = async () => {
         message: '请先退出登录',
         type: 'warning'
       });
-    }else {
+    } else {
       ElMessage({
         message: '令牌过期，请重新登录',
         type: 'warning'
@@ -85,6 +85,7 @@ const forgetQuest = async () => {
 }
 
 const forgetTime = 120000;
+
 function onForgetClick() {
   if (forgetFlag.value) {
     forgetForm.value.validate((valid) => {
@@ -119,12 +120,15 @@ function onForgetClick() {
     <div class="login-wrapper">
       <div style="font-size: large; margin-bottom: 10px">忘记密码</div>
       <div class="form">
-        <el-form ref="forgetForm" :model="userInfo" :rules="rules" status-icon label-width="80px" size="large">
+        <el-form ref="forgetForm" :model="userInfo" :rules="rules" status-icon label-width="80px" size="large"
+                 @submit.prevent>
           <el-form-item prop="username" style="width:320px" label="账号">
             <el-input placeholder="请输入账号" v-model="userInfo.username"/>
           </el-form-item>
           <div class="button-container">
-            <el-button size="large" class="subBtn" @click="onForgetClick">找回密码</el-button>
+            <el-tooltip content="密码将发送到注册邮箱">
+              <el-button size="large" class="subBtn" @click="onForgetClick">找回密码</el-button>
+            </el-tooltip>
             <el-button size="large" class="login-btn">
               <router-link to="/login">马上登录</router-link>
             </el-button>
@@ -145,7 +149,7 @@ function onForgetClick() {
   justify-content: center;
   align-items: center;
   height: 360px;
-  margin-bottom: 285px;
+  margin-bottom: 376px;
 }
 
 .login-wrapper {

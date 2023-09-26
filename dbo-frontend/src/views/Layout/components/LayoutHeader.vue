@@ -1,5 +1,6 @@
 <script setup>
 import {ref, computed, onMounted} from "vue";
+import {watch} from "vue";
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 
@@ -20,9 +21,15 @@ const isMePage = computed(() => {
   return router.currentRoute.value.path === "/me";
 });
 
-// 判断当前路由是否为 /order
+// 判断当前路由是否为 /orderXXX
 const isOrderPage = computed(() => {
-  return router.currentRoute.value.path === "/order";
+  return router.currentRoute.value.path === "/orderKey" ||
+      router.currentRoute.value.path === "/orderMall";
+});
+
+// 判断当前路由是否为 /orderXXX
+const isAdminPage = computed(() => {
+  return router.currentRoute.value.path === "/admin"
 });
 
 onMounted(() => {
@@ -38,41 +45,58 @@ function logoutClick() {
     type: 'success'
   });
 }
+
+const showDropdown = ref(false);
+const dropdownRef = ref(null)
+
+watch(showDropdown, (newValue) => {
+  if (newValue) {
+    // 显示下拉菜单
+    dropdownRef.value.style.display = 'block'
+  } else {
+    // 隐藏下拉菜单
+    dropdownRef.value.style.display = 'none'
+  }
+})
 </script>
 
 <template>
-  <header class='app-header'>
+  <header class="app-header">
     <div class="container">
       <h1 class="logo">
         <RouterLink to="/home">七龙珠Online</RouterLink>
       </h1>
       <ul class="app-header-nav">
-        <li class="home">
-          <RouterLink active-class="active" to="/home">首页</RouterLink>
+        <li>
+          <RouterLink active-class="active" :to="`/home`">首页</RouterLink>
         </li>
-        <li class="home">
+        <li>
           <RouterLink active-class="active" :to="`/activity`">活动列表</RouterLink>
         </li>
-        <li class="home">
+        <li>
           <RouterLink active-class="active" :to="`/skill`">加点模拟器</RouterLink>
         </li>
-        <li class="home">
+        <li>
           <RouterLink active-class="active" :to="`/signin`">每日签到</RouterLink>
         </li>
-        <li class="home">
+        <li>
           <RouterLink active-class="active" :to="`/mall`">胶囊商城</RouterLink>
         </li>
       </ul>
       <ul class="app-nav-nav">
         <template v-if="user != null">
           <template v-if="user.admin === 10">
-            <li :class="{ 'active': isOrderPage }" class="enlarge-hover">
-              <RouterLink active-class="active" :to="`/order`">管理界面</RouterLink>
+            <li :class="{ 'active': isAdminPage }" class="enlarge-hover">
+              <RouterLink active-class="active" :to="`/admin`">管理界面</RouterLink>
             </li>
           </template>
           <template v-else>
-            <li :class="{ 'active': isOrderPage }" class="enlarge-hover">
-              <RouterLink active-class="active" :to="`/order`">我的订单</RouterLink>
+            <li class="enlarge-hover" @mouseenter="showDropdown = true" @mouseleave="showDropdown = false">
+              <a href="javascript:;" :class="{ 'active': isOrderPage }">我的订单</a>
+              <ul ref="dropdownRef" class="dropdown" v-show="showDropdown">
+                <li><RouterLink active-class="active" :to="`/orderKey`">卡密订单</RouterLink></li>
+                <li><RouterLink active-class="active" :to="`/orderMall`">商城订单</RouterLink></li>
+              </ul>
             </li>
           </template>
           <li :class="{ 'active': isMePage }" class="enlarge-hover">
@@ -111,16 +135,50 @@ function logoutClick() {
 
 
 <style scoped lang='scss'>
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 490px;
+  z-index: 999;
+  padding: 8px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  width: 100px; /* 设置下拉菜单的宽度 */
+  height: 90px; /* 设置下拉菜单的高度 */
+  li {
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      display: block;
+      height: 32px;
+      line-height: 30px;
+      font-size: 14px;
+      color: #666;
+
+      &:hover {
+        color: $xtxColor;
+      }
+    }
+  }
+}
+
 .app-header {
   background: #fff;
+  height: 60px;
 
   .container {
     display: flex;
     align-items: center;
+    height: 60px;
   }
 
   .logo {
-    width: 200px;
+    width: 158px;
 
     a {
       display: block;
@@ -140,7 +198,7 @@ function logoutClick() {
 
     li {
       margin-right: 30px;
-      width: 100px;
+      width: 85px;
       text-align: center;
 
       a {
@@ -151,44 +209,44 @@ function logoutClick() {
 
         &:hover {
           color: $xtxColor;
-          border-bottom: 1px solid $xtxColor;
+          border-bottom: 2px solid $xtxColor;
         }
       }
 
       .active {
         color: $xtxColor;
-        border-bottom: 1px solid $xtxColor;
+        border-bottom: 2px solid $xtxColor;
       }
     }
   }
 
   .app-nav-nav {
-    width: 400px;
+    width: 900px;
     display: flex;
-    padding-left: 40px;
+    padding-left: 500px;
     position: relative;
     z-index: 998;
 
     li {
       margin-right: 30px;
-      width: 100px;
+      width: 80px;
       text-align: center;
 
       a {
-        font-size: 15px;
+        font-size: 16px;
         line-height: 32px;
         height: 32px;
         display: inline-block;
 
         &:hover {
           color: $xtxColor;
-          border-bottom: 1px solid $xtxColor;
+          border-bottom: 2px solid $xtxColor;
         }
       }
 
       .active {
         color: $xtxColor;
-        border-bottom: 1px solid $xtxColor;
+        border-bottom: 2px solid $xtxColor;
       }
     }
   }

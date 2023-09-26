@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cc.mapper.dboacc.ActivityMapper">
-    <resultMap type="com.cc.entity.Activity" id="ActivityResult">
+<mapper namespace="com.cc.mapper.dboacc.EventMapper">
+    <resultMap type="com.cc.entity.Event" id="EventResult">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="monday" column="monday"/>
@@ -15,7 +15,7 @@
         <result property="sunday" column="sunday"/>
     </resultMap>
 
-    <select id="getActivityList" resultMap="ActivityResult">
-        select * from activity;
+    <select id="getEventList" resultMap="EventResult">
+        select * from event;
     </select>
 </mapper>

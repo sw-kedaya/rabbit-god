@@ -70,4 +70,11 @@
     </update>
 
 
+    <update id="addMallPoints">
+        <if test="accountID != null">
+            update accounts set mallpoints = mallpoints + #{cash}
+            where AccountID = #{accountID}
+        </if>
+    </update>
+
 </mapper>

@@ -3,13 +3,15 @@ import Login from '@/views/Login/index.vue'
 import Layout from '@/views/Layout/index.vue'
 import Home from '@/views/Home/index.vue'
 import Skill from '@/views/Skill/index.vue'
-import Activity from '@/views/Activity/index.vue'
+import Event from '@/views/Event/index.vue'
 import Register from '@/views/Register/index.vue'
 import Forget from '@/views/Forget/index.vue'
 import Me from '@/views/Me/index.vue'
-import Order from '@/views/Order/index.vue'
+import OrderKey from '@/views/OrderKey/index.vue'
+import OrderMall from '@/views/OrderMall/index.vue'
 import Signin from '@/views/Signin/index.vue'
 import Mall from '@/views/Mall/index.vue'
+import Admin from '@/views/Admin/index.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,7 +27,7 @@ const router = createRouter({
         },
         {
           path: "activity",
-          component: Activity
+          component: Event
         },
         {
           path: "skill",
@@ -44,8 +46,12 @@ const router = createRouter({
           component: Me
         },
         {
-          path: "order",
-          component: Order
+          path: "orderKey",
+          component: OrderKey
+        },
+        {
+          path: "orderMall",
+          component: OrderMall
         },
         {
           path: '/login',
@@ -58,6 +64,10 @@ const router = createRouter({
         {
           path: '/forget',
           component: Forget
+        },
+        {
+          path: 'admin',
+          component: Admin
         }
       ]
     },

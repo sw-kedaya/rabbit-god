@@ -20,4 +20,7 @@ public interface AccountMapper {
     Integer updatePwd(@PathVariable("newPassword") String newPassword,
                       @PathVariable("username") String username,
                       @PathVariable("md5") String md5);
+
+    Integer addMallPoints(@PathVariable("accountID") Integer accountID,
+                          @PathVariable("cash") Integer cash);
 }

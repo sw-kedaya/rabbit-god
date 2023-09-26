@@ -1,11 +1,12 @@
 <script setup>
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, watch} from 'vue';
 import {checkApi, updateApi} from "@/apis/account";
 import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
 import {getDBOCharListApi} from "@/apis/dboChar";
+import {getUseCdKeyApi} from "@/apis/cashKey";
 
-// 表单校验
+// 修改密码的表单校验
 const confirmPasswordValidator = (rule, value, callback) => {
   if (value !== passwordForm.value.newPassword) {
     callback(new Error('两次输入的密码不一致'));
@@ -30,9 +31,18 @@ const passwordRules = {
   ]
 };
 
+// 兑换卡密的表单校验
+const cDKeyRules = {
+  cdKey: [
+    {required: true, message: '请输入卡密'},
+    {min: 32, max: 32, message: '请输入正确的卡密'}
+  ]
+};
+
 // 验证是否登录
 const user = ref()
 const dialogVisible = ref(false);
+const dialogVisibleForCdKey = ref(false);
 
 const router = useRouter()
 const checkQuest = async () => {
@@ -63,7 +73,41 @@ const getDBOCharListQuest = async (data) => {
   const res = await getDBOCharListApi(data)
   tableData.value = res.data;
 }
+// 给角色信息分表
+const currentPage = ref(1);
+const pageSize = ref(10);
+const totalPage = ref(1);
+const startIndex = ref(0);
+const endIndex = ref(0);
+const currentPageData = ref([]);
 
+// 切换每页显示多少数据时刷新
+function handleSizeChange(newSize) {
+  pageSize.value = newSize;
+  updatePagination();
+}
+
+// 切换页时刷新
+function handleClick(newCurrentPage) {
+  currentPage.value = newCurrentPage;
+  updatePagination();
+}
+
+
+function updatePagination() {
+  totalPage.value = Math.ceil(tableData.value.length / pageSize.value);
+  startIndex.value = (currentPage.value - 1) * pageSize.value;
+  endIndex.value = Math.min(startIndex.value + pageSize.value - 1, tableData.value.length - 1);
+  currentPageData.value = tableData.value.slice(startIndex.value, endIndex.value + 1);
+  console.log(currentPageData.value)
+}
+
+// 当tableData有数据，就触发分页
+watch(tableData, () => {
+  updatePagination();
+});
+
+// 钩子
 let updateFlag = ref(true)
 onMounted(() => {
   // 进入前先判断登录没
@@ -80,10 +124,12 @@ onMounted(() => {
       updateFlag = ref(true);
     }, Number(updateTTL) - Date.now());
   }
+
+  // 给兑换卡密的表单设置用户id
+  cdKeyExchangeForm.value.accountID = user.value.accountID;
 })
 
 // 修改密码
-// const dialogVisible = ref(false);
 const passwordForm = ref({
   username: '',
   oldPassword: '',
@@ -91,15 +137,25 @@ const passwordForm = ref({
   confirmPassword: ''
 });
 
+// 兑换卡密
+const cdKeyExchangeForm = ref({
+  accountID: '',
+  cdKey: ''
+});
+
 const showPasswordForm = () => {
   dialogVisible.value = true;
 };
 
+const showCdKeyExchangeForm = () => {
+  dialogVisibleForCdKey.value = true;
+};
+
 const updateQuest = async () => {
   const res = await updateApi(passwordForm.value)
-  if (res.success){
+  if (res.success) {
     ElMessage.success('修改成功')
-  }else {
+  } else {
     ElMessage.error(res.errorMsg)
   }
 }
@@ -129,7 +185,7 @@ const savePassword = () => {
         ElMessage.warning('请填写正确的信息');
       }
     });
-  }else {
+  } else {
     ElMessage.warning('请120秒后再重试');
   }
 };
@@ -144,6 +200,44 @@ const cancelPassword = () => {
   };
   dialogVisible.value = false;
 }
+
+// 卡密兑换取消
+const cancelCdKeyExchange = () => {
+  cdKeyExchangeForm.value = {
+    cdKey: '',
+  };
+  dialogVisibleForCdKey.value = false;
+}
+
+// 点击购买卡密提示
+function onBuyCardClick() {
+  ElMessage.warning("暂未开放购买卡密")
+}
+
+// 卡密请求
+const getUseCdKeyQuest = async () => {
+  const res = await getUseCdKeyApi(cdKeyExchangeForm.value)
+  if (res.success){
+    ElMessage.success(res.data)
+  }else {
+    ElMessage.error(res.errorMsg)
+  }
+}
+
+// 使用卡密
+const cdKeyFormValidate = ref()
+const useCdKey = () => {
+  cdKeyFormValidate.value.validate((valid) => {
+    if (valid){
+      dialogVisibleForCdKey.value = false;
+      cdKeyExchangeForm.value.accountID = user.value.accountID
+      getUseCdKeyQuest()
+    }else {
+      ElMessage.warning("请填写卡密")
+    }
+  })
+}
+
 </script>
 
 <template>
@@ -156,8 +250,14 @@ const cancelPassword = () => {
             <el-tag class="el-tag--light" style="font-size: 15px;">{{ user.username }}</el-tag>
             <div style="height: 5px;"></div>
             状态：
-            <el-tag class="el-tag--success el-tag--light" style="font-size: 15px;">正常</el-tag>
-            <div style="height: 5px;"></div>
+            <template v-if="user.accStatus === 'active'">
+              <el-tag class="el-tag--success el-tag--light" style="font-size: 15px;"> 正常</el-tag>
+              <div style="height: 5px;"></div>
+            </template>
+            <template v-else>
+              <el-tag class="el-tag--error el-tag--light" style="font-size: 15px;"> 异常</el-tag>
+              <div style="height: 5px;"></div>
+            </template>
             邮箱：
             <el-tag class="el-tag--light" style="font-size: 15px;">{{ user.email }}</el-tag>
             <div style="height: 5px;"></div>
@@ -176,18 +276,23 @@ const cancelPassword = () => {
               </el-button>
             </div>
             <div style="height: 35px;">
-              <el-button class="el-button--warning el-button--mini" style="width: 100%;">购买卡密</el-button>
+              <el-button class="el-button--warning el-button--mini" style="width: 100%;" @click="onBuyCardClick">
+                购买卡密
+              </el-button>
             </div>
             <div style="height: 35px;">
-              <el-button class="el-button--success el-button--mini" style="width: 100%;">卡密兑换</el-button>
+              <el-button class="el-button--success el-button--mini" style="width: 100%;" @click="showCdKeyExchangeForm">
+                卡密兑换
+              </el-button>
             </div>
           </div>
         </el-card>
       </el-col>
-      <el-col v-if="tableData != null" :span="13" style="padding-left: 10px; padding-right: 10px;">
+      <el-col v-if="tableData != null" :span="13" style="padding-left: 10px; padding-right: 10px; margin-top: 40px">
         <el-card class="grid-content bg-purple is-always-shadow">
           <div class="el-card__body">
-            <el-table :data="tableData" style="width: 100%;" stripe fit>
+            <el-table :data="currentPageData" style="width: 100%;" stripe fit :current-page="currentPage"
+                      :page-size="pageSize" :total="tableData.length">
               <el-table-column label="角色" prop="charName" align="center"></el-table-column>
               <el-table-column label="等级" prop="level" align="center"></el-table-column>
               <el-table-column label="种族" prop="race" align="center">
@@ -234,6 +339,13 @@ const cancelPassword = () => {
             </el-table>
           </div>
         </el-card>
+        <div style="display: flex; justify-content: flex-end;">
+          <el-pagination v-model="currentPage" :page-sizes="[10]" :page-size="pageSize"
+                         :total="tableData.length" layout="prev, pager, next, total"
+                         @size-change="handleSizeChange" @update:current-page="handleClick"
+                         @prev-click="handleClick" @next-click="handleClick">
+          </el-pagination>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -269,9 +381,32 @@ const cancelPassword = () => {
       </div>
     </el-form>
   </el-dialog>
+  <!-- 兑换卡密对话框 -->
+  <el-dialog v-model="dialogVisibleForCdKey" title="兑换卡密" width="440px">
+    <el-form ref="cdKeyFormValidate" :model="cdKeyExchangeForm" label-position="top" :rules="cDKeyRules">
+      <div class="form-row">
+        <span class="cdKeyLabel">卡密</span>
+        <el-form-item class="myInput" prop="cdKey">
+          <el-input style="height: 40px; width: 330px" type="text" placeholder="请输入卡密"
+                    v-model="cdKeyExchangeForm.cdKey"></el-input>
+        </el-form-item>
+      </div>
+      <div class="form-row" style="justify-content: flex-end; margin-top: 20px;">
+        <el-button type="default" style="width: 70px; height: 40px" @click="cancelCdKeyExchange">取消</el-button>
+        <el-button type="primary" style="background-color: #3388FF; color: #FFFFFF;height: 40px;" @click="useCdKey">
+          确认兑换
+        </el-button>
+      </div>
+    </el-form>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss">
+.me {
+  margin-top: 40px;
+  margin-bottom: 78px;
+}
+
 .el-tag {
   user-select: text; /* 允许选择文本 */
 }
@@ -293,5 +428,12 @@ const cancelPassword = () => {
 
 .myInput {
   margin-left: 18px;
+}
+
+.cdKeyLabel {
+  width: 50px;
+  text-align: right;
+  margin-bottom: 15px;
+  font-size: 15px;
 }
 </style>

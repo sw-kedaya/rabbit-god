@@ -35,9 +35,37 @@ onMounted(() => {
 </script>
 
 <template>
-
+  <div class="sign-in-container">
+    <div >
+      <el-button class="myButton" type="success" round size="large">
+        立即签到
+      </el-button>
+    </div>
+  </div>
 </template>
 
-<style scoped lang="scss">
-
+<style>
+.sign-in-container {
+  display: flex;
+  justify-content: center;
+  height: 738px;
+  background-image: url("@/assets/images/bg.png"); /* 设置背景图片的 URL */
+  background-repeat: repeat; /* 将背景图片设置为平铺 */
+  .myButton{
+    margin-top: 100px;
+    font-size: 24px; /* 增加按钮文本的字体大小 */
+    padding: 34px 101px; /* 增加按钮的内边距 */
+    background-color: #67C23A; /* 设置按钮的背景颜色为红色 */
+    color: #ffffff; /* 设置按钮的文本颜色为白色 */
+    border-radius: 50px; /* 增加按钮的边框半径 */
+  }
+}
+h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
 </style>

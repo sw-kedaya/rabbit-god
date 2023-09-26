@@ -4,6 +4,7 @@ import {checkApi} from "@/apis/account";
 import {ElMessage} from "element-plus";
 import {onMounted, ref} from "vue";
 
+// 进入前先判断登录
 const router = useRouter()
 const checkQuest = async () => {
   if (user.value != null) {

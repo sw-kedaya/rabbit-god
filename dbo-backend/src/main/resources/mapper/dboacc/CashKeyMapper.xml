@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.mapper.dboacc.CashKeyMapper">
+    <resultMap type="com.cc.entity.CashKey" id="CashKeyResult">
+        <id property="id" column="id"/>
+        <result property="cdKey" column="cd_key"/>
+        <result property="cash" column="cash"/>
+        <result property="createTime" column="create_time"/>
+        <result property="useTime" column="use_time"/>
+        <result property="accountID" column="account_id"/>
+    </resultMap>
+
+    <select id="adminGetCashKeyList" resultMap="CashKeyResult">
+        select * from cash_key;
+    </select>
+
+    <insert id="adminAddCashKey">
+        insert into cash_key(cd_key, cash)
+        values (#{cdKey}, #{cash});
+    </insert>
+
+    <select id="checkCdKey" resultType="java.lang.Integer">
+        select cash from cash_key where cd_key = #{cdKey}
+    </select>
+
+    <update id="useCdKey">
+        <if test="accountID != null">
+            update cash_key
+            set use_time  = #{useTime},
+            account_id= #{accountID}
+            where account_id = 0 and cd_key = #{cdKey};
+        </if>
+    </update>
+
+    <select id="userOrder" resultMap="CashKeyResult">
+        <if test="accountID != null">
+            select * from cash_key where account_id = #{accountID}
+            order by create_time ASC;
+        </if>
+    </select>
+</mapper>

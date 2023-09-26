@@ -3,9 +3,9 @@ package com.cc.entity;
 import lombok.Data;
 
 @Data
-public class Activity {
+public class Event {
     private Integer id;
-    private String name;
+    private String event_name;
     private String monday;
     private String tuesday;
     private String wednesday;

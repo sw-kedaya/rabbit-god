@@ -4,7 +4,7 @@ spring:
   datasource:
     dboacc:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbcUrl: jdbc:mysql://localhost:3306/dbo_page?useUnicode=true&characterEncoding=utf-8
+      jdbcUrl: jdbc:mysql://localhost:3306/dbo_acc?useUnicode=true&characterEncoding=utf-8
       username: root
       password: 123456
       type: com.alibaba.druid.pool.DruidDataSource
@@ -24,3 +24,6 @@ register:
   email-check: true # 是否开启邮箱验证(true/false)
   ip-max-num: 5 # ip注册最大数
   email-max-num: 5 # 邮箱注册最大数
+
+signin:
+  open: true # 是否开放签到(true/false)

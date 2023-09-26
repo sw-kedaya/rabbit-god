@@ -215,7 +215,8 @@ function onRegisterClick() {
     <div class="login-wrapper">
       <div style="font-size: large; margin-bottom: 10px">七龙珠Online账号注册</div>
       <div class="form">
-        <el-form ref="registerForm" :model="userInfo" :rules="rules" status-icon label-width="80px" size="large">
+        <el-form ref="registerForm" :model="userInfo" :rules="rules" status-icon label-width="80px" size="large"
+                 @submit.prevent>
           <el-form-item prop="username" style="width:320px" label="账号">
             <el-input placeholder="请输入账号" v-model="userInfo.username"/>
           </el-form-item>
@@ -256,7 +257,7 @@ function onRegisterClick() {
   justify-content: center;
   align-items: center;
   height: 620px;
-  margin-bottom: 25px;
+  margin-bottom: 115px;
 }
 
 .login-wrapper {

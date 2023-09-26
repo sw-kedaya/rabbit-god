@@ -11,6 +11,6 @@ public class MyInterception implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String header = request.getHeader("Rg-Msg");
-        return "online".equals(header);
+        return "Online".equals(header);
     }
 }

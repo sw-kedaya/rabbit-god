@@ -81,12 +81,16 @@ const loginQuest = async () => {
   }
 }
 
+// 防止一直按登录
+let disabledLoginButton = ref(true)
+
 function onLoginClick() {
   loginForm.value.validate((valid) => {
     if (valid) {
-      loginQuest()
-      userInfo.value.username = ''
-      userInfo.value.password = ''
+      if (disabledLoginButton.value) {
+        disabledLoginButton = ref(false)
+        loginQuest()
+      }
     } else {
       // 表单验证不通过，处理错误信息
       ElMessage({
@@ -103,7 +107,9 @@ function onLoginClick() {
     <div class="login-wrapper">
       <div style="font-size: large; margin-bottom: 10px">七龙珠Online账号登录</div>
       <div class="form">
-        <el-form ref="loginForm" :model="userInfo" :rules="rules" status-icon label-width="80px" size="large">
+        <el-form ref="loginForm" :model="userInfo" :rules="rules"
+                 status-icon label-width="80px" size="large"
+                  @submit.prevent>
           <el-form-item prop="username" style="width:320px" label="账号">
             <el-input placeholder="请输入账号" v-model="userInfo.username"/>
           </el-form-item>
@@ -133,7 +139,7 @@ function onLoginClick() {
   justify-content: center;
   align-items: center;
   height: 50vh;
-  margin-bottom: 180px;
+  margin-bottom: 270px;
 }
 
 .login-wrapper {

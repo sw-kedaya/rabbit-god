@@ -6,7 +6,7 @@ import {onMounted, ref} from "vue";
 
 const router = useRouter()
 const checkQuest = async () => {
-  if (user.value != null) {
+  if (user.value != null && user.value.admin === 10) {
     const res = await checkApi(user.value.token)
     if (!res.data) {
       {
@@ -18,7 +18,7 @@ const checkQuest = async () => {
         localStorage.removeItem("user-token")
       }
     }
-  }else {
+  } else {
     router.push('/login')
     ElMessage({
       message: '请先登录',
@@ -28,16 +28,16 @@ const checkQuest = async () => {
 }
 const user = ref()
 onMounted(() => {
-  // 进入前先判断登录没
+  // 进入前先判断是否等于且为管理员
   user.value = JSON.parse(localStorage.getItem("user-token"))
   checkQuest()
 })
 </script>
 
 <template>
-  <h1>订单</h1>
+  <h1>管理员</h1>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 
 </style>

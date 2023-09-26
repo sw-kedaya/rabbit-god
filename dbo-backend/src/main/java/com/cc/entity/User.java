@@ -14,8 +14,6 @@ public class User {
     private Integer waguCoins;
     // 活动扭蛋币
     private Integer eventCoins;
-    // TODO 角色表
-
     // 是否为管理员
     private Integer admin;
     // 用户登录凭证

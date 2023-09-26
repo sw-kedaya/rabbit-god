@@ -1,8 +1,8 @@
 import instance from '@/utils/http'
 
-export function getActivityList() {
+export function getEventList() {
     return instance({
         method: "get",
-        url: "/activity/list"
+        url: "/event/list"
     })
 }
