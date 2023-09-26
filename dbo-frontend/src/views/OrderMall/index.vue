@@ -67,7 +67,6 @@ function updatePagination() {
   startIndex.value = (currentPage.value - 1) * pageSize.value;
   endIndex.value = Math.min(startIndex.value + pageSize.value - 1, orders.value.length - 1);
   currentPageData.value = orders.value.slice(startIndex.value, endIndex.value + 1);
-  console.log(currentPageData.value)
 }
 
 // 当orders有数据，就触发分页

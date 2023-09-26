@@ -13,7 +13,7 @@ public class JwtUtils {
                 .setHeaderParam("rabbit-god", "TuShenLingYu")
                 .claim("username", username)
                 .setSubject("token")
-                .setExpiration(new Date(System.currentTimeMillis() + CommonConstant.TOKEN_TTL)) // 60分钟有效期
+                .setExpiration(new Date(System.currentTimeMillis() + CommonConstant.TOKEN_TTL)) // 120分钟有效期
                 .setId(UUID.randomUUID().toString())
                 .signWith(SignatureAlgorithm.HS256, CommonConstant.SIGN)
                 .compact();
