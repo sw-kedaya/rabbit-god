@@ -9,7 +9,9 @@ import java.util.List;
 public interface ICashKeyService {
     Result adminGetCashKeyList();
 
-    Result adminAddCashKey(CashKey cashKey);
+    Result adminAddCashKey(Long cash, Long num);
+
+    Result deleteAllKey();
 
     Result useCdKey(CashKey cashKey);
 

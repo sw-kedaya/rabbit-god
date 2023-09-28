@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Event {
-    private Integer id;
+    private Long id;
     private String event_name;
     private String monday;
     private String tuesday;

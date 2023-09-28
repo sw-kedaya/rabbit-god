@@ -2,7 +2,10 @@
 import {useRouter} from "vue-router";
 import {checkApi} from "@/apis/account";
 import {ElMessage} from "element-plus";
-import {onMounted, ref, reactive, computed, watch} from "vue";
+import {onMounted, ref, computed, watch} from "vue";
+import {getMallTypeListApi} from "@/apis/category"
+import {getMallList} from "@/apis/mall"
+import {getDBOCharListApi} from "@/apis/dboChar"
 
 // 进入前先判断登录
 const router = useRouter()
@@ -17,6 +20,7 @@ const checkQuest = async () => {
           type: 'warning'
         });
         localStorage.removeItem("user-token")
+        localStorage.removeItem("admin-token")
       }
     }
   } else {
@@ -33,51 +37,32 @@ onMounted(() => {
   user.value = JSON.parse(localStorage.getItem("user-token"))
   checkQuest()
   updatePagination()
-  // TODO 将数据渲染放在这-categories/products
+  // 数据渲染放在这-categories/products
+  getMallTypeListQuest()
+  getMallListQuest()
+  getDBOCharListQuest()
 })
 
-// TODO 后台获取分类数据
-const categories = [
-  {id: 'clothing', name: '服装'},
-  {id: 'electronics', name: '电子产品'},
-  {id: 'home', name: '家居用品'}
-];
+// 后台获取分类数据
+const categories = ref([])
+const getMallTypeListQuest = async () => {
+  const res = await getMallTypeListApi()
+  categories.value = res.data
+}
 
-// TODO 后台获取商品数据
 // products用来存过滤后的数据，currentPageData就是最后分页的数据(当过滤后分页根据自己分，查看updatePaginationBySelf可知)
-const products = ref([
-  {id: 1, name: '商品1', price: 9, category: 'clothing'},
-  {id: 2, name: '商品2', price: 199, category: 'clothing'},
-  {id: 3, name: '商品3', price: 299, category: 'clothing'},
-  {id: 4, name: '商品4', price: 299, category: 'clothing'},
-  {id: 5, name: '商品5', price: 299, category: 'home'},
-  {id: 6, name: '商品6', price: 299, category: 'home'},
-  {id: 7, name: '商品7', price: 299, category: 'home'},
-  {id: 8, name: '商品8', price: 299, category: 'home'},
-  {id: 9, name: '商品9', price: 299, category: 'home'},
-  {id: 10, name: '商品10', price: 299, category: 'home'},
-  {id: 11, name: '商品11', price: 299, category: 'home'},
-  {id: 12, name: '商品12', price: 299, category: 'home'},
-  {id: 13, name: '商品13', price: 299, category: 'home'},
-  {id: 14, name: '商品14', price: 299, category: 'home'},
-  {id: 15, name: '商品15', price: 299, category: 'electronics'},
-  {id: 16, name: '商品16', price: 299, category: 'electronics'},
-  {id: 17, name: '商品17', price: 299, category: 'electronics'},
-  {id: 18, name: '商品18', price: 299, category: 'electronics'},
-  {id: 19, name: '商品18', price: 299, category: 'electronics'},
-  {id: 20, name: '商品18', price: 299, category: 'electronics'},
-  {id: 21, name: '商品18', price: 299, category: 'electronics'},
-  {id: 22, name: '商品18', price: 299, category: 'electronics'},
-  {id: 23, name: '商品18', price: 299, category: 'electronics'},
-  {id: 24, name: '商品18', price: 299, category: 'electronics'},
-  {id: 25, name: '商品18', price: 299, category: 'electronics'},
-  {id: 26, name: '商品18', price: 299, category: 'electronics'},
-  {id: 27, name: '商品18', price: 299, category: 'electronics'},
-  {id: 28, name: '商品18', price: 299, category: 'electronics'},
-  {id: 29, name: '商品18', price: 299, category: 'electronics'},
-  {id: 31, name: '商品18', price: 299, category: 'electronics'},
-  {id: 32, name: '商品18', price: 299, category: 'electronics'},
-]);
+const products = ref([]);
+const getMallListQuest = async () => {
+  const res = await getMallList()
+  products.value = res.data
+}
+
+// 选择框的参数，value和label的值一致即可
+const dboCharOptions = ref([])
+const getDBOCharListQuest = async () => {
+  const res = await getDBOCharListApi(user.value.accountID)
+  dboCharOptions.value = res.data;
+}
 
 // 分页基本属性
 const currentPage = ref(1);
@@ -111,7 +96,7 @@ const filteredProducts = computed(() => {
     return res;
   } else {
     const res = products.value.filter(item => item.name.includes(searchKeyword.value)
-        && item.category === selectedCategory.value);
+        && item.type === selectedCategory.value);
     currentPageData.value = res;
     updatePaginationBySelf()
     return res;
@@ -144,7 +129,7 @@ function updatePagination() {
 // 把数据分页-根据自己分
 function updatePaginationBySelf() {
   startIndex.value = (currentPage.value - 1) * pageSize.value;
-  endIndex.value = Math.min(startIndex.value + pageSize.value - 1, products.value.length - 1);
+  endIndex.value = Math.min(startIndex.value + pageSize.value - 1, currentPageData.value.length - 1);
   currentPageData.value = currentPageData.value.slice(startIndex.value, endIndex.value + 1);
 }
 
@@ -177,8 +162,8 @@ const givePresent = () => {
       dialogVisibleForGivePresent.value = false;
       givePresentForm.value.accountID = user.value.accountID
       // TODO 赠送QuestAPI 在里面记得（givePresentForm.value.username = ''）
-
-    }else {
+      console.log("赠送表单   用户id:" + givePresentForm.value.accountID + "   用户名:" + givePresentForm.value.username)
+    } else {
       ElMessage.warning("请输入角色名称")
     }
   })
@@ -191,7 +176,7 @@ const buyForm = ref({
 });
 const buyRules = {
   username: [
-    { required: true, message: '请选择角色名称' },
+    {required: true, message: '请选择角色名称'},
   ]
 };
 const dialogVisibleForBuy = ref(false)
@@ -210,35 +195,12 @@ const buy = () => {
       dialogVisibleForBuy.value = false;
       buyForm.value.accountID = user.value.accountID
       // TODO 购买QuestAPI 在里面记得(buyForm.value.username = '';)
-
-    }else {
+      console.log("购买表单   用户id:" + buyForm.value.accountID + "   用户名:" + buyForm.value.username)
+    } else {
       ElMessage.warning("请选择角色名称")
     }
   })
 }
-// 选择框的参数，value和label的值一致即可
-const options = [
-  {
-    value: '九木铃子',
-    label: '九木铃子',
-  },
-  {
-    value: 'Option2',
-    label: 'Option2',
-  },
-  {
-    value: 'Option3',
-    label: 'Option3',
-  },
-  {
-    value: 'Option4',
-    label: 'Option4',
-  },
-  {
-    value: 'Option5',
-    label: 'Option5',
-  },
-]
 </script>
 
 <template>
@@ -271,7 +233,7 @@ const options = [
               <button class="white-button">商品详情</button>
               <template #content>
                 <div class="tooltip-content">
-                  我是商品我是商品我是商品我是商品我是商品我是商品我是商品我是商品我是商品我是商品我是商品我是商品我是商品我是商品我是商品我是商品我是商品我是商品
+                  {{ product.description }}
                 </div>
               </template>
             </el-tooltip>
@@ -323,10 +285,10 @@ const options = [
         <el-form-item class="myInput" prop="username">
           <el-select v-model="buyForm.username" class="m-2" placeholder="请选择角色名称" size="large">
             <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="item in dboCharOptions"
+                :key="item.charName"
+                :label="item.charName"
+                :value="item.charName"
             />
           </el-select>
         </el-form-item>
@@ -334,8 +296,8 @@ const options = [
       <div class="form-row" style="justify-content: flex-end; margin-top: 20px;">
         <el-button type="default" style="width: 70px; height: 40px" @click="cancelBuyExchange">取消</el-button>
         <el-button type="primary"
-                   style="background-color: #67c23a; color: #FFFFFF; height: 40px; border-color: #67c23a;" @click="buy">
-          确认购买
+                   style="background-color: #67c23a; color: #FFFFFF; height: 40px; border-color: #67c23a;"
+                   @click="buy">确认购买
         </el-button>
       </div>
     </el-form>

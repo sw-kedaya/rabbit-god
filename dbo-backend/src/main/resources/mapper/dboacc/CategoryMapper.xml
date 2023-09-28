@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.mapper.dboacc.CategoryMapper">
+    <resultMap type="com.cc.entity.Category" id="CategoryResult">
+        <id property="id" column="id"/>
+        <result property="name" column="type_name"/>
+        <result property="sort" column="sort"/>
+    </resultMap>
+
+    <select id="getMallTypeList" resultMap="CategoryResult">
+        select * from mall_type order by sort ASC;
+    </select>
+
+    <update id="updateMallTypeById">
+        update mall_type set type_name = #{name}, sort = #{sort}
+        where id = #{id};
+    </update>
+
+    <delete id="deleteById">
+        delete from mall_type where #{id} = id;
+    </delete>
+
+    <insert id="saveMallType">
+        insert into mall_type(type_name,sort) values (#{name}, #{sort});
+    </insert>
+</mapper>

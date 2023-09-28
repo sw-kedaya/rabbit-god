@@ -6,4 +6,10 @@ import java.util.List;
 
 public interface EventMapper {
     List<Event> getEventList();
+
+    Integer adminEventSave(Event event);
+
+    Integer adminEventUpdate(Event event);
+
+    Integer adminEventDelete(Long id);
 }

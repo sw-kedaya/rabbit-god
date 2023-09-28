@@ -5,11 +5,11 @@ import lombok.Data;
 @Data
 public class DBOChar {
     // CharID-角色主键id
-    private Integer charID;
+    private Long charID;
     // CharName-角色主键名
     private String charName;
     // AccountID-用户id
-    private Integer accountID;
+    private Long accountID;
     // Level-等级
     private Integer level;
     /**race-种族(0=人类 1= 那美克 2=魔人)*/

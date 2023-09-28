@@ -21,7 +21,7 @@
         values (#{cdKey}, #{cash});
     </insert>
 
-    <select id="checkCdKey" resultType="java.lang.Integer">
+    <select id="checkCdKey" resultType="java.lang.Long">
         select cash from cash_key where cd_key = #{cdKey}
     </select>
 
@@ -40,4 +40,8 @@
             order by create_time ASC;
         </if>
     </select>
+
+    <delete id="deleteAllKey">
+        delete from cash_key;
+    </delete>
 </mapper>

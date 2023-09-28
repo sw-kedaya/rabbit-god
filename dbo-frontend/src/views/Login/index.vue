@@ -17,6 +17,7 @@ const checkQuest = async () => {
         type: 'warning'
       });
       localStorage.removeItem("user-token")
+      localStorage.removeItem("admin-token")
     }
   }
 }

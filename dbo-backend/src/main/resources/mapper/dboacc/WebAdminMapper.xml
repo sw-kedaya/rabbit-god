@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.mapper.dboacc.WebAdminMapper">
+    <resultMap type="com.cc.entity.WebAdmin" id="WebAdminResult">
+        <id property="username" column="Username"/>
+        <result property="password" column="Password"/>
+    </resultMap>
+
+    <select id="verifyAdmin" resultMap="WebAdminResult">
+        select *
+        from web_admin
+        where Username = #{username}
+          and Password = #{password};
+    </select>
+</mapper>

@@ -14,4 +14,6 @@ public interface IAccountService {
     Result forgetPassword(String username);
 
     Result updatePwd(PasswordDTO passwordDTO);
+
+    boolean isAdmin(Long id);
 }

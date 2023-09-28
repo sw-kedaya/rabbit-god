@@ -38,6 +38,7 @@ onMounted(() => {
 
 function logoutClick() {
   localStorage.removeItem("user-token")
+  localStorage.removeItem("admin-token")
   user.value = null;
   router.replace('/home')
   ElMessage({

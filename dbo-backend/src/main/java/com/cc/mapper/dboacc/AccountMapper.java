@@ -21,6 +21,8 @@ public interface AccountMapper {
                       @PathVariable("username") String username,
                       @PathVariable("md5") String md5);
 
-    Integer addMallPoints(@PathVariable("accountID") Integer accountID,
-                          @PathVariable("cash") Integer cash);
+    Integer addMallPoints(@PathVariable("accountID") Long accountID,
+                          @PathVariable("cash") Long cash);
+
+    Integer isAdmin(@PathVariable("id") Long id);
 }

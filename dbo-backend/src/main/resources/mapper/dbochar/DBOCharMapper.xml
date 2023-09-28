@@ -18,4 +18,8 @@
         select CharID,CharName,AccountID,Level,Race,Class,Gender,GuildName from characters
         where AccountID = #{accountID};
     </select>
+
+    <select id="getAllCharNameList" resultType="com.cc.entity.DBOChar">
+        select AccountID,CharName from characters;
+    </select>
 </mapper>

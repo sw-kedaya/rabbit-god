@@ -10,7 +10,9 @@ public interface CashKeyMapper {
 
     void adminAddCashKey(CashKey cashKey);
 
-    Integer checkCdKey(@PathVariable("cdKey") String cdKey);
+    void deleteAllKey();
+
+    Long checkCdKey(@PathVariable("cdKey") String cdKey);
 
     Integer useCdKey(CashKey cashKey);
 

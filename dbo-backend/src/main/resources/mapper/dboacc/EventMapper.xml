@@ -5,7 +5,7 @@
 <mapper namespace="com.cc.mapper.dboacc.EventMapper">
     <resultMap type="com.cc.entity.Event" id="EventResult">
         <id property="id" column="id"/>
-        <result property="name" column="name"/>
+        <result property="event_name" column="event_name"/>
         <result property="monday" column="monday"/>
         <result property="tuesday" column="tuesday"/>
         <result property="wednesday" column="wednesday"/>
@@ -18,4 +18,28 @@
     <select id="getEventList" resultMap="EventResult">
         select * from event;
     </select>
+
+    <insert id="adminEventSave">
+        insert into event(event_name, monday, tuesday, wednesday, thursday, friday, saturday, sunday)
+        values (#{event_name}, #{monday}, #{tuesday}, #{wednesday}, #{thursday}, #{friday}, #{saturday}, #{sunday});
+    </insert>
+
+    <update id="adminEventUpdate">
+        update event
+        set event_name = #{event_name},
+            monday=#{monday},
+            tuesday=#{tuesday},
+            wednesday=#{wednesday},
+            thursday=#{thursday},
+            friday=#{friday},
+            saturday=#{saturday},
+            sunday=#{sunday}
+        where id = #{id}
+    </update>
+
+    <delete id="adminEventDelete">
+        delete
+        from event
+        where id = #{id};
+    </delete>
 </mapper>

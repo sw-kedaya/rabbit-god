@@ -5,14 +5,14 @@ import lombok.Data;
 import java.time.LocalDateTime;
 @Data
 public class Account {
-    private Integer accountID;
+    private Long accountID;
     private String username;
     private String password;
     private String accStatus;
     private String email;
-    private Integer mallPoints;
-    private Integer eventCoins;
-    private Integer waguCoins;
+    private Long mallPoints;
+    private Long eventCoins;
+    private Long waguCoins;
     private LocalDateTime regDate;
     private LocalDateTime lastLogin;
     private String regIp;
@@ -29,5 +29,5 @@ public class Account {
     private Integer bansEnd;
     private String bz;
     private Integer newPlayer;
-    private Integer firstCharID;
+    private Long firstCharID;
 }

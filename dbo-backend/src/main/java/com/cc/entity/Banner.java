@@ -5,7 +5,7 @@ import java.awt.*;
 
 @Data
 public class Banner {
-    private Integer id;
+    private Long id;
     private String name;
     private Image src;
 }

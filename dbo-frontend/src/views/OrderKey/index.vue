@@ -19,6 +19,7 @@ const checkQuest = async () => {
           type: 'warning'
         });
         localStorage.removeItem("user-token")
+        localStorage.removeItem("admin-token")
       }
     }
   } else {
@@ -134,7 +135,7 @@ onMounted(() => {
         </template>
         <template #default="scope">
           <div class="cell-wrapper">
-            {{ scope.row.useTime }}
+            {{ scope.row.createTime }}
           </div>
         </template>
       </el-table-column>

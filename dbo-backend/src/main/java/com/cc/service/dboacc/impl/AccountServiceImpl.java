@@ -95,4 +95,10 @@ public class AccountServiceImpl implements IAccountService {
                 DigestUtils.md5DigestAsHex(passwordDTO.getNewPassword().getBytes())) > 0 ?
                 Result.ok(): Result.fail("修改失败，请检查密码");
     }
+
+    @Override
+    public boolean isAdmin(Long id) {
+        Integer admin = accountMapper.isAdmin(id);
+        return admin == 1;
+    }
 }

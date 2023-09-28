@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.mapper.dboacc.MallMapper">
+    <resultMap type="com.cc.entity.Mall" id="MallResult">
+        <id property="id" column="id"/>
+        <result property="name" column="mall_name"/>
+        <result property="description" column="mall_desc"/>
+        <result property="price" column="cash"/>
+        <result property="type" column="mall_type"/>
+        <result property="del_flag" column="del_flag"/>
+        <result property="tblidx" column="tblidx"/>
+        <result property="place" column="place"/>
+        <result property="pos" column="pos"/>
+        <result property="count" column="count"/>
+        <result property="rank" column="rank"/>
+        <result property="durability" column="durability"/>
+        <result property="grade" column="grade"/>
+        <result property="needToIdentify" column="NeedToIdentify"/>
+        <result property="battleAttribute" column="BattleAttribute"/>
+        <result property="maker" column="Maker"/>
+        <result property="optionTblidx" column="OptionTblidx"/>
+        <result property="optionTblidx2" column="OptionTblidx2"/>
+        <result property="optionRandomId" column="OptionRandomId"/>
+        <result property="optionRandomVal" column="OptionRandomVal"/>
+        <result property="optionRandomId2" column="OptionRandomId2"/>
+        <result property="optionRandomVal2" column="OptionRandomVal2"/>
+        <result property="optionRandomId3" column="OptionRandomId3"/>
+        <result property="optionRandomVal3" column="OptionRandomVal3"/>
+        <result property="optionRandomId4" column="OptionRandomId4"/>
+        <result property="optionRandomVal4" column="OptionRandomVal4"/>
+        <result property="optionRandomId5" column="OptionRandomId5"/>
+        <result property="optionRandomVal5" column="OptionRandomVal5"/>
+        <result property="optionRandomId6" column="OptionRandomId6"/>
+        <result property="optionRandomVal6" column="OptionRandomVal6"/>
+        <result property="optionRandomId7" column="OptionRandomId7"/>
+        <result property="optionRandomVal7" column="OptionRandomVal7"/>
+        <result property="optionRandomId8" column="OptionRandomId8"/>
+        <result property="optionRandomVal8" column="OptionRandomVal8"/>
+        <result property="useStartTime" column="UseStartTime"/>
+        <result property="useEndTime" column="UseEndTime"/>
+        <result property="restrictState" column="RestrictState"/>
+        <result property="durationType" column="DurationType"/>
+        <result property="sign_reward" column="sign_reward"/>
+    </resultMap>
+
+    <select id="getMallList" resultMap="MallResult">
+        select *
+        from mall;
+    </select>
+    <!--这里除了id和sign_reward都有(id自增，签到默认0)-->
+    <insert id="saveMall">
+        insert into mall( mall_name, mall_desc, cash, mall_type, del_flag, tblidx, place, pos, count, rank
+                        , durability, grade, NeedToIdentify, BattleAttribute, Maker, OptionTblidx, OptionTblidx2
+                        , OptionRandomId, OptionRandomVal, OptionRandomId2, OptionRandomVal2
+                        , OptionRandomId3, OptionRandomVal3, OptionRandomId4, OptionRandomVal4
+                        , OptionRandomId5, OptionRandomVal5, OptionRandomId6, OptionRandomVal6
+                        , OptionRandomId7, OptionRandomVal7, OptionRandomId8, OptionRandomVal8
+                        , UseStartTime, UseEndTime, RestrictState, DurationType)
+        values (#{name}, #{description}, #{price}, #{type}, #{del_flag}, #{tblidx}, #{place}, #{pos}, #{count},
+                #{rank}, #{durability}, #{grade}, #{needToIdentify}, #{battleAttribute}, #{maker},
+                #{optionTblidx}, #{optionTblidx2},
+                #{optionRandomId}, #{optionRandomVal}, #{optionRandomId2}, #{optionRandomVal2},
+                #{optionRandomId3}, #{optionRandomVal3}, #{optionRandomId4}, #{optionRandomVal4},
+                #{optionRandomId5}, #{optionRandomVal5}, #{optionRandomId6}, #{optionRandomVal6},
+                #{optionRandomId7}, #{optionRandomVal7}, #{optionRandomId8}, #{optionRandomVal8},
+                #{useStartTime}, #{useEndTime}, #{restrictState}, #{durationType});
+    </insert>
+
+    <update id="updateMall">
+        update mall
+        set mall_name        = #{name},
+            mall_desc        = #{description},
+            cash             = #{price},
+            mall_type        = #{type},
+            del_flag         = #{del_flag},
+            tblidx           = #{tblidx},
+            place            = #{place},
+            pos              = #{pos},
+            count            = #{count},
+            rank             = #{rank},
+            durability       = #{durability},
+            grade            = #{grade},
+            NeedToIdentify   = #{needToIdentify},
+            BattleAttribute  = #{battleAttribute},
+            Maker            = #{maker},
+            OptionTblidx     = #{optionTblidx},
+            OptionTblidx2    = #{optionTblidx2},
+            OptionRandomId   = #{optionRandomId},
+            OptionRandomVal  = #{optionRandomVal},
+            OptionRandomId2  = #{optionRandomId2},
+            OptionRandomVal2 = #{optionRandomVal2},
+            OptionRandomId3  = #{optionRandomId3},
+            OptionRandomVal3 = #{optionRandomVal3},
+            OptionRandomId4  = #{optionRandomId4},
+            OptionRandomVal4 = #{optionRandomVal4},
+            OptionRandomId5  = #{optionRandomId5},
+            OptionRandomVal5 = #{optionRandomVal5},
+            OptionRandomId6  = #{optionRandomId6},
+            OptionRandomVal6 = #{optionRandomVal6},
+            OptionRandomId7  = #{optionRandomId7},
+            OptionRandomVal7 = #{optionRandomVal7},
+            OptionRandomId8  = #{optionRandomId8},
+            OptionRandomVal8 = #{optionRandomVal8},
+            UseStartTime     = #{useStartTime},
+            UseEndTime       = #{useEndTime},
+            RestrictState    = #{restrictState},
+            DurationType     = #{durationType}
+        where id = #{id};
+    </update>
+
+    <delete id="deleteMallById">
+        delete from mall where id = #{id};
+    </delete>
+
+    <update id="setSignRewardById">
+        update mall
+        set sign_reward = 1
+        where id = #{id}
+    </update>
+
+    <update id="cancelSignRewardById">
+        update mall
+        set sign_reward = 0
+        where id = #{id}
+    </update>
+</mapper>
