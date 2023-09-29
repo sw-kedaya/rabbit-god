@@ -1,11 +1,10 @@
 <script setup>
 import {useRouter} from "vue-router";
-import {checkApi} from "@/apis/account";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {computed, onMounted, ref, watch} from "vue";
 import {getMallTypeListApi, updateMallTypeByIdApi, deleteByIdApi, saveMallTypeApi} from "@/apis/category"
 import {
-  getMallList,
+  getAdminAllMallList,
   saveMallApi,
   updateMallApi,
   deleteMallByIdApi,
@@ -21,41 +20,19 @@ const activeTab = ref();
 const activeSideTab = ref();
 
 const router = useRouter()
-const checkQuest = async () => {
-  if (user.value != null && user.value.admin === 10) {
-    const res = await checkApi(user.value.token)
-    if (!res.data) {
-      {
-        router.push('/login')
-        ElMessage({
-          message: '令牌过期，请重新登录',
-          type: 'warning'
-        });
-        localStorage.removeItem("user-token")
-        localStorage.removeItem("admin-token")
-      }
-    }
-  } else {
-    router.push('/login')
-    ElMessage({
-      message: '请先登录',
-      type: 'warning'
-    });
-  }
-}
 const user = ref()
 const admin = ref()
 onMounted(() => {
   // 进入前先判断是否等于且为管理员
   user.value = JSON.parse(localStorage.getItem("user-token"))
-  checkQuest()
+  if (user.value == null) router.push('/login')
   // 然后判断是否输入了管理员密码
   admin.value = localStorage.getItem("admin-token")
   // 其他初始化
   activeTab.value = localStorage.getItem("activeTab");
   activeSideTab.value = localStorage.getItem("activeSideTab");
   getMallTypeListQuest()
-  getMallListQuest()
+  getAdminAllMallListQuest()
   getAdminOrderQuest()
   getEventListQuest()
 })
@@ -73,8 +50,8 @@ const getMallTypeListQuest = async () => {
   categoryData.value = res.data;
 }
 
-const getMallListQuest = async () => {
-  const res = await getMallList()
+const getAdminAllMallListQuest = async () => {
+  const res = await getAdminAllMallList()
   goodsData.value = res.data
 }
 
@@ -259,7 +236,7 @@ const goodsFormValidate = ref() // 用于判断用户是否填写了表单
 const saveMallQuest = async () => {
   const res = await saveMallApi(goodsForm.value)
   if (res.success) {
-    getMallListQuest()
+    getAdminAllMallListQuest()
     goodsForm.value = {
       name: '', description: '', price: '', type: '', del_flag: '0', tblidx: '', userId: 0,
     };
@@ -374,7 +351,7 @@ const updateGoodsFormValidate = ref() // 用于判断用户是否填写了表单
 const updateMallQuest = async () => {
   const res = await updateMallApi(updateGoodsForm.value)
   if (res.success) {
-    getMallListQuest()
+    getAdminAllMallListQuest()
     ElMessage.success('修改成功')
   } else {
     ElMessage.error(res.errorMsg);
@@ -396,7 +373,7 @@ const updateGoodsSubmit = () => {
 const deleteMallByIdQuest = async (id, userId) => {
   const res = await deleteMallByIdApi(id, userId);
   if (res.success) {
-    getMallListQuest()
+    getAdminAllMallListQuest()
     ElMessage.success('删除成功')
   } else {
     ElMessage.error(res.errorMsg)
@@ -418,7 +395,7 @@ const deleteGoods = (id) => {
 const setSignRewardByIdQuest = async (id, userId) => {
   const res = await setSignRewardByIdApi(id, userId)
   if (res.success) {
-    getMallListQuest()
+    getAdminAllMallListQuest()
     ElMessage.success('设置成功')
   } else {
     ElMessage.error(res.errorMsg)
@@ -440,7 +417,7 @@ const setSignRewordGoods = (id) => {
 const cancelSignRewardByIdQuest = async (id, userId) => {
   const res = await cancelSignRewardByIdApi(id, userId)
   if (res.success) {
-    getMallListQuest()
+    getAdminAllMallListQuest()
     ElMessage.success('取消成功')
   } else {
     ElMessage.error(res.errorMsg)
@@ -647,7 +624,6 @@ const eventSaveSubmit = () => {
   eventSaveFormValidate.value.validate((valid) => {
     if (valid) {
       dialogVisibleForEventSaveRules.value = false;
-      // TODO 新增API
       adminEventSaveQuest()
     } else {
       ElMessage.warning("请输入活动名称")
@@ -681,7 +657,6 @@ const eventUpdateSubmit = () => {
   eventUpdateFormValidate.value.validate((valid) => {
     if (valid) {
       dialogVisibleForEventUpdateRules.value = false;
-      // TODO 修改API
       adminEventUpdateQuest()
     } else {
       ElMessage.warning("请输入活动名称")
@@ -704,7 +679,6 @@ const deleteEvent = (id) => {
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    // TODO 删除API
     adminEventDeleteQuest(id)
   }).catch(() => {
     ElMessage.info("取消删除")
@@ -721,7 +695,7 @@ const deleteEvent = (id) => {
           <el-form ref="adminInfoForm" :model="adminInfo" :rules="rules" status-icon label-width="80px" size="large"
                    @submit.prevent>
             <el-form-item prop="password" style="width:320px" label="密码">
-              <el-input placeholder="请输入管理平台密码" v-model="adminInfo.password"/>
+              <el-input placeholder="请输入管理平台密码" v-model="adminInfo.password" type="password"/>
             </el-form-item>
             <div class="button-container">
               <el-button size="large" class="subBtn" type="primary" @click="onAdminSubmitClick">进入管理平台</el-button>

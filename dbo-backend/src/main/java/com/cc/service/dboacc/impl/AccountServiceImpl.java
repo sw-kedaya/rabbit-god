@@ -88,7 +88,6 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public Result updatePwd(PasswordDTO passwordDTO) {
-        System.out.println(passwordDTO);
         Account account = accountMapper.getPassword(passwordDTO.getUsername());
         if (!passwordDTO.getOldPassword().equals(account.getPassword())) return Result.fail("修改失败，请检查原密码");
         return accountMapper.updatePwd(passwordDTO.getNewPassword(), passwordDTO.getUsername(),

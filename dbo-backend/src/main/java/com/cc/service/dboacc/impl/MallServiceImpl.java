@@ -4,6 +4,8 @@ import com.cc.entity.Mall;
 import com.cc.mapper.dboacc.MallMapper;
 import com.cc.service.dboacc.IMallService;
 import com.cc.vo.Result;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -46,5 +48,15 @@ public class MallServiceImpl implements IMallService {
     public Result cancelSignRewardById(Long id) {
         Integer integer = mallMapper.cancelSignRewardById(id);
         return integer > 0 ? Result.ok() : Result.fail("设置失败，请刷新后检查数据");
+    }
+
+    @Override
+    public Result getAdminEnableMallList() {
+        return Result.ok(mallMapper.getAdminEnableMallList());
+    }
+
+    @Override
+    public Result getAdminAllMallList() {
+        return Result.ok(mallMapper.getAdminAllMallList());
     }
 }

@@ -46,3 +46,17 @@ export function cancelSignRewardByIdApi(id, userId){
         params: {id, userId}
     })
 }
+
+export function getAdminEnableMallList() {
+    return instance({
+        method: "get",
+        url: "/mall/admin/list"
+    })
+}
+
+export function getAdminAllMallList() {
+    return instance({
+        method: "get",
+        url: "/mall/admin/all/list"
+    })
+}

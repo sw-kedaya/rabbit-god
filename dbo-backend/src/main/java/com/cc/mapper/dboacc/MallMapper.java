@@ -17,4 +17,8 @@ public interface MallMapper {
     Integer setSignRewardById(@PathVariable("id") Long id);
 
     Integer cancelSignRewardById(@PathVariable("id") Long id);
+
+    List<Mall> getAdminEnableMallList();
+
+    List<Mall> getAdminAllMallList();
 }

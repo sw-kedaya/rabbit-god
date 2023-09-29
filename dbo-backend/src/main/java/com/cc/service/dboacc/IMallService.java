@@ -15,4 +15,8 @@ public interface IMallService {
     Result setSignRewardById(Long id);
 
     Result cancelSignRewardById(Long id);
+
+    Result getAdminEnableMallList();
+
+    Result getAdminAllMallList();
 }

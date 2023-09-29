@@ -50,4 +50,14 @@ public class MallController {
         if (!accountService.isAdmin(userId)) return Result.fail("禁止非管理员操作");
         return mallService.cancelSignRewardById(id);
     }
+
+    @GetMapping("/admin/list")
+    public Result getAdminEnableMallList() {
+        return mallService.getAdminEnableMallList();
+    }
+
+    @GetMapping("/admin/all/list")
+    public Result getAdminAllMallList() {
+        return mallService.getAdminAllMallList();
+    }
 }

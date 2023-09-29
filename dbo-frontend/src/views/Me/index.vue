@@ -1,6 +1,6 @@
 <script setup>
 import {ref, onMounted, watch} from 'vue';
-import {checkApi, updateApi} from "@/apis/account";
+import {updateApi} from "@/apis/account";
 import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
 import {getDBOCharListApi} from "@/apis/dboChar";
@@ -39,34 +39,11 @@ const cDKeyRules = {
   ]
 };
 
-// 验证是否登录
 const user = ref()
 const dialogVisible = ref(false);
 const dialogVisibleForCdKey = ref(false);
 
 const router = useRouter()
-const checkQuest = async () => {
-  if (user.value != null) {
-    const res = await checkApi(user.value.token)
-    if (!res.data) {
-      {
-        router.push('/login')
-        ElMessage({
-          message: '令牌过期，请重新登录',
-          type: 'warning'
-        });
-        localStorage.removeItem("user-token")
-        localStorage.removeItem("admin-token")
-      }
-    }
-  } else {
-    router.push('/login')
-    ElMessage({
-      message: '请先登录',
-      type: 'warning'
-    });
-  }
-}
 
 // 获取用户角色信息
 const tableData = ref([]);
@@ -94,7 +71,6 @@ function handleClick(newCurrentPage) {
   updatePagination();
 }
 
-
 function updatePagination() {
   totalPage.value = Math.ceil(tableData.value.length / pageSize.value);
   startIndex.value = (currentPage.value - 1) * pageSize.value;
@@ -113,7 +89,7 @@ let updateFlag = ref(true)
 onMounted(() => {
   // 进入前先判断登录没
   user.value = JSON.parse(localStorage.getItem("user-token"))
-  checkQuest()
+  if (user.value == null) router.push('/login')
   getDBOCharListQuest(user.value.accountID)
 
   // 120秒只能修改一次密码

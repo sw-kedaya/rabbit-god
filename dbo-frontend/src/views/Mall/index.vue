@@ -1,46 +1,26 @@
 <script setup>
 import {useRouter} from "vue-router";
-import {checkApi} from "@/apis/account";
 import {ElMessage} from "element-plus";
 import {onMounted, ref, computed, watch} from "vue";
 import {getMallTypeListApi} from "@/apis/category"
-import {getMallList} from "@/apis/mall"
+import {getMallList, getAdminEnableMallList} from "@/apis/mall"
 import {getDBOCharListApi} from "@/apis/dboChar"
 
-// 进入前先判断登录
 const router = useRouter()
-const checkQuest = async () => {
-  if (user.value != null) {
-    const res = await checkApi(user.value.token)
-    if (!res.data) {
-      {
-        router.push('/login')
-        ElMessage({
-          message: '令牌过期，请重新登录',
-          type: 'warning'
-        });
-        localStorage.removeItem("user-token")
-        localStorage.removeItem("admin-token")
-      }
-    }
-  } else {
-    router.push('/login')
-    ElMessage({
-      message: '请先登录',
-      type: 'warning'
-    });
-  }
-}
 const user = ref()
 onMounted(() => {
   // 进入前先判断登录没
   user.value = JSON.parse(localStorage.getItem("user-token"))
-  checkQuest()
   updatePagination()
   // 数据渲染放在这-categories/products
   getMallTypeListQuest()
-  getMallListQuest()
-  getDBOCharListQuest()
+  // 如果是管理员则找管理员可见的商品
+  if (user.value != null && user.value.admin === 10) {
+    getAdminEnableMallQuest()
+  } else {
+    getMallListQuest()
+  }
+  if (user.value != null) getDBOCharListQuest()
 })
 
 // 后台获取分类数据
@@ -56,7 +36,10 @@ const getMallListQuest = async () => {
   const res = await getMallList()
   products.value = res.data
 }
-
+const getAdminEnableMallQuest = async () => {
+  const res = await getAdminEnableMallList()
+  products.value = res.data
+}
 // 选择框的参数，value和label的值一致即可
 const dboCharOptions = ref([])
 const getDBOCharListQuest = async () => {
@@ -157,6 +140,7 @@ const cancelGivePresentExchange = () => {
 const givePresentFormValidate = ref() // 用于判断用户是否填写了表单
 
 const givePresent = () => {
+  if (user.value == null) return ElMessage.warning('请先登录')
   givePresentFormValidate.value.validate((valid) => {
     if (valid) {
       dialogVisibleForGivePresent.value = false;
@@ -190,6 +174,7 @@ const cancelBuyExchange = () => {
 const buyFormValidate = ref() // 用于判断用户是否填写了表单
 
 const buy = () => {
+  if (user.value == null) return ElMessage.warning('请先登录')
   buyFormValidate.value.validate((valid) => {
     if (valid) {
       dialogVisibleForBuy.value = false;
