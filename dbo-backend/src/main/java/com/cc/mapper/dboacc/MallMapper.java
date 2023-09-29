@@ -1,12 +1,13 @@
 package com.cc.mapper.dboacc;
 
 import com.cc.entity.Mall;
+import com.cc.vo.MallVO;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
 public interface MallMapper {
-    List<Mall> getMallList();
+    List<MallVO> getMallList();
 
     Integer saveMall(Mall mall);
 
@@ -18,7 +19,7 @@ public interface MallMapper {
 
     Integer cancelSignRewardById(@PathVariable("id") Long id);
 
-    List<Mall> getAdminEnableMallList();
+    List<MallVO> getAdminEnableMallList();
 
     List<Mall> getAdminAllMallList();
 }

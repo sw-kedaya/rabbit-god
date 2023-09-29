@@ -44,9 +44,15 @@
         <result property="durationType" column="DurationType"/>
         <result property="sign_reward" column="sign_reward"/>
     </resultMap>
+    <resultMap type="com.cc.vo.MallVO" id="MallVOResult">
+        <id property="id" column="id"/>
+        <result property="name" column="mall_name"/>
+        <result property="description" column="mall_desc"/>
+        <result property="price" column="cash"/>
+    </resultMap>
 
-    <select id="getMallList" resultMap="MallResult">
-        select *
+    <select id="getMallList" resultMap="MallVOResult">
+        select id, cash, mall_name, mall_desc
         from mall
         where del_flag = 0;
     </select>
@@ -127,8 +133,8 @@
         where id = #{id}
     </update>
 
-    <select id="getAdminEnableMallList" resultMap="MallResult">
-        select *
+    <select id="getAdminEnableMallList" resultMap="MallVOResult">
+        select id, cash, mall_name, mall_desc
         from mall
         where del_flag = 0 or del_flag = 2;
     </select>
