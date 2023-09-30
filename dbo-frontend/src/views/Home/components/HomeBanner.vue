@@ -6,16 +6,16 @@
   <div class="home-banner">
     <el-carousel width="1903px" height="871px" :interval="3000">
       <el-carousel-item>
-        <img src="@/assets/banner/10.jpg" alt="" class="carousel-image">
+        <img src="/banner/10.jpg" alt="" class="carousel-image">
       </el-carousel-item>
       <el-carousel-item>
-        <img src="@/assets/banner/11.jpg" alt="" class="carousel-image">
+        <img src="/banner/11.jpg" alt="" class="carousel-image">
       </el-carousel-item>
       <el-carousel-item>
-        <img src="@/assets/banner/12.jpg" alt="" class="carousel-image">
+        <img src="/banner/12.jpg" alt="" class="carousel-image">
       </el-carousel-item>
       <el-carousel-item>
-        <img src="@/assets/banner/13.jpg" alt="" class="carousel-image">
+        <img src="/banner/13.jpg" alt="" class="carousel-image">
       </el-carousel-item>
     </el-carousel>
   </div>

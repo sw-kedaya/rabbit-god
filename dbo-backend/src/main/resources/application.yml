@@ -1,5 +1,6 @@
 server:
-  port: 8080
+  port: 2333
+# 把localhost都改成对应的ip，username/password都改成自己的
 spring:
   datasource:
     dboacc:
@@ -14,15 +15,16 @@ spring:
       username: root
       password: 123456
       type: com.alibaba.druid.pool.DruidDataSource
+  # redis的ip，端口，密码
   redis:
     host: localhost
     port: 6379
-  # 邮箱信息
+    password:
+  # 邮箱信息(账号是邮箱，密码是授权码)
   mail:
     host: smtp.qq.com
-    username: 1289796298@qq.com
-    # 弄到github前要删掉这个密码
-#    password:
+    username:
+    password:
 
 # 注册参数
 register:

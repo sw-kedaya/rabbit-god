@@ -18,15 +18,15 @@ export default defineConfig({
         resolvers: [ElementPlusResolver({importStyle: "sass"})]
     }),
   ],
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/\/api/, '')
-      }
-    }
-  },
+  // server: {
+  //   proxy: {
+  //     '/api': {
+  //       target: config.target,
+  //       changeOrigin: true,
+  //       rewrite: (path) => path.replace(/\/api/, '')
+  //     }
+  //   }
+  // },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

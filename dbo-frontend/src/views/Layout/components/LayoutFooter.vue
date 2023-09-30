@@ -1,3 +1,32 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const message = ref({
+  text1: "",
+  text2: "",
+  text3: "",
+  CopyRight: "",
+});
+
+onMounted(() => {
+  fetchPublicFile('footer.json');
+});
+
+async function fetchPublicFile(filename) {
+  try {
+    const response = await fetch(filename);
+    if (response.ok) {
+      const content = await response.json();
+      message.value = content.message;
+    } else {
+      console.error(`Failed to fetch ${filename}: ${response.status} ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error(`Error while fetching ${filename}:`, error);
+  }
+}
+</script>
+
 <template>
   <footer class="app_footer">
     <div class="extra">
@@ -5,11 +34,11 @@
         <!-- 版权信息 -->
         <div class="copyright">
           <p>
-            <a href="javascript:;">适当游玩</a>
-            <a href="javascript:;">版权信息</a>
-            <a href="javascript:;">严禁脚本</a>
+            <a href="javascript:;">{{ message.text1 }}</a>
+            <a href="javascript:;">{{ message.text2 }}</a>
+            <a href="javascript:;">{{ message.text3 }}</a>
           </p>
-          <p>CopyRight &copy; 兔神 | Q群：927829715</p>
+          <p>{{ message.CopyRight }}</p>
         </div>
       </div>
     </div>
@@ -60,5 +89,3 @@
   }
 }
 </style>
-<script setup>
-</script>

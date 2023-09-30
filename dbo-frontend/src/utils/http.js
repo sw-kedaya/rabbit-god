@@ -5,8 +5,8 @@ import {useRouter} from "vue-router";
 const router = useRouter()
 
 const instance = axios.create({
-    // baseURL: 'http://localhost:8080',
-    baseURL: '/api',
+    baseURL: 'http://106.52.203.45:2333',
+    // baseURL: serverUrl,
     timeout: 5000
 })
 
@@ -19,7 +19,7 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(res => {
     return res.data;
 }, e => {
-    if (e.response.data=== 'Unauthorized' && e.response.status === 401){
+    if (e.response.data === 'Unauthorized' && e.response.status === 401) {
         ElMessage.warning("请先登录")
         localStorage.removeItem("user-token")
         localStorage.removeItem("admin-token")

@@ -1,12 +1,10 @@
 package com.cc;
 
-import cn.hutool.log.Log;
 import com.cc.entity.Mail;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.*;
-import java.util.Date;
 import java.util.UUID;
 
 @SpringBootTest
