@@ -20,7 +20,7 @@ export function checkApi(token) {
     return instance({
         method: "get",
         url: "/user/check",
-        params:{
+        params: {
             token
         }
     })
@@ -30,7 +30,7 @@ export function forgetApi(username) {
     return instance({
         method: "get",
         url: "/user/forget",
-        params:{
+        params: {
             username
         }
     })
@@ -41,5 +41,13 @@ export function updateApi(data) {
         method: "post",
         url: "/user/update",
         data
+    })
+}
+
+export function getLatestMallPointsApi(id) {
+    return instance({
+        method: "get",
+        url: "/user/latest",
+        params: {id}
     })
 }

@@ -41,4 +41,8 @@ public class AccountController {
         return accountService.updatePwd(passwordDTO);
     }
 
+    @GetMapping("/latest")
+    public Result getLatestMallPoints(Long id) {
+        return accountService.getLatestMallPoints(id);
+    }
 }

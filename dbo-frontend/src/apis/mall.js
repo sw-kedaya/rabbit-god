@@ -31,15 +31,16 @@ export function deleteMallByIdApi(id, userId) {
     })
 }
 
-export function setSignRewardByIdApi(id, userId){
+export function setSignRewardByIdApi(data, userId) {
     return instance({
         method: "put",
         url: "/mall/admin/set",
-        params: {id, userId}
+        data,
+        params: {userId}
     })
 }
 
-export function cancelSignRewardByIdApi(id, userId){
+export function cancelSignRewardByIdApi(id, userId) {
     return instance({
         method: "put",
         url: "/mall/admin/cancel",
@@ -58,5 +59,13 @@ export function getAdminAllMallList() {
     return instance({
         method: "get",
         url: "/mall/admin/all/list"
+    })
+}
+
+export function buyOrGiveMallPresentApi(data) {
+    return instance({
+        method: "post",
+        url: "/mall/buyOrGive",
+        data
     })
 }

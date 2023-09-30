@@ -83,4 +83,17 @@
         from accounts
         where AccountID = #{id} and admin = 10;
     </select>
+
+    <update id="checkUserCashById">
+        update accounts
+        set mallpoints = mallpoints - #{price}
+        where AccountID = #{id}
+          and (mallpoints - #{price}) >= 0;
+    </update>
+
+    <select id="getLatestMallPoints" resultMap="AccountResult">
+        select mallpoints
+        from accounts
+        where AccountID = #{id}
+    </select>
 </mapper>

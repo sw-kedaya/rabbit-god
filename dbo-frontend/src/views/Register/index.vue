@@ -79,7 +79,7 @@ const rules = {
   ],
   email: [
     {required: isOpenEmailCheck.value, message: '邮箱不能为空'},
-    {validator: validateEmail, message: '邮箱格式不正确'} // 添加邮箱格式验证规则
+    {validator: validateEmail, message: '邮箱格式不正确(仅支持qq邮箱)'} // 添加邮箱格式验证规则
   ],
   verification: [
     {required: isOpenEmailCheck.value, message: '验证码不能为空'}
@@ -158,9 +158,9 @@ function validateEmail(rule, value, callback) {
   if (!value) {
     return callback(new Error('邮箱不能为空'));
   }
-  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  const emailRegex = /^[A-Za-z0-9._%+-]+@qq\.com$/;
   if (!emailRegex.test(value)) {
-    return callback(new Error('邮箱格式不正确'));
+    return callback(new Error('邮箱格式不正确(仅支持qq邮箱)'));
   }
   callback();
 }

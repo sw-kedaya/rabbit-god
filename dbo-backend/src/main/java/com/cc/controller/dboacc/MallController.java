@@ -1,6 +1,9 @@
 package com.cc.controller.dboacc;
 
+import com.cc.dto.MallAndPurchaserDTO;
+import com.cc.dto.MallSignDTO;
 import com.cc.entity.Mall;
+import com.cc.entity.Purchaser;
 import com.cc.service.dboacc.IAccountService;
 import com.cc.service.dboacc.IMallService;
 import com.cc.vo.Result;
@@ -40,9 +43,9 @@ public class MallController {
     }
 
     @PutMapping("/admin/set")
-    public Result setSignRewardById(Long id, Long userId) {
+    public Result setSignRewardById(@RequestBody MallSignDTO dto, Long userId) {
         if (!accountService.isAdmin(userId)) return Result.fail("禁止非管理员操作");
-        return mallService.setSignRewardById(id);
+        return mallService.setSignRewardById(dto);
     }
 
     @PutMapping("/admin/cancel")
@@ -59,5 +62,10 @@ public class MallController {
     @GetMapping("/admin/all/list")
     public Result getAdminAllMallList() {
         return mallService.getAdminAllMallList();
+    }
+
+    @PostMapping("/buyOrGive")
+    public Result buyOrGiveMallPresent(@RequestBody MallAndPurchaserDTO dto){
+        return mallService.buyOrGiveMallPresent(dto.getMall(), dto.getPurchaser());
     }
 }

@@ -8,6 +8,7 @@ import com.cc.entity.CommonConstant;
 import com.cc.entity.User;
 import com.cc.mapper.dboacc.AccountMapper;
 import com.cc.service.dboacc.IAccountService;
+import com.cc.service.dboacc.ISendMailService;
 import com.cc.util.JwtUtils;
 import com.cc.vo.Result;
 import org.springframework.beans.BeanUtils;
@@ -23,12 +24,12 @@ import javax.servlet.http.HttpServletRequest;
 public class AccountServiceImpl implements IAccountService {
     @Resource
     private AccountMapper accountMapper;
-
     @Autowired
     private StringRedisTemplate redisTemplate;
-
     @Resource
     private RegisterConfiguration registerConfiguration;
+    @Resource
+    private ISendMailService sendMailService;
 
     @Override
     public Result register(AccountDTO accountDTO, HttpServletRequest request) {
@@ -79,10 +80,8 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public Result forgetPassword(String username) {
-        // TODO 查询密码并发送给指定邮箱
-        System.out.println("username:" + username);
         Account account = accountMapper.getPassword(username);
-        System.out.println("邮箱为：" + account.getEmail() + "的" + "密码已找回：" + account.getPassword());
+        sendMailService.sendMailForForget(account.getEmail(), account.getPassword());
         return Result.ok();
     }
 
@@ -92,12 +91,25 @@ public class AccountServiceImpl implements IAccountService {
         if (!passwordDTO.getOldPassword().equals(account.getPassword())) return Result.fail("修改失败，请检查原密码");
         return accountMapper.updatePwd(passwordDTO.getNewPassword(), passwordDTO.getUsername(),
                 DigestUtils.md5DigestAsHex(passwordDTO.getNewPassword().getBytes())) > 0 ?
-                Result.ok(): Result.fail("修改失败，请检查密码");
+                Result.ok() : Result.fail("修改失败，请检查密码");
     }
 
     @Override
     public boolean isAdmin(Long id) {
         Integer admin = accountMapper.isAdmin(id);
         return admin == 1;
+    }
+
+    @Override
+    public boolean checkUserCashById(Long id, Long price) {
+        Integer enough = accountMapper.checkUserCashById(id, price);
+        return enough > 0;
+    }
+
+    @Override
+    public Result getLatestMallPoints(Long id) {
+        Account account = accountMapper.getLatestMallPoints(id);
+        if (account == null) return Result.fail("刷新出错了");
+        return Result.ok(account.getMallPoints());
     }
 }

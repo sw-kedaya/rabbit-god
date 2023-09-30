@@ -2,13 +2,13 @@
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 import {onMounted, ref, watch} from "vue";
-import {getUserOrderList} from "@/apis/cashKey";
+import {getMallOrderByUserId} from "@/apis/mallOrder";
 
 const router = useRouter()
 // 查询订单
 const orders = ref([])
-const getUserOrderListQuest = async () => {
-  const res = await getUserOrderList(user.value.accountID)
+const getMallOrderByUserIdQuest = async () => {
+  const res = await getMallOrderByUserId(user.value.accountID)
   if (res.success) {
     orders.value = res.data
   } else {
@@ -54,7 +54,7 @@ onMounted(() => {
   // 进入前先判断登录没
   user.value = JSON.parse(localStorage.getItem("user-token"))
   if (user.value == null) router.push('/login')
-  getUserOrderListQuest()
+  getMallOrderByUserIdQuest()
 })
 
 </script>
@@ -62,9 +62,9 @@ onMounted(() => {
 <template>
   <div class="order-list-container">
     <h2 class="order-list-title">商城订单</h2>
-    <el-table :data="currentPageData" style="width: 70%; font-size: 15px;"
+    <el-table :data="currentPageData" style="width: 75%; font-size: 15px;"
               :cell-style="{textAlign: 'center'}" align="center" :border="true"
-              :current-page="currentPage" :page-size="pageSize" :total="orders.length">
+              :current-page="currentPage" :page-size="pageSize" :total="orders.length" stripe>
       <el-table-column prop="id" label="订单编号" width="230%">
         <template #header="{ column }">
           <div class="header-wrapper">
@@ -77,7 +77,7 @@ onMounted(() => {
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="cdKey" label="卡密" width="340%">
+      <el-table-column prop="mallName" label="商品名称" width="200%">
         <template #header="{ column }">
           <div class="header-wrapper">
             {{ column.label }}
@@ -85,11 +85,11 @@ onMounted(() => {
         </template>
         <template #default="scope">
           <div class="cell-wrapper">
-            {{ scope.row.cdKey }}
+            {{ scope.row.mallName }}
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="cash" label="C点" width="200%">
+      <el-table-column prop="mallDesc" label="商品描述" width="300%">
         <template #header="{ column }">
           <div class="header-wrapper">
             {{ column.label }}
@@ -97,11 +97,11 @@ onMounted(() => {
         </template>
         <template #default="scope">
           <div class="cell-wrapper">
-            {{ scope.row.cash }}
+            {{ scope.row.mallDesc }}
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="useTime" label="购买时间">
+      <el-table-column prop="price" label="价格">
         <template #header="{ column }">
           <div class="header-wrapper">
             {{ column.label }}
@@ -109,11 +109,11 @@ onMounted(() => {
         </template>
         <template #default="scope">
           <div class="cell-wrapper">
-            {{ scope.row.useTime }}
+            {{ scope.row.price }}
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="useTime" label="使用时间">
+      <el-table-column prop="charName" label="角色名" width="350%">
         <template #header="{ column }">
           <div class="header-wrapper">
             {{ column.label }}
@@ -121,7 +121,19 @@ onMounted(() => {
         </template>
         <template #default="scope">
           <div class="cell-wrapper">
-            {{ scope.row.useTime }}
+            {{ scope.row.charName }}
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="buyTime" label="购买时间" width="200%">
+        <template #header="{ column }">
+          <div class="header-wrapper">
+            {{ column.label }}
+          </div>
+        </template>
+        <template #default="scope">
+          <div class="cell-wrapper">
+            {{ scope.row.buyTime }}
           </div>
         </template>
       </el-table-column>

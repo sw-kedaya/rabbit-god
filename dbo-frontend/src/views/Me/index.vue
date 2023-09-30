@@ -1,6 +1,6 @@
 <script setup>
 import {ref, onMounted, watch} from 'vue';
-import {updateApi} from "@/apis/account";
+import {updateApi, getLatestMallPointsApi} from "@/apis/account";
 import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
 import {getDBOCharListApi} from "@/apis/dboChar";
@@ -76,7 +76,6 @@ function updatePagination() {
   startIndex.value = (currentPage.value - 1) * pageSize.value;
   endIndex.value = Math.min(startIndex.value + pageSize.value - 1, tableData.value.length - 1);
   currentPageData.value = tableData.value.slice(startIndex.value, endIndex.value + 1);
-  console.log(currentPageData.value)
 }
 
 // 当tableData有数据，就触发分页
@@ -194,9 +193,9 @@ function onBuyCardClick() {
 // 卡密请求
 const getUseCdKeyQuest = async () => {
   const res = await getUseCdKeyApi(cdKeyExchangeForm.value)
-  if (res.success){
+  if (res.success) {
     ElMessage.success(res.data)
-  }else {
+  } else {
     ElMessage.error(res.errorMsg)
   }
 }
@@ -205,14 +204,34 @@ const getUseCdKeyQuest = async () => {
 const cdKeyFormValidate = ref()
 const useCdKey = () => {
   cdKeyFormValidate.value.validate((valid) => {
-    if (valid){
+    if (valid) {
       dialogVisibleForCdKey.value = false;
       cdKeyExchangeForm.value.accountID = user.value.accountID
       getUseCdKeyQuest()
-    }else {
+    } else {
       ElMessage.warning("请填写卡密")
     }
   })
+}
+
+// 刷新余额
+const isLatest = ref(false)
+const getLatestMallPointsQuest = async () => {
+  const res = await getLatestMallPointsApi(user.value.accountID)
+  if (res.success) {
+    isLatest.value = true;
+    user.value.mallPoints = res.data
+    localStorage.setItem("user-token", JSON.stringify(user.value))
+    setTimeout(()=>{
+      isLatest.value = false;
+    }, 3000)
+  } else {
+    ElMessage.error(res.errorMsg)
+  }
+}
+const onGetLatestMallPointsClick = () => {
+  if(isLatest.value) return;
+  getLatestMallPointsQuest()
 }
 
 </script>
@@ -239,7 +258,12 @@ const useCdKey = () => {
             <el-tag class="el-tag--light" style="font-size: 15px;">{{ user.email }}</el-tag>
             <div style="height: 5px;"></div>
             余额：
-            <el-tag class="el-tag--light" style="font-size: 15px;">{{ user.mallPoints }}</el-tag>
+            <el-tooltip content="余额不会实时更新，若不同步请重新登录">
+              <el-tag class="el-tag--light" style="font-size: 15px;">{{ user.mallPoints }}</el-tag>
+            </el-tooltip>
+            <el-button size="small" type="info" style="margin-left: 10px"
+                       @click="onGetLatestMallPointsClick">刷新
+            </el-button>
             <div style="height: 5px;"></div>
             现金扭蛋币：
             <el-tag class="el-tag--light" style="font-size: 15px;">{{ user.waguCoins }}</el-tag>

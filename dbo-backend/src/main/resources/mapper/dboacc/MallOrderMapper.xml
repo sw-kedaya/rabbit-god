@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.mapper.dboacc.MallOrderMapper">
+    <resultMap type="com.cc.entity.MallOrder" id="MallOrderResult">
+        <id property="id" column="id"/>
+        <result property="mallId" column="mall_id"/>
+        <result property="mallName" column="mall_name"/>
+        <result property="mallDesc" column="mall_desc"/>
+        <result property="price" column="cash"/>
+        <result property="accountID" column="AccountID"/>
+        <result property="charID" column="CharID"/>
+        <result property="charName" column="CharName"/>
+        <result property="buyTime" column="buy_time"/>
+    </resultMap>
+
+    <insert id="saveMallOrder">
+        insert into mall_order(mall_id, mall_name, mall_desc, cash, AccountID, CharID, CharName, buy_time)
+        values (#{mallId}, #{mallName}, #{mallDesc}, #{price}, #{accountID}, #{charID}, #{charName}, #{buyTime})
+    </insert>
+
+    <select id="getMallOrderByUserId" resultMap="MallOrderResult">
+        select id,
+               mall_id,
+               mall_name,
+               mall_desc,
+               cash,
+               AccountID,
+               CharID,
+               CharName,
+               buy_time
+        from mall_order
+        where AccountID = #{id}
+    </select>
+
+</mapper>

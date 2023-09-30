@@ -19,4 +19,9 @@ public class DBOCharController {
     public Result getDBOCharList(Long accountID){
         return dboCharService.getDBOCharList(accountID);
     }
+
+    @GetMapping("sign")
+    public Result setSign(String charName) {
+        return dboCharService.setSign(charName);
+    }
 }

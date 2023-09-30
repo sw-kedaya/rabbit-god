@@ -64,7 +64,7 @@ onMounted(() => {
     <h2 class="order-list-title">卡密订单</h2>
     <el-table :data="currentPageData" style="width: 70%; font-size: 15px;"
               :cell-style="{textAlign: 'center'}" align="center" :border="true"
-              :current-page="currentPage" :page-size="pageSize" :total="orders.length">
+              :current-page="currentPage" :page-size="pageSize" :total="orders.length" stripe>
       <el-table-column prop="id" label="订单编号" width="230%">
         <template #header="{ column }">
           <div class="header-wrapper">

@@ -4,4 +4,6 @@ import com.cc.vo.Result;
 
 public interface IDBOCharService {
     Result getDBOCharList(Long accountID);
+
+    Result setSign(String charName);
 }

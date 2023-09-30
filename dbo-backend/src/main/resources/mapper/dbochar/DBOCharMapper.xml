@@ -19,7 +19,20 @@
         where AccountID = #{accountID};
     </select>
 
-    <select id="getAllCharNameList" resultType="com.cc.entity.DBOChar">
+    <select id="getAllCharNameList" resultMap="DBOCharResult">
         select AccountID,CharName from characters;
     </select>
+
+    <select id="getCharIDByCharName" resultMap="DBOCharResult">
+        select CharID
+        from characters
+        where CharName = #{roleName}
+    </select>
+
+    <update id="setSign">
+        update characters
+        set Sign = #{signNum}
+        where CharName = #{charName}
+          and Sign != #{signNum};
+    </update>
 </mapper>

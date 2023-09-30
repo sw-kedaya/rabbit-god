@@ -25,4 +25,9 @@ public interface AccountMapper {
                           @PathVariable("cash") Long cash);
 
     Integer isAdmin(@PathVariable("id") Long id);
+
+    Integer checkUserCashById(@PathVariable("id") Long id,
+                           @PathVariable("price") Long price);
+
+    Account getLatestMallPoints(@PathVariable("id") Long id);
 }

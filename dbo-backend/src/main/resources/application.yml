@@ -17,6 +17,12 @@ spring:
   redis:
     host: localhost
     port: 6379
+  # 邮箱信息
+  mail:
+    host: smtp.qq.com
+    username: 1289796298@qq.com
+    # 弄到github前要删掉这个密码
+#    password:
 
 # 注册参数
 register:
@@ -25,5 +31,6 @@ register:
   ip-max-num: 5 # ip注册最大数
   email-max-num: 5 # 邮箱注册最大数
 
+# 签到参数
 signin:
   open: true # 是否开放签到(true/false)

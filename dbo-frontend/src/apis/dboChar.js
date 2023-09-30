@@ -9,3 +9,11 @@ export function getDBOCharListApi(accountID) {
         }
     })
 }
+
+export function setSignApi(charName) {
+    return instance({
+        method: "get",
+        url: "/char/sign",
+        params: {charName}
+    })
+}

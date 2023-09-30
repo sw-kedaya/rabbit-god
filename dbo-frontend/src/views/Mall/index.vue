@@ -3,7 +3,7 @@ import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 import {onMounted, ref, computed, watch} from "vue";
 import {getMallTypeListApi} from "@/apis/category"
-import {getMallList, getAdminEnableMallList} from "@/apis/mall"
+import {getMallList, getAdminEnableMallList, buyOrGiveMallPresentApi} from "@/apis/mall"
 import {getDBOCharListApi} from "@/apis/dboChar"
 
 const router = useRouter()
@@ -116,24 +116,37 @@ function updatePaginationBySelf() {
   currentPageData.value = currentPageData.value.slice(startIndex.value, endIndex.value + 1);
 }
 
+// 赠送/购买API
+const mall = ref()
+const buyOrGiveMallPresentQuest = async (mall, purchaser, msg) => {
+  const requestData = {mall, purchaser}
+  const res = await buyOrGiveMallPresentApi(requestData)
+  if (res.success) {
+    ElMessage.success(msg + "成功")
+  } else {
+    ElMessage.error(res.errorMsg)
+  }
+}
+
 // 赠送对话框
 const givePresentForm = ref({
   accountID: '',
-  username: ''
+  roleName: ''
 });
 const givePresentRules = {
-  username: [
+  roleName: [
     {required: true, message: '请输入角色名'},
     {min: 2, max: 16, message: '角色名长度为2-16位'}
   ]
 };
 const dialogVisibleForGivePresent = ref(false)
-const showGivePresentExchangeForm = () => {
+const showGivePresentExchangeForm = (product) => {
+  mall.value = product
   dialogVisibleForGivePresent.value = true;
 };
 const cancelGivePresentExchange = () => {
   givePresentForm.value = {
-    username: '',
+    roleName: '',
   };
   dialogVisibleForGivePresent.value = false;
 }
@@ -145,8 +158,7 @@ const givePresent = () => {
     if (valid) {
       dialogVisibleForGivePresent.value = false;
       givePresentForm.value.accountID = user.value.accountID
-      // TODO 赠送QuestAPI 在里面记得（givePresentForm.value.username = ''）
-      console.log("赠送表单   用户id:" + givePresentForm.value.accountID + "   用户名:" + givePresentForm.value.username)
+      buyOrGiveMallPresentQuest(mall.value, givePresentForm.value, "赠送")
     } else {
       ElMessage.warning("请输入角色名称")
     }
@@ -156,19 +168,20 @@ const givePresent = () => {
 // 购买对话框
 const buyForm = ref({
   accountID: '',
-  username: ''
+  roleName: ''
 });
 const buyRules = {
-  username: [
+  roleName: [
     {required: true, message: '请选择角色名称'},
   ]
 };
 const dialogVisibleForBuy = ref(false)
-const showBuyExchangeForm = () => {
+const showBuyExchangeForm = (product) => {
+  mall.value = product
   dialogVisibleForBuy.value = true;
 };
 const cancelBuyExchange = () => {
-  buyForm.value.username = '';
+  buyForm.value.roleName = '';
   dialogVisibleForBuy.value = false;
 }
 const buyFormValidate = ref() // 用于判断用户是否填写了表单
@@ -179,8 +192,7 @@ const buy = () => {
     if (valid) {
       dialogVisibleForBuy.value = false;
       buyForm.value.accountID = user.value.accountID
-      // TODO 购买QuestAPI 在里面记得(buyForm.value.username = '';)
-      console.log("购买表单   用户id:" + buyForm.value.accountID + "   用户名:" + buyForm.value.username)
+      buyOrGiveMallPresentQuest(mall.value, buyForm.value, "购买")
     } else {
       ElMessage.warning("请选择角色名称")
     }
@@ -222,8 +234,8 @@ const buy = () => {
                 </div>
               </template>
             </el-tooltip>
-            <button class="action-button orange-button" @click="showGivePresentExchangeForm">赠送</button>
-            <button class="action-button green-button" @click="showBuyExchangeForm">购买</button>
+            <button class="action-button orange-button" @click="showGivePresentExchangeForm(product)">赠送</button>
+            <button class="action-button green-button" @click="showBuyExchangeForm(product)">购买</button>
           </div>
         </div>
       </div>
@@ -245,9 +257,9 @@ const buy = () => {
       </div>
       <div class="form-row">
         <span class="dialogLabel">角色</span>
-        <el-form-item class="myInput" prop="username">
+        <el-form-item class="myInput" prop="roleName">
           <el-input style="height: 38px; width: 220px" type="text" placeholder="请输入角色名称"
-                    v-model="givePresentForm.username"></el-input>
+                    v-model="givePresentForm.roleName"></el-input>
         </el-form-item>
       </div>
       <div class="form-row" style="justify-content: flex-end; margin-top: 40px;">
@@ -267,8 +279,8 @@ const buy = () => {
       </div>
       <div class="form-row">
         <span class="dialogLabel">角色</span>
-        <el-form-item class="myInput" prop="username">
-          <el-select v-model="buyForm.username" class="m-2" placeholder="请选择角色名称" size="large">
+        <el-form-item class="myInput" prop="roleName">
+          <el-select v-model="buyForm.roleName" class="m-2" placeholder="请选择角色名称" size="large">
             <el-option
                 v-for="item in dboCharOptions"
                 :key="item.charName"

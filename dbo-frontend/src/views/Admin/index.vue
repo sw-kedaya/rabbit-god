@@ -391,9 +391,27 @@ const deleteGoods = (id) => {
   })
 }
 
+// 签到奖励设置表单
+const dialogVisibleForSign = ref(false);
+const signForm = ref({id: '', sign: '',});
+const signRules = {
+  sign: [
+    {required: true, message: '请输入日期数字(例如2月6号：206)'},
+  ]
+};
+const showSignForm = (row) => {
+  signForm.value.sign = row.sign_reward;
+  signForm.value.id = row.id;
+  console.log(signForm.value)
+  dialogVisibleForSign.value = true;
+};
+const cancelSign = () => {
+  dialogVisibleForSign.value = false;
+}
+const signFormValidate = ref()
 // 设置为签到奖励
-const setSignRewardByIdQuest = async (id, userId) => {
-  const res = await setSignRewardByIdApi(id, userId)
+const setSignRewardByIdQuest = async (data, userId) => {
+  const res = await setSignRewardByIdApi(data, userId)
   if (res.success) {
     getAdminAllMallListQuest()
     ElMessage.success('设置成功')
@@ -401,30 +419,28 @@ const setSignRewardByIdQuest = async (id, userId) => {
     ElMessage.error(res.errorMsg)
   }
 }
-const setSignRewordGoods = (id) => {
-  ElMessageBox.confirm("您确定要将此商品设置为签到奖励吗？", "提示", {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning',
-  }).then(() => {
-    setSignRewardByIdQuest(id, user.value.accountID)
-  }).catch(() => {
-    ElMessage.info("取消设置")
+const signSubmit = () => {
+  signFormValidate.value.validate((valid) => {
+    if (valid) {
+      dialogVisibleForSign.value = false;
+      setSignRewardByIdQuest(signForm.value, user.value.accountID)
+    } else {
+      ElMessage.warning("请输入日期数字(例如10月3号：1003)")
+    }
   })
 }
-
 // 取消该签到奖励
 const cancelSignRewardByIdQuest = async (id, userId) => {
   const res = await cancelSignRewardByIdApi(id, userId)
   if (res.success) {
     getAdminAllMallListQuest()
-    ElMessage.success('取消成功')
+    ElMessage.success('设置成功')
   } else {
     ElMessage.error(res.errorMsg)
   }
 }
-const cancelSignRewordGoods = (id) => {
-  ElMessageBox.confirm("您确定要将此商品设置为签到奖励吗？", "提示", {
+const cancelSignRewardGoods = (id) => {
+  ElMessageBox.confirm("您确定将此商品设置为非签到奖励？", "提示", {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
@@ -772,6 +788,12 @@ const deleteEvent = (id) => {
                     <span v-else-if="row.del_flag === '2'">仅管理员可见</span>
                   </template>
                 </el-table-column>
+                <el-table-column prop="sign_reward" label="签到日期" width="180">
+                  <template #default="{ row }">
+                    <span v-if="row.sign_reward === '0'">未设置</span>
+                    <span v-if="row.sign_reward !== '0'">{{row.sign_reward}}</span>
+                  </template>
+                </el-table-column>
                 <el-table-column fixed="right" label="操作" width="740">
                   <template #default="scope">
                     <el-button type="primary" size="default"
@@ -779,11 +801,11 @@ const deleteEvent = (id) => {
                     </el-button>
                     <el-button type="danger" size="default" @click="deleteGoods(scope.row.id)">删除</el-button>
                     <template v-if="scope.row.sign_reward === '0'">
-                      <el-button type="default" size="default" @click="setSignRewordGoods(scope.row.id)">设置为签到奖励
+                      <el-button type="default" size="default" @click="showSignForm(scope.row)">设置签到奖励
                       </el-button>
                     </template>
-                    <template v-else-if="scope.row.sign_reward === '1'">
-                      <el-button type="info" size="default" @click="cancelSignRewordGoods(scope.row.id)">
+                    <template v-else-if="scope.row.sign_reward !== '0'">
+                      <el-button type="info" size="default" @click="cancelSignRewardGoods(scope.row.id)">
                         取消该签到奖励
                       </el-button>
                     </template>
@@ -1654,6 +1676,26 @@ const deleteEvent = (id) => {
         </div>
       </el-form>
     </el-dialog>
+
+    <!-- 签到奖励 -->
+    <el-dialog v-model="dialogVisibleForSign" title="设置签到奖励" width="300px">
+      <el-form ref="signFormValidate" :model="signForm" label-position="top" :rules="signRules">
+        <div style="text-align: center; background-color: #cccccc">月日各2位数字，例如：5月8日</div>
+        <div style="text-align: center; background-color: #cccccc">则写：508（填0表示取消该签到礼物）</div><br>
+        <div class="form-row">
+          <span class="signLabel">日期时间</span>
+          <el-form-item class="myInput" prop="sign">
+            <el-input style="height: 40px; width: 175px" type="text" placeholder="请输入日期时间"
+                      v-model="signForm.sign"></el-input>
+          </el-form-item>
+        </div>
+        <div class="form-row" style="justify-content: flex-end; margin-top: 20px;">
+          <el-button type="default" style="width: 70px; height: 40px" @click="cancelSign">取消</el-button>
+          <el-button type="primary" style="background-color: #3388FF; color: #FFFFFF;height: 40px;"
+                     @click="signSubmit">保存</el-button>
+        </div>
+      </el-form>
+    </el-dialog>
   </template>
 </template>
 
@@ -1776,5 +1818,12 @@ const deleteEvent = (id) => {
   text-align: right;
   margin-bottom: 15px;
   font-size: 14px;
+}
+
+.signLabel {
+  width: 60px;
+  text-align: right;
+  margin-bottom: 15px;
+  font-size: 15px;
 }
 </style>

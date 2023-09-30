@@ -16,4 +16,8 @@ public interface IAccountService {
     Result updatePwd(PasswordDTO passwordDTO);
 
     boolean isAdmin(Long id);
+
+    boolean checkUserCashById(Long id, Long price);
+
+    Result getLatestMallPoints(Long id);
 }
