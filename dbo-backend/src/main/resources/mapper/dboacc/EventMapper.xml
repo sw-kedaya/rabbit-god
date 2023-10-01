@@ -20,26 +20,26 @@
     </select>
 
     <insert id="adminEventSave">
-        insert into event(event_name, monday, tuesday, wednesday, thursday, friday, saturday, sunday)
+        insert into event(`event_name`, `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`)
         values (#{event_name}, #{monday}, #{tuesday}, #{wednesday}, #{thursday}, #{friday}, #{saturday}, #{sunday});
     </insert>
 
     <update id="adminEventUpdate">
         update event
-        set event_name = #{event_name},
-            monday=#{monday},
-            tuesday=#{tuesday},
-            wednesday=#{wednesday},
-            thursday=#{thursday},
-            friday=#{friday},
-            saturday=#{saturday},
-            sunday=#{sunday}
-        where id = #{id}
+        set `event_name` = #{event_name},
+            `monday`=#{monday},
+            `tuesday`=#{tuesday},
+            `wednesday`=#{wednesday},
+            `thursday`=#{thursday},
+            `friday`=#{friday},
+            `saturday`=#{saturday},
+            `sunday`=#{sunday}
+        where `id` = #{id}
     </update>
 
     <delete id="adminEventDelete">
         delete
         from event
-        where id = #{id};
+        where `id` = #{id};
     </delete>
 </mapper>

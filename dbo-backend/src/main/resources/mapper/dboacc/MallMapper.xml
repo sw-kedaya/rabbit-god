@@ -54,19 +54,19 @@
     </resultMap>
 
     <select id="getMallList" resultMap="MallVOResult">
-        select id, cash, mall_name, mall_desc, count, tblidx
+        select `id`, `cash`, `mall_name`, `mall_desc`, `count`, `tblidx`
         from mall
-        where del_flag = 0;
+        where `del_flag` = 0;
     </select>
     <!--这里除了id和sign_reward都有(id自增，签到默认0)-->
     <insert id="saveMall">
-        insert into mall( mall_name, mall_desc, cash, mall_type, del_flag, tblidx, place, pos, count, rank
-                        , durability, grade, NeedToIdentify, BattleAttribute, Maker, OptionTblidx, OptionTblidx2
-                        , OptionRandomId, OptionRandomVal, OptionRandomId2, OptionRandomVal2
-                        , OptionRandomId3, OptionRandomVal3, OptionRandomId4, OptionRandomVal4
-                        , OptionRandomId5, OptionRandomVal5, OptionRandomId6, OptionRandomVal6
-                        , OptionRandomId7, OptionRandomVal7, OptionRandomId8, OptionRandomVal8
-                        , UseStartTime, UseEndTime, RestrictState, DurationType)
+        insert into mall( `mall_name`, `mall_desc`, `cash`, `mall_type`, `del_flag`, `tblidx`, `place`, `pos`, `count`, `rank`
+                        , `durability`, `grade`, `NeedToIdentify`, `BattleAttribute`, `Maker`, `OptionTblidx`, `OptionTblidx2`
+                        , `OptionRandomId`, `OptionRandomVal`, `OptionRandomId2`, `OptionRandomVal2`
+                        , `OptionRandomId3`, `OptionRandomVal3`, `OptionRandomId4`, `OptionRandomVal4`
+                        , `OptionRandomId5`, `OptionRandomVal5`, `OptionRandomId6`, `OptionRandomVal6`
+                        , `OptionRandomId7`, `OptionRandomVal7`, `OptionRandomId8`, `OptionRandomVal8`
+                        , `UseStartTime`, `UseEndTime`, `RestrictState`, `DurationType`)
         values (#{name}, #{description}, #{price}, #{type}, #{del_flag}, #{tblidx}, #{place}, #{pos}, #{count},
                 #{rank}, #{durability}, #{grade}, #{needToIdentify}, #{battleAttribute}, #{maker},
                 #{optionTblidx}, #{optionTblidx2},
@@ -79,67 +79,67 @@
 
     <update id="updateMall">
         update mall
-        set mall_name        = #{name},
-            mall_desc        = #{description},
-            cash             = #{price},
-            mall_type        = #{type},
-            del_flag         = #{del_flag},
-            tblidx           = #{tblidx},
-            place            = #{place},
-            pos              = #{pos},
-            count            = #{count},
-            rank             = #{rank},
-            durability       = #{durability},
-            grade            = #{grade},
-            NeedToIdentify   = #{needToIdentify},
-            BattleAttribute  = #{battleAttribute},
-            Maker            = #{maker},
-            OptionTblidx     = #{optionTblidx},
-            OptionTblidx2    = #{optionTblidx2},
-            OptionRandomId   = #{optionRandomId},
-            OptionRandomVal  = #{optionRandomVal},
-            OptionRandomId2  = #{optionRandomId2},
-            OptionRandomVal2 = #{optionRandomVal2},
-            OptionRandomId3  = #{optionRandomId3},
-            OptionRandomVal3 = #{optionRandomVal3},
-            OptionRandomId4  = #{optionRandomId4},
-            OptionRandomVal4 = #{optionRandomVal4},
-            OptionRandomId5  = #{optionRandomId5},
-            OptionRandomVal5 = #{optionRandomVal5},
-            OptionRandomId6  = #{optionRandomId6},
-            OptionRandomVal6 = #{optionRandomVal6},
-            OptionRandomId7  = #{optionRandomId7},
-            OptionRandomVal7 = #{optionRandomVal7},
-            OptionRandomId8  = #{optionRandomId8},
-            OptionRandomVal8 = #{optionRandomVal8},
-            UseStartTime     = #{useStartTime},
-            UseEndTime       = #{useEndTime},
-            RestrictState    = #{restrictState},
-            DurationType     = #{durationType}
-        where id = #{id};
+        set `mall_name`        = #{name},
+            `mall_desc`        = #{description},
+            `cash`             = #{price},
+            `mall_type`        = #{type},
+            `del_flag`         = #{del_flag},
+            `tblidx`           = #{tblidx},
+            `place`            = #{place},
+            `pos`              = #{pos},
+            `count`            = #{count},
+            `rank`             = #{rank},
+            `durability`       = #{durability},
+            `grade`            = #{grade},
+            `NeedToIdentify`   = #{needToIdentify},
+            `BattleAttribute`  = #{battleAttribute},
+            `Maker`            = #{maker},
+            `OptionTblidx`     = #{optionTblidx},
+            `OptionTblidx2`    = #{optionTblidx2},
+            `OptionRandomId`   = #{optionRandomId},
+            `OptionRandomVal`  = #{optionRandomVal},
+            `OptionRandomId2`  = #{optionRandomId2},
+            `OptionRandomVal2` = #{optionRandomVal2},
+            `OptionRandomId3`  = #{optionRandomId3},
+            `OptionRandomVal3` = #{optionRandomVal3},
+            `OptionRandomId4`  = #{optionRandomId4},
+            `OptionRandomVal4` = #{optionRandomVal4},
+            `OptionRandomId5`  = #{optionRandomId5},
+            `OptionRandomVal5` = #{optionRandomVal5},
+            `OptionRandomId6`  = #{optionRandomId6},
+            `OptionRandomVal6` = #{optionRandomVal6},
+            `OptionRandomId7`  = #{optionRandomId7},
+            `OptionRandomVal7` = #{optionRandomVal7},
+            `OptionRandomId8`  = #{optionRandomId8},
+            `OptionRandomVal8` = #{optionRandomVal8},
+            `UseStartTime`     = #{useStartTime},
+            `UseEndTime`       = #{useEndTime},
+            `RestrictState`    = #{restrictState},
+            `DurationType`     = #{durationType}
+        where `id` = #{id};
     </update>
 
     <delete id="deleteMallById">
-        delete from mall where id = #{id};
+        delete from mall where `id` = #{id};
     </delete>
 
     <update id="setSignRewardById">
         update mall
-        set sign_reward = #{sign}
-        where id = #{id}
+        set `sign_reward` = #{sign}
+        where `id` = #{id}
     </update>
 
     <update id="cancelSignRewardById">
         update mall
-        set sign_reward = 0
-        where id = #{id}
+        set `sign_reward` = 0
+        where `id` = #{id}
     </update>
 
     <select id="getAdminEnableMallList" resultMap="MallVOResult">
-        select id, cash, mall_name, mall_desc, count, tblidx
+        select `id`, `cash`, `mall_name`, `mall_desc`, `count`, `tblidx`
         from mall
-        where del_flag = 0
-           or del_flag = 2;
+        where `del_flag` = 0
+           or `del_flag` = 2;
     </select>
 
     <select id="getAdminAllMallList" resultMap="MallResult">
@@ -148,12 +148,12 @@
     </select>
 
     <select id="getMallById" resultType="com.cc.entity.Mall">
-        select * from mall where id = #{id}
+        select * from mall where `id` = #{id}
     </select>
 
     <select id="getSignRewardList" resultType="com.cc.entity.Mall">
         select *
         from mall
-        where sign_reward = #{signNum}
+        where `sign_reward` = #{signNum}
     </select>
 </mapper>

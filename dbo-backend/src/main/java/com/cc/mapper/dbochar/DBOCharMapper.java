@@ -13,4 +13,6 @@ public interface DBOCharMapper {
     DBOChar getCharIDByCharName(@PathVariable("roleName") String roleName);
 
     Integer setSign(@PathVariable("charName") String charName, @PathVariable("signNum") Integer signNum);
+
+    List<DBOChar> checkIsSign(@PathVariable("accountID") Long accountID, @PathVariable("signNum") Integer signNum);
 }

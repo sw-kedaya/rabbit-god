@@ -5,5 +5,7 @@ import com.cc.vo.Result;
 public interface IDBOCharService {
     Result getDBOCharList(Long accountID);
 
-    Result setSign(String charName);
+    Result setSign(String charName, Long accountID);
+
+    Result checkIsSign(Long accountID);
 }

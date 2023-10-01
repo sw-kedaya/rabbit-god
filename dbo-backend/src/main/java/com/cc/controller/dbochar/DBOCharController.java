@@ -25,8 +25,14 @@ public class DBOCharController {
     }
 
     @GetMapping("sign")
-    public Result setSign(String charName) {
+    public Result setSign(String charName, Long accountID) {
         if (!isOpenSignIn) return Result.fail("管理员未开启签到");
-        return dboCharService.setSign(charName);
+        return dboCharService.setSign(charName, accountID);
+    }
+
+    @GetMapping("sign/check")
+    public Result checkIsSign(Long accountID) {
+        if (!isOpenSignIn) return Result.fail("管理员未开启签到");
+        return dboCharService.checkIsSign(accountID);
     }
 }

@@ -15,24 +15,30 @@
     </resultMap>
 
     <select id="getDBOCharList" resultMap="DBOCharResult">
-        select CharID,CharName,AccountID,Level,Race,Class,Gender,GuildName from characters
-        where AccountID = #{accountID};
+        select `CharID`,`CharName`,`AccountID`,`Level`,`Race`,`Class`,`Gender`,`GuildName` from characters
+        where `AccountID` = #{accountID};
     </select>
 
     <select id="getAllCharNameList" resultMap="DBOCharResult">
-        select AccountID,CharName from characters;
+        select `AccountID`,`CharName` from characters;
     </select>
 
     <select id="getCharIDByCharName" resultMap="DBOCharResult">
-        select CharID
+        select `CharID`
         from characters
-        where CharName = #{roleName}
+        where `CharName` = #{roleName}
     </select>
 
     <update id="setSign">
         update characters
-        set Sign = #{signNum}
-        where CharName = #{charName}
-          and Sign != #{signNum};
+        set `Sign` = #{signNum}
+        where `CharName` = #{charName}
+          and `Sign` != #{signNum};
     </update>
+
+    <select id="checkIsSign" resultMap="DBOCharResult">
+        select `CharID` from characters
+        where `AccountID` = #{accountID}
+        and `Sign` = #{signNum}
+    </select>
 </mapper>

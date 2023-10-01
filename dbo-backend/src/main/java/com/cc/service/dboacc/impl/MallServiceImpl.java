@@ -1,7 +1,9 @@
 package com.cc.service.dboacc.impl;
 
+import cn.hutool.json.JSONUtil;
 import com.cc.dto.MallOrderDTO;
 import com.cc.dto.MallSignDTO;
+import com.cc.entity.CommonConstant;
 import com.cc.entity.Mall;
 import com.cc.entity.Purchaser;
 import com.cc.mapper.dboacc.AccountMapper;
@@ -10,11 +12,16 @@ import com.cc.service.dboacc.IAccountService;
 import com.cc.service.dboacc.IMallOrderService;
 import com.cc.service.dboacc.IMallService;
 import com.cc.service.dbochar.IMailService;
+import com.cc.vo.MallVO;
 import com.cc.vo.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class MallServiceImpl implements IMallService {
@@ -26,50 +33,77 @@ public class MallServiceImpl implements IMallService {
     private IMailService mailService;
     @Resource
     private IMallOrderService mallOrderService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Override
     public Result getMallList() {
-        return Result.ok(mallMapper.getMallList());
+        String json = redisTemplate.opsForValue().get(CommonConstant.MALL_LIST_USER_KEY);
+        if (json != null && !json.isEmpty()) return Result.ok(JSONUtil.toList(json, MallVO.class));
+        List<MallVO> mallList = mallMapper.getMallList();
+        redisTemplate.opsForValue().set(CommonConstant.MALL_LIST_USER_KEY, JSONUtil.toJsonStr(mallList),
+                CommonConstant.MALL_LIST_TTL_HOURS, TimeUnit.HOURS);
+        return Result.ok(mallList);
     }
 
     @Override
     public Result saveMall(Mall mall) {
         Integer integer = mallMapper.saveMall(mall);
-        return integer > 0 ? Result.ok() : Result.fail("添加失败，请检查是否有错误数据");
+        if (integer <= 0) return Result.fail("添加失败，请检查是否有错误数据");
+        deleteAllMallKey();
+        return Result.ok();
     }
 
     @Override
     public Result updateMall(Mall mall) {
         Integer integer = mallMapper.updateMall(mall);
-        return integer > 0 ? Result.ok() : Result.fail("修改失败，请检查是否有错误数据");
+        if (integer <= 0) return Result.fail("修改失败，请检查是否有错误数据");
+        deleteAllMallKey();
+        return Result.ok();
     }
 
     @Override
     public Result deleteMallById(Long id) {
         Integer integer = mallMapper.deleteMallById(id);
-        return integer > 0 ? Result.ok() : Result.fail("删除失败，请刷新后检查数据");
+        if (integer <= 0) return Result.fail("删除失败，请刷新后检查数据");
+        deleteAllMallKey();
+        return Result.ok();
     }
 
     @Override
     public Result setSignRewardById(MallSignDTO mallSignDTO) {
         Integer integer = mallMapper.setSignRewardById(mallSignDTO);
-        return integer > 0 ? Result.ok() : Result.fail("设置失败，请刷新后检查数据");
+        if (integer <= 0) return Result.fail("设置失败，请刷新后检查数据");
+        deleteAllMallKey();
+        return Result.ok();
     }
 
     @Override
     public Result cancelSignRewardById(Long id) {
         Integer integer = mallMapper.cancelSignRewardById(id);
-        return integer > 0 ? Result.ok() : Result.fail("设置失败，请刷新后检查数据");
+        if (integer <= 0) return Result.fail("设置失败，请刷新后检查数据");
+        deleteAllMallKey();
+        return Result.ok();
     }
 
     @Override
     public Result getAdminEnableMallList() {
-        return Result.ok(mallMapper.getAdminEnableMallList());
+        String json = redisTemplate.opsForValue().get(CommonConstant.MALL_LIST_ADMIN_KEY);
+        if (json != null && !json.isEmpty()) return Result.ok(JSONUtil.toList(json, MallVO.class));
+        List<MallVO> mallList = mallMapper.getAdminEnableMallList();
+        redisTemplate.opsForValue().set(CommonConstant.MALL_LIST_ADMIN_KEY, JSONUtil.toJsonStr(mallList),
+                CommonConstant.MALL_LIST_TTL_HOURS, TimeUnit.HOURS);
+        return Result.ok(mallList);
     }
 
     @Override
     public Result getAdminAllMallList() {
-        return Result.ok(mallMapper.getAdminAllMallList());
+        String json = redisTemplate.opsForValue().get(CommonConstant.MALL_LIST_ADMIN_CRUD_KEY);
+        if (json != null && !json.isEmpty()) return Result.ok(JSONUtil.toList(json, Mall.class));
+        List<Mall> mallList = mallMapper.getAdminAllMallList();
+        redisTemplate.opsForValue().set(CommonConstant.MALL_LIST_ADMIN_CRUD_KEY, JSONUtil.toJsonStr(mallList),
+                CommonConstant.MALL_LIST_TTL_HOURS, TimeUnit.HOURS);
+        return Result.ok(mallList);
     }
 
     @Override
@@ -88,5 +122,11 @@ public class MallServiceImpl implements IMallService {
         // 生成订单
         mallOrderService.saveMallOrder(mall, purchaser, mallOrderDTO);
         return Result.ok();
+    }
+
+    private void deleteAllMallKey(){
+        redisTemplate.delete(CommonConstant.MALL_LIST_USER_KEY);
+        redisTemplate.delete(CommonConstant.MALL_LIST_ADMIN_KEY);
+        redisTemplate.delete(CommonConstant.MALL_LIST_ADMIN_CRUD_KEY);
     }
 }

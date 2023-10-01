@@ -31,9 +31,9 @@
     </resultMap>
 
     <insert id="generateMail">
-        insert into mail(CharID, SenderType, MailType, TextSize, Text, Zenny, itemId, TargetName, FromName,
-                         IsAccept, IsLock, IsRead, CreateTime, EndTime, RemainDay, year, month, day, hour, minute,
-                         second, system, count)
+        insert into mail(`CharID`, `SenderType`, `MailType`, `TextSize`, `Text`, `Zenny`, `itemId`, `TargetName`, `FromName`,
+                         `IsAccept`, `IsLock`, `IsRead`, `CreateTime`, `EndTime`, `RemainDay`, `year`, `month`, `day`, `hour`, `minute`,
+                         `second`, `system`, `count`)
         values (#{charID}, #{senderType}, #{mailType}, #{textSize}, #{text}, #{zenny}, #{itemId}, #{targetName},
                 #{fromName}, #{isAccept}, #{isLock}, #{isRead}, #{createTime}, #{endTime}, #{remainDay}, #{year},
                 #{month}, #{day}, #{hour}, #{minute}, #{second}, #{system}, #{count})

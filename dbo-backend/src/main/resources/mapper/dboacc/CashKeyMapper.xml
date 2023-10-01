@@ -17,27 +17,27 @@
     </select>
 
     <insert id="adminAddCashKey">
-        insert into cash_key(cd_key, cash)
+        insert into cash_key(`cd_key`, `cash`)
         values (#{cdKey}, #{cash});
     </insert>
 
     <select id="checkCdKey" resultType="java.lang.Long">
-        select cash from cash_key where cd_key = #{cdKey}
+        select `cash` from cash_key where `cd_key` = #{cdKey}
     </select>
 
     <update id="useCdKey">
         <if test="accountID != null">
             update cash_key
-            set use_time  = #{useTime},
-            account_id= #{accountID}
-            where account_id = 0 and cd_key = #{cdKey};
+            set `use_time`  = #{useTime},
+            `account_id`= #{accountID}
+            where `account_id` = 0 and `cd_key` = #{cdKey};
         </if>
     </update>
 
     <select id="userOrder" resultMap="CashKeyResult">
         <if test="accountID != null">
-            select * from cash_key where account_id = #{accountID}
-            order by create_time ASC;
+            select * from cash_key where `account_id` = #{accountID}
+            order by `create_time` ASC;
         </if>
     </select>
 

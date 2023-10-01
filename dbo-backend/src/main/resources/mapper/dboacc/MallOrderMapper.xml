@@ -16,22 +16,22 @@
     </resultMap>
 
     <insert id="saveMallOrder">
-        insert into mall_order(mall_id, mall_name, mall_desc, cash, AccountID, CharID, CharName, buy_time)
+        insert into mall_order(`mall_id`, `mall_name`, `mall_desc`, `cash`, `AccountID`, `CharID`, `CharName`, `buy_time`)
         values (#{mallId}, #{mallName}, #{mallDesc}, #{price}, #{accountID}, #{charID}, #{charName}, #{buyTime})
     </insert>
 
     <select id="getMallOrderByUserId" resultMap="MallOrderResult">
-        select id,
-               mall_id,
-               mall_name,
-               mall_desc,
-               cash,
-               AccountID,
-               CharID,
-               CharName,
-               buy_time
+        select `id`,
+               `mall_id`,
+               `mall_name`,
+               `mall_desc`,
+               `cash`,
+               `AccountID`,
+               `CharID`,
+               `CharName`,
+               `buy_time`
         from mall_order
-        where AccountID = #{id}
+        where `AccountID` = #{id}
     </select>
 
 </mapper>

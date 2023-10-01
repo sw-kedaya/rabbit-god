@@ -32,68 +32,68 @@
     </resultMap>
 
     <insert id="register">
-        insert into accounts(Username, Password_hash, email, reg_ip, web_ip, del_char_pw)
+        insert into accounts(`Username`, `Password_hash`, `email`, `reg_ip`, `web_ip`, `del_char_pw`)
         values (#{username}, #{password}, #{email}, #{regIp}, #{webIp}, #{delCharPw});
     </insert>
 
     <select id="isUserRepeat" resultMap="AccountResult">
-        select Username from accounts
-        <if test="username != null">where #{username} = Username</if>
+        select `Username` from accounts
+        <if test="username != null">where #{username} = `Username`</if>
         ;
     </select>
 
     <select id="checkUserPwd" resultMap="AccountResult">
-        select AccountID,Username,acc_status,email,mallpoints,WaguCoins,EventCoins,admin from accounts
-        <if test="username != null">where #{username} = Username</if>
-        <if test="password != null">and #{password} = Password_hash</if>
+        select `AccountID`,`Username`,`acc_status`,`email`,`mallpoints`,`WaguCoins`,`EventCoins`,`admin` from accounts
+        <if test="username != null">where #{username} = `Username`</if>
+        <if test="password != null">and #{password} = `Password_hash`</if>
         ;
     </select>
 
     <select id="checkIpNum" resultType="java.lang.Integer">
-        select count(web_ip) from accounts
-        <if test="ip != null">where #{ip} = web_ip</if>
+        select count(`web_ip`) from accounts
+        <if test="ip != null">where #{ip} = `web_ip`</if>
     </select>
 
     <select id="checkEmailNum" resultType="java.lang.Integer">
-        select count(email) from accounts
-        <if test="email != null">where #{email} = email</if>
+        select count(`email`) from accounts
+        <if test="email != null">where #{email} = `email`</if>
     </select>
 
     <select id="getPassword" resultMap="AccountResult">
-        select email,Password_hash from accounts
-        <if test="username != null">where #{username} = Username</if>
+        select `email`,`Password_hash` from accounts
+        <if test="username != null">where #{username} = `Username`</if>
     </select>
 
     <update id="updatePwd">
         <if test="newPassword != null">
-        update accounts set Password_hash = #{newPassword}, del_char_pw = #{md5}
-        where username = #{username};
+        update accounts set `Password_hash` = #{newPassword}, `del_char_pw` = #{md5}
+        where `username` = #{username};
         </if>
     </update>
 
     <update id="addMallPoints">
         <if test="accountID != null">
-            update accounts set mallpoints = mallpoints + #{cash}
-            where AccountID = #{accountID}
+            update accounts set `mallpoints` = `mallpoints` + #{cash}
+            where `AccountID` = #{accountID}
         </if>
     </update>
 
     <select id="isAdmin" resultType="java.lang.Integer">
         select count(*)
         from accounts
-        where AccountID = #{id} and admin = 10;
+        where `AccountID` = #{id} and `admin` = 10;
     </select>
 
     <update id="checkUserCashById">
         update accounts
-        set mallpoints = mallpoints - #{price}
-        where AccountID = #{id}
-          and (mallpoints - #{price}) >= 0;
+        set `mallpoints` = `mallpoints` - #{price}
+        where `AccountID` = #{id}
+          and (`mallpoints` - #{price}) >= 0;
     </update>
 
     <select id="getLatestMallPoints" resultMap="AccountResult">
-        select mallpoints
+        select `mallpoints`
         from accounts
-        where AccountID = #{id}
+        where `AccountID` = #{id}
     </select>
 </mapper>

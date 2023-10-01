@@ -2,20 +2,30 @@
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 import {onMounted, ref} from "vue";
-import {getDBOCharListApi, setSignApi} from "@/apis/dboChar";
+import {getDBOCharListApi, setSignApi, checkIsSignApi} from "@/apis/dboChar";
 
 const router = useRouter()
 const user = ref()
 onMounted(() => {
   // 进入前先判断登录没
   user.value = JSON.parse(localStorage.getItem("user-token"))
-  getDBOCharListQuest()
+  if (user.value !== null) {
+    getDBOCharListQuest(user.value.accountID)
+    checkIsSignQuest(user.value.accountID)
+  }
 })
+
+// 判断该账号是否签到
+const isCanSign = ref(true)
+const checkIsSignQuest = async (accountID) => {
+  const res = await checkIsSignApi(accountID)
+  if (!res.success) isCanSign.value = false;
+}
 
 // 表单
 const dboCharOptions = ref([])
-const getDBOCharListQuest = async () => {
-  const res = await getDBOCharListApi(user.value.accountID)
+const getDBOCharListQuest = async (accountID) => {
+  const res = await getDBOCharListApi(accountID)
   dboCharOptions.value = res.data;
 }
 const signForm = ref({
@@ -35,20 +45,21 @@ const cancelSignExchange = () => {
   dialogVisibleForSign.value = false;
 }
 const signFormValidate = ref() // 用于判断用户是否填写了表单
-const setSignQuest = async (charName) => {
-  const res = await setSignApi(charName)
-  if (res.success){
+const setSignQuest = async (charName, accountID) => {
+  const res = await setSignApi(charName, accountID)
+  if (res.success) {
     ElMessage.success("签到成功")
-  }else {
+  } else {
     ElMessage.warning(res.errorMsg)
   }
 }
 const sign = () => {
   if (user.value == null) return ElMessage.warning('请先登录')
+  if (!isCanSign.value) return ElMessage.warning('一个账号只能签到一次')
   signFormValidate.value.validate((valid) => {
     if (valid) {
       dialogVisibleForSign.value = false;
-      setSignQuest(signForm.value.roleName)
+      setSignQuest(signForm.value.roleName, user.value.accountID)
     } else {
       ElMessage.warning("请选择角色名称")
     }
@@ -57,13 +68,24 @@ const sign = () => {
 </script>
 
 <template>
-  <div class="sign-in-container">
-    <div>
-      <el-button class="myButton" type="success" round size="large" @click="showSignExchangeForm">
-        立即签到
-      </el-button>
+  <template v-if="isCanSign">
+    <div class="sign-in-container">
+      <div>
+        <el-button class="myButton" type="success" round size="large" @click="showSignExchangeForm">
+          立即签到
+        </el-button>
+      </div>
     </div>
-  </div>
+  </template>
+  <template v-else>
+    <div class="sign-in-container2">
+      <div>
+        <el-button class="myButton" type="info" round size="large" disabled="true">
+          已完成签到
+        </el-button>
+      </div>
+    </div>
+  </template>
   <el-dialog v-model="dialogVisibleForSign" title="购买胶囊" width="320px">
     <el-form ref="signFormValidate" :model="signForm" label-position="top" :rules="signRules">
       <div class="myWarning ">
@@ -107,6 +129,20 @@ const sign = () => {
     padding: 34px 101px; /* 增加按钮的内边距 */
     background-color: #67C23A; /* 设置按钮的背景颜色为红色 */
     color: #ffffff; /* 设置按钮的文本颜色为白色 */
+    border-radius: 50px; /* 增加按钮的边框半径 */
+  }
+}
+.sign-in-container2 {
+  display: flex;
+  justify-content: center;
+  height: 738px;
+  background-image: url("@/assets/images/bg.png"); /* 设置背景图片的 URL */
+  background-repeat: repeat; /* 将背景图片设置为平铺 */
+
+  .myButton {
+    margin-top: 100px;
+    font-size: 24px; /* 增加按钮文本的字体大小 */
+    padding: 34px 101px; /* 增加按钮的内边距 */
     border-radius: 50px; /* 增加按钮的边框半径 */
   }
 }

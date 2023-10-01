@@ -10,19 +10,19 @@
     </resultMap>
 
     <select id="getMallTypeList" resultMap="CategoryResult">
-        select * from mall_type order by sort ASC;
+        select * from mall_type order by `sort` ASC;
     </select>
 
     <update id="updateMallTypeById">
-        update mall_type set type_name = #{name}, sort = #{sort}
-        where id = #{id};
+        update mall_type set `type_name` = #{name}, `sort` = #{sort}
+        where `id` = #{id};
     </update>
 
     <delete id="deleteById">
-        delete from mall_type where #{id} = id;
+        delete from mall_type where #{id} = `id`;
     </delete>
 
     <insert id="saveMallType">
-        insert into mall_type(type_name,sort) values (#{name}, #{sort});
+        insert into mall_type(`type_name`,`sort`) values (#{name}, #{sort});
     </insert>
 </mapper>

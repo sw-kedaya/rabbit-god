@@ -11,7 +11,7 @@
     <select id="verifyAdmin" resultMap="WebAdminResult">
         select *
         from web_admin
-        where Username = #{username}
-          and Password = #{password};
+        where `Username` = #{username}
+          and `Password` = #{password};
     </select>
 </mapper>
