@@ -5,8 +5,9 @@ import {useRouter} from "vue-router";
 const router = useRouter()
 
 const instance = axios.create({
+    /**修改后端URL接口路径*/
     baseURL: 'http://106.52.203.45:2333',
-    // baseURL: serverUrl,
+    // baseURL: 'http://localhost:2333',
     timeout: 5000
 })
 

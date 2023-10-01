@@ -15,7 +15,6 @@ public class WebAdminServiceImpl implements IWebAdminService {
 
     @Override
     public Result verifyAdmin(WebAdmin webAdmin) {
-        System.out.println(webAdmin);
         WebAdmin user = webAdminMapper.verifyAdmin(webAdmin);
         if (user == null) return Result.fail("密码错误");
         return Result.ok();

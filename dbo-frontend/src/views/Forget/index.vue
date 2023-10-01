@@ -114,12 +114,19 @@ function onForgetClick() {
     });
   }
 }
+
+// 跳转到登录界面的按钮
+function onLoginPageClick(){
+  router.push('/login')
+}
+
 </script>
 
 <template>
   <div class="login-container">
     <div class="login-wrapper">
       <div style="font-size: large; margin-bottom: 10px">忘记密码</div>
+      <br>
       <div class="form">
         <el-form ref="forgetForm" :model="userInfo" :rules="rules" status-icon label-width="80px" size="large"
                  @submit.prevent>
@@ -130,8 +137,8 @@ function onForgetClick() {
             <el-tooltip content="密码将发送到注册邮箱">
               <el-button size="large" class="subBtn" @click="onForgetClick">找回密码</el-button>
             </el-tooltip>
-            <el-button size="large" class="login-btn">
-              <router-link to="/login">马上登录</router-link>
+            <el-button size="large" class="login-btn" @click="onLoginPageClick">
+              马上登录
             </el-button>
           </div>
         </el-form>

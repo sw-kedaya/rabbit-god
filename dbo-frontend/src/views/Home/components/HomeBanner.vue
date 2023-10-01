@@ -4,7 +4,7 @@
 
 <template>
   <div class="home-banner">
-    <el-carousel width="1903px" height="871px" :interval="3000">
+    <el-carousel width="1920px" height="871px" :interval="3000">
       <el-carousel-item>
         <img src="/banner/10.jpg" alt="" class="carousel-image">
       </el-carousel-item>
@@ -23,7 +23,8 @@
 
 <style scoped lang='scss'>
 .home-banner {
-  width: 1903px;
+  margin-left: -9px;
+  width: 1920px;
   height: 550px;
   left: 0;
   z-index: 98;

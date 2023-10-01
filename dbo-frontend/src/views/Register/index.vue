@@ -209,41 +209,52 @@ function onRegisterClick() {
     }
   });
 }
+
+// 跳转到登录界面的按钮
+function onLoginPageClick(){
+  router.push('/login')
+}
+
 </script>
 
 <template>
   <div class="login-container">
     <div class="login-wrapper">
       <div style="font-size: large; margin-bottom: 10px">七龙珠Online账号注册</div>
+      <br><br>
       <div class="form">
         <el-form ref="registerForm" :model="userInfo" :rules="rules" status-icon label-width="80px" size="large"
                  @submit.prevent>
-          <el-form-item prop="username" style="width:320px" label="账号">
+          <el-form-item prop="username" style="width:345px" label="账号">
             <el-input placeholder="请输入账号" v-model="userInfo.username"/>
           </el-form-item>
-          <el-form-item prop="password" style="width:320px" label="密码">
+          <el-form-item prop="password" style="width:345px" label="密码">
             <el-input type="password" placeholder="请输入密码" v-model="userInfo.password"/>
           </el-form-item>
-          <el-form-item prop="rePassword" style="width:320px" label="确认密码">
+          <el-form-item prop="rePassword" style="width:345px" label="确认密码">
             <el-input type="password" placeholder="请确认密码" v-model="userInfo.rePassword"/>
           </el-form-item>
-          <el-form-item prop="email" style="width:320px" label="邮箱" v-if="isOpenEmailCheck">
+          <el-form-item prop="email" style="width:345px" label="邮箱" v-if="isOpenEmailCheck">
             <el-input placeholder="请输入邮箱" v-model="userInfo.email"/>
           </el-form-item>
           <el-row v-if="isOpenEmailCheck">
             <el-col :span="16">
-              <el-form-item prop="verification" style="width:235px" label="验证码">
+              <el-form-item prop="verification" style="width:270px" label="验证码">
                 <el-input placeholder="请输入验证码" v-model="userInfo.verification"/>
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-button @click="onVerificationBtnClick">{{ verificationBtnText }}</el-button>
+              <el-button @click="onVerificationBtnClick" style="margin-left: 36px">
+                {{ verificationBtnText }}
+              </el-button>
             </el-col>
           </el-row>
           <div class="button-container">
-            <el-button size="large" class="subBtn" @click="onRegisterClick">注册</el-button>
-            <el-button size="large" class="register-btn">
-              <router-link to="/login">已有帐号？登录</router-link>
+            <el-button size="large" class="subBtn" @click="onRegisterClick">
+              注册
+            </el-button>
+            <el-button size="large" class="register-btn" @click="onLoginPageClick">
+              已有帐号？登录
             </el-button>
           </div>
         </el-form>

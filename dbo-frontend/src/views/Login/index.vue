@@ -101,31 +101,43 @@ function onLoginClick() {
     }
   });
 }
+
+// 跳转到注册页面的按钮
+function onRegisterPageClick() {
+  router.push('/register')
+}
+
+// 跳转到忘记密码页面的按钮
+function onForgetPageClick() {
+  router.push('/forget')
+}
+
 </script>
 
 <template>
   <div class="login-container">
     <div class="login-wrapper">
       <div style="font-size: large; margin-bottom: 10px">七龙珠Online账号登录</div>
+      <br><br>
       <div class="form">
         <el-form ref="loginForm" :model="userInfo" :rules="rules"
                  status-icon label-width="80px" size="large"
-                  @submit.prevent>
-          <el-form-item prop="username" style="width:320px" label="账号">
-            <el-input placeholder="请输入账号" v-model="userInfo.username"/>
-          </el-form-item>
-          <el-form-item prop="password" style="width:320px" label="密码">
-            <el-input type="password" placeholder="请输入密码" v-model="userInfo.password"/>
-          </el-form-item>
+                 @submit.prevent>
+            <el-form-item prop="username" style="width:360px;margin-left:-10px;" label="账号">
+              <el-input placeholder="请输入账号" v-model="userInfo.username"/>
+            </el-form-item>
+            <el-form-item prop="password" style="width:360px;margin-left:-10px;" label="密码">
+              <el-input type="password" placeholder="请输入密码" v-model="userInfo.password"/>
+            </el-form-item>
           <div class="button-container">
             <el-button size="large" class="subBtn" @click="onLoginClick">登录</el-button>
-            <el-button size="large" class="register-btn">
-              <router-link to="/register">注册账号</router-link>
+            <el-button size="large" class="register-btn" @click="onRegisterPageClick">
+              注册账号
             </el-button>
           </div>
           <div class="forget-link">
-            <button class="el-button el-button--default el-button--mini">
-              <router-link to="/forget">忘记密码？</router-link>
+            <button class="el-button el-button--default el-button--mini" @click="onForgetPageClick">
+              密码忘了？点击找回密码
             </button>
           </div>
         </el-form>
@@ -167,7 +179,7 @@ function onLoginClick() {
 
 .forget-link {
   margin-top: 20px;
-  margin-left: 80px;
+  margin-left: 70px;
 }
 
 .button-container {
@@ -180,7 +192,7 @@ function onLoginClick() {
   background-color: #409eff;
   color: #fff;
   width: 35%;
-  margin-left: 80px;
+  margin-left: 70px;
 }
 
 .register-btn {

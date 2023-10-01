@@ -706,7 +706,7 @@ const deleteEvent = (id) => {
   <template v-if="admin === null">
     <div class="login-container">
       <div class="login-wrapper">
-        <div style="font-size: large; margin-bottom: 10px">七龙珠Online管理平台</div>
+        <div style="font-size: large; margin-bottom: 10px">七龙珠Online管理平台</div><br>
         <div class="form">
           <el-form ref="adminInfoForm" :model="adminInfo" :rules="rules" status-icon label-width="80px" size="large"
                    @submit.prevent>

@@ -84,52 +84,60 @@ watch(showDropdown, (newValue) => {
           <RouterLink active-class="active" :to="`/mall`">胶囊商城</RouterLink>
         </li>
       </ul>
-      <ul class="app-nav-nav">
-        <template v-if="user != null">
-          <template v-if="user.admin === 10">
-            <li :class="{ 'active': isAdminPage }" class="enlarge-hover">
-              <RouterLink active-class="active" :to="`/admin`">管理界面</RouterLink>
+      <div class="container" style="justify-content: flex-end;">
+        <ul class="app-nav-nav">
+          <template v-if="user != null">
+            <template v-if="user.admin === 10">
+              <li :class="{ 'active': isAdminPage }" class="enlarge-hover">
+                <RouterLink active-class="active" :to="`/admin`">管理界面</RouterLink>
+              </li>
+            </template>
+            <template v-else>
+              <li class="enlarge-hover" @mouseenter="showDropdown = true" @mouseleave="showDropdown = false">
+                <a href="javascript:;" :class="{ 'active': isOrderPage }">我的订单</a>
+                <ul ref="dropdownRef" class="dropdown" v-show="showDropdown">
+                  <li>
+                    <RouterLink active-class="active" :to="`/orderKey`">卡密订单</RouterLink>
+                  </li>
+                  <li>
+                    <RouterLink active-class="active" :to="`/orderMall`">商城订单</RouterLink>
+                  </li>
+                </ul>
+              </li>
+            </template>
+            <li :class="{ 'active': isMePage }" class="enlarge-hover">
+              <RouterLink active-class="active" :to="`/me`">个人中心</RouterLink>
+            </li>
+            <li class="enlarge-hover">
+              <el-popconfirm title="确认退出吗?" confirm-button-text="确认" cancel-button-text="取消"
+                             @confirm="logoutClick">
+                <template #reference>
+                  <a href="javascript:;">退出登录</a>
+                </template>
+              </el-popconfirm>
             </li>
           </template>
           <template v-else>
-            <li class="enlarge-hover" @mouseenter="showDropdown = true" @mouseleave="showDropdown = false">
-              <a href="javascript:;" :class="{ 'active': isOrderPage }">我的订单</a>
-              <ul ref="dropdownRef" class="dropdown" v-show="showDropdown">
-                <li><RouterLink active-class="active" :to="`/orderKey`">卡密订单</RouterLink></li>
-                <li><RouterLink active-class="active" :to="`/orderMall`">商城订单</RouterLink></li>
-              </ul>
-            </li>
+            <div style="padding-left: 190px">
+            <template v-if="isLoginOrRegister === 'login'">
+              <li class="enlarge-hover">
+                <RouterLink active-class="active" :to="`/login`">登录/注册</RouterLink>
+              </li>
+            </template>
+            <template v-else-if="isLoginOrRegister === 'register'">
+              <li class="enlarge-hover">
+                <RouterLink active-class="active" :to="`/register`">登录/注册</RouterLink>
+              </li>
+            </template>
+            <template v-else>
+              <li class="enlarge-hover">
+                <RouterLink active-class="active" :to="`/login`">登录/注册</RouterLink>
+              </li>
+            </template>
+            </div>
           </template>
-          <li :class="{ 'active': isMePage }" class="enlarge-hover">
-            <RouterLink active-class="active" :to="`/me`">个人中心</RouterLink>
-          </li>
-          <li class="enlarge-hover">
-            <el-popconfirm title="确认退出吗?" confirm-button-text="确认" cancel-button-text="取消"
-                           @confirm="logoutClick">
-              <template #reference>
-                <a href="javascript:;">退出登录</a>
-              </template>
-            </el-popconfirm>
-          </li>
-        </template>
-        <template v-else>
-          <template v-if="isLoginOrRegister === 'login'">
-            <li class="enlarge-hover">
-              <RouterLink active-class="active" :to="`/login`">登录/注册</RouterLink>
-            </li>
-          </template>
-          <template v-else-if="isLoginOrRegister === 'register'">
-            <li class="enlarge-hover">
-              <RouterLink active-class="active" :to="`/register`">登录/注册</RouterLink>
-            </li>
-          </template>
-          <template v-else>
-            <li class="enlarge-hover">
-              <RouterLink active-class="active" :to="`/login`">登录/注册</RouterLink>
-            </li>
-          </template>
-        </template>
-      </ul>
+        </ul>
+      </div>
     </div>
   </header>
 </template>
@@ -139,7 +147,7 @@ watch(showDropdown, (newValue) => {
 .dropdown {
   position: absolute;
   top: 100%;
-  left: 490px;
+  left: 585px;
   z-index: 999;
   padding: 8px;
   background-color: #fff;
@@ -179,7 +187,7 @@ watch(showDropdown, (newValue) => {
   }
 
   .logo {
-    width: 158px;
+    width: 250px;
 
     a {
       display: block;
@@ -224,7 +232,7 @@ watch(showDropdown, (newValue) => {
   .app-nav-nav {
     width: 900px;
     display: flex;
-    padding-left: 500px;
+    padding-left: 600px;
     position: relative;
     z-index: 998;
 
