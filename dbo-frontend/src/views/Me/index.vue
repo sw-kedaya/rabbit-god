@@ -5,6 +5,7 @@ import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
 import {getDBOCharListApi} from "@/apis/dboChar";
 import {getUseCdKeyApi} from "@/apis/cashKey";
+import {sendCode, checkOpen} from "@/apis/code"
 
 // 修改密码的表单校验
 const confirmPasswordValidator = (rule, value, callback) => {
@@ -14,22 +15,13 @@ const confirmPasswordValidator = (rule, value, callback) => {
     callback();
   }
 };
-
-const passwordRules = {
-  oldPassword: [
-    {required: true, message: '请输入原密码'},
-    {min: 6, max: 32, message: '密码长度应为6到32位'}
-  ],
-  newPassword: [
-    {required: true, message: '请输入新密码'},
-    {min: 6, max: 32, message: '密码长度应为6到32位'}
-  ],
-  confirmPassword: [
-    {required: true, message: '请确认密码'},
-    {min: 6, max: 32, message: '密码长度应为6到32位'},
-    {validator: confirmPasswordValidator}
-  ]
-};
+// 判断是否开了邮箱验证
+const isOpenEmailCheck = ref()
+const checkOpenQuest = async () => {
+  const res = await checkOpen()
+  isOpenEmailCheck.value = res.data
+  passwordRules.code[0].required = isOpenEmailCheck.value
+}
 
 // 兑换卡密的表单校验
 const cDKeyRules = {
@@ -86,12 +78,14 @@ watch(tableData, () => {
 // 钩子
 let updateFlag = ref(true)
 onMounted(() => {
+  // 判断是否开启了邮箱验证
+  checkOpenQuest()
   // 进入前先判断登录没
   user.value = JSON.parse(localStorage.getItem("user-token"))
   if (user.value == null) router.push('/login')
   getDBOCharListQuest(user.value.accountID)
 
-  // 120秒只能修改一次密码
+  // 30秒只能修改一次密码
   const updateTTL = localStorage.getItem("update-ttl");
   // 值不为空且还没过期，就先进入把倒计时走完再开放
   if (updateTTL && Date.now() < Number(updateTTL)) {
@@ -105,12 +99,33 @@ onMounted(() => {
   cdKeyExchangeForm.value.accountID = user.value.accountID;
 })
 
+const passwordRules = {
+  oldPassword: [
+    {required: true, message: '请输入原密码'},
+    {min: 6, max: 32, message: '密码长度应为6到32位'}
+  ],
+  newPassword: [
+    {required: true, message: '请输入新密码'},
+    {min: 6, max: 32, message: '密码长度应为6到32位'}
+  ],
+  confirmPassword: [
+    {required: true, message: '请确认密码'},
+    {min: 6, max: 32, message: '密码长度应为6到32位'},
+    {validator: confirmPasswordValidator}
+  ],
+  code: [
+    {required: isOpenEmailCheck.value, message: '请输入验证码'}
+  ]
+};
+
 // 修改密码
 const passwordForm = ref({
   username: '',
   oldPassword: '',
   newPassword: '',
-  confirmPassword: ''
+  confirmPassword: '',
+  code: '',
+  uuid: localStorage.getItem("uuid")
 });
 
 // 兑换卡密
@@ -137,7 +152,7 @@ const updateQuest = async () => {
 }
 
 const passwordFormValidate = ref()
-const updateTime = 120000;
+const updateTime = 30000;
 const savePassword = () => {
   if (updateFlag.value) {
     passwordFormValidate.value.validate((valid) => {
@@ -162,7 +177,7 @@ const savePassword = () => {
       }
     });
   } else {
-    ElMessage.warning('请120秒后再重试');
+    ElMessage.warning('请30秒后再重试');
   }
 };
 
@@ -234,6 +249,36 @@ const onGetLatestMallPointsClick = () => {
   getLatestMallPointsQuest()
 }
 
+// 修改密码验证码
+const sendCodeQuest = async () => {
+  const res = await sendCode(user.value.email)
+  passwordForm.value.code = res.data.code;
+  // 存入uuid
+  passwordForm.value.uuid = res.data.uuid
+  localStorage.setItem('uuid', res.data.uuid)
+}
+const isClickSendCode = ref(true)
+const sendCodeText = ref('获取')
+const onSendCodeClick = () => {
+  if (isClickSendCode.value){
+    isClickSendCode.value = false;
+    ElMessage.success("获取成功")
+    sendCodeQuest()
+    sendCodeText.value = '10s'
+    let count = 10;
+    const timer = setInterval(() => {
+      count--;
+      if (count > 0) {
+        sendCodeText.value = `${count}s`;
+      } else {
+        clearInterval(timer);
+        sendCodeText.value = '获取';
+      }
+    }, 1000);
+  }else {
+    ElMessage.warning("请勿重复获取验证码")
+  }
+}
 </script>
 
 <template>
@@ -251,14 +296,14 @@ const onGetLatestMallPointsClick = () => {
               <div style="height: 5px;"></div>
             </template>
             <template v-else>
-              <el-tag class="el-tag--error el-tag--light" style="font-size: 15px;"> 异常</el-tag>
+              <el-tag class="el-tag--error el-tag--light" style="font-size: 15px;"> 封禁</el-tag>
               <div style="height: 5px;"></div>
             </template>
             邮箱：
             <el-tag class="el-tag--light" style="font-size: 15px;">{{ user.email }}</el-tag>
             <div style="height: 5px;"></div>
             余额：
-            <el-tooltip content="余额不会实时更新，若不同步请重新登录">
+            <el-tooltip content="若不同步请点击刷新按钮">
               <el-tag class="el-tag--light" style="font-size: 15px;">{{ user.mallPoints }}</el-tag>
             </el-tooltip>
             <el-button size="small" type="info" style="margin-left: 10px"
@@ -374,6 +419,14 @@ const onGetLatestMallPointsClick = () => {
                     v-model="passwordForm.confirmPassword"></el-input>
         </el-form-item>
       </div>
+      <div class="form-row-code" v-if="isOpenEmailCheck">
+        <span class="label">验证码</span>
+        <el-form-item class="myInput" prop="code" v-if="isOpenEmailCheck">
+          <el-input style="height: 40px; width: 120px" type="text" placeholder="请输入验证码"
+                    v-model="passwordForm.code"></el-input>
+          <el-button type="default" size="large" style="margin-left: 4px" @click="onSendCodeClick">{{ sendCodeText }}</el-button>
+        </el-form-item>
+      </div>
       <div class="form-row" style="justify-content: flex-end; margin-top: 20px;">
         <el-button type="default" style="width: 70px; height: 40px" @click="cancelPassword">取消</el-button>
         <el-button type="primary" style="background-color: #3388FF; color: #FFFFFF;height: 40px;" @click="savePassword">
@@ -413,6 +466,13 @@ const onGetLatestMallPointsClick = () => {
 }
 
 .form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  margin-right: 15px;
+}
+
+.form-row-code {
   display: flex;
   align-items: center;
   margin-bottom: 5px;

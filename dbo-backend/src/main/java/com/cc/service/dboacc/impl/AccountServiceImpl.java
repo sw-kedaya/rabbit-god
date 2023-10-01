@@ -87,6 +87,14 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public Result updatePwd(PasswordDTO passwordDTO) {
+        // 判断验证码
+        if (registerConfiguration.getEmailCheck()) {
+            String code = redisTemplate.opsForValue().get(CommonConstant.CODE_KEY + passwordDTO.getUuid());
+            if (code == null || code.isEmpty()) return Result.fail("验证码错误");
+            if (!code.equals(passwordDTO.getCode())) return Result.fail("验证码错误");
+            redisTemplate.delete(CommonConstant.CODE_KEY + passwordDTO.getUuid());
+        }
+        // 验证码通过则修改
         Account account = accountMapper.getPassword(passwordDTO.getUsername());
         if (!passwordDTO.getOldPassword().equals(account.getPassword())) return Result.fail("修改失败，请检查原密码");
         return accountMapper.updatePwd(passwordDTO.getNewPassword(), passwordDTO.getUsername(),

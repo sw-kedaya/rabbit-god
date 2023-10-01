@@ -49,6 +49,7 @@ const isOpenEmailCheck = ref()
 const checkOpenQuest = async () => {
   const res = await checkOpen()
   isOpenEmailCheck.value = res.data
+  rules.verification[0].required = isOpenEmailCheck.value
 }
 
 let registerFlag = ref(true)

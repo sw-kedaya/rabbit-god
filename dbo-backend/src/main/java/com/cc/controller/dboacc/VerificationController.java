@@ -36,6 +36,7 @@ public class VerificationController {
         redisTemplate.opsForValue().set(CommonConstant.CODE_KEY + uuid, code, 5, TimeUnit.MINUTES);
         // 发送邮件
         sendMailService.sendMailForRegister(email,code);
+//        System.out.println("验证码：" + code);
         // 把uuid发送到前端
         CodeMessage codeMessage = new CodeMessage();
         codeMessage.setUuid(uuid);

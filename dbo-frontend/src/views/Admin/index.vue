@@ -493,7 +493,7 @@ const handleCashNumChange = (value) => {
 }
 const ordersForKey = ref([])
 const currentPageForKey = ref(1);
-const pageSizeForKey = ref(12);
+const pageSizeForKey = ref(10);
 const totalPageForKey = ref(1);
 const startIndexForKey = ref(0);
 const endIndexForKey = ref(0);
@@ -611,7 +611,8 @@ const getEventListQuest = async () => {
   eventData.value = res.data
 }
 // 新增活动
-const eventSaveForm = ref({event_name: '', monday: '', tuesday: '', wednesday: '', thursday: '', friday: '',
+const eventSaveForm = ref({
+  event_name: '', monday: '', tuesday: '', wednesday: '', thursday: '', friday: '',
   saturday: '', sunday: '',
 })
 const eventSaveRules = {
@@ -629,8 +630,10 @@ const adminEventSaveQuest = async () => {
   const res = await adminEventSaveApi(eventSaveForm.value, user.value.accountID)
   if (res.success) {
     getEventListQuest()
-    eventSaveForm.value = {event_name: '', monday: '', tuesday: '', wednesday: '', thursday: '', friday: '',
-      saturday: '', sunday: '',};
+    eventSaveForm.value = {
+      event_name: '', monday: '', tuesday: '', wednesday: '', thursday: '', friday: '',
+      saturday: '', sunday: '',
+    };
     ElMessage.success('新增活动成功')
   } else {
     ElMessage.error(res.errorMsg)
@@ -700,13 +703,21 @@ const deleteEvent = (id) => {
     ElMessage.info("取消删除")
   })
 }
+
+// 复制卡密按钮
+const onCopyCashKeyClick = (cdKey) => {
+  navigator.clipboard.writeText(cdKey).then(() => {
+    ElMessage.success("已复制卡密")
+  })
+}
 </script>
 
 <template>
   <template v-if="admin === null">
     <div class="login-container">
       <div class="login-wrapper">
-        <div style="font-size: large; margin-bottom: 10px">七龙珠Online管理平台</div><br>
+        <div style="font-size: large; margin-bottom: 10px">七龙珠Online管理平台</div>
+        <br>
         <div class="form">
           <el-form ref="adminInfoForm" :model="adminInfo" :rules="rules" status-icon label-width="80px" size="large"
                    @submit.prevent>
@@ -791,7 +802,7 @@ const deleteEvent = (id) => {
                 <el-table-column prop="sign_reward" label="签到日期" width="180">
                   <template #default="{ row }">
                     <span v-if="row.sign_reward === '0'">未设置</span>
-                    <span v-if="row.sign_reward !== '0'">{{row.sign_reward}}</span>
+                    <span v-if="row.sign_reward !== '0'">{{ row.sign_reward }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="740">
@@ -875,10 +886,17 @@ const deleteEvent = (id) => {
                   <span v-else>-</span>
                 </template>
               </el-table-column>
+              <el-table-column label="点击复制卡密">
+                <template #default="scope">
+                  <el-button size="default" @click="onCopyCashKeyClick(scope.row.cdKey)" type="info">
+                    复制卡密
+                  </el-button>
+                </template>
+              </el-table-column>
             </el-table>
           </div>
           <div>
-            <el-pagination v-model="currentPageForKey" :page-sizes="[12]" :page-size="pageSizeForKey"
+            <el-pagination v-model="currentPageForKey" :page-sizes="[10]" :page-size="pageSizeForKey"
                            :total="totalDataForKey" layout="prev, pager, next, jumper, total"
                            @size-change="handleSizeChangeForKey" @update:current-page="handleClickForKey"
                            @prev-click="handleClickForKey" @next-click="handleClickForKey">
@@ -1681,7 +1699,8 @@ const deleteEvent = (id) => {
     <el-dialog v-model="dialogVisibleForSign" title="设置签到奖励" width="300px">
       <el-form ref="signFormValidate" :model="signForm" label-position="top" :rules="signRules">
         <div style="text-align: center; background-color: #cccccc">月日各2位数字，例如：5月8日</div>
-        <div style="text-align: center; background-color: #cccccc">则写：508（填0表示取消该签到礼物）</div><br>
+        <div style="text-align: center; background-color: #cccccc">则写：508（填0表示取消该签到礼物）</div>
+        <br>
         <div class="form-row">
           <span class="signLabel">日期时间</span>
           <el-form-item class="myInput" prop="sign">
@@ -1692,7 +1711,8 @@ const deleteEvent = (id) => {
         <div class="form-row" style="justify-content: flex-end; margin-top: 20px;">
           <el-button type="default" style="width: 70px; height: 40px" @click="cancelSign">取消</el-button>
           <el-button type="primary" style="background-color: #3388FF; color: #FFFFFF;height: 40px;"
-                     @click="signSubmit">保存</el-button>
+                     @click="signSubmit">保存
+          </el-button>
         </div>
       </el-form>
     </el-dialog>

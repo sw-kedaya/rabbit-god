@@ -8,4 +8,6 @@ public class PasswordDTO {
     private String oldPassword;
     private String newPassword;
     private String confirmPassword;
+    private String code;
+    private String uuid;
 }
