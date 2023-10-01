@@ -10,4 +10,5 @@ public class MallVO {
     private Long price;
     private Long count;
     private Long tblidx;
+    private Long type;
 }

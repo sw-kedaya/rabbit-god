@@ -51,10 +51,11 @@
         <result property="price" column="cash"/>
         <result property="count" column="count"/>
         <result property="tblidx" column="tblidx"/>
+        <result property="type" column="mall_type"/>
     </resultMap>
 
     <select id="getMallList" resultMap="MallVOResult">
-        select `id`, `cash`, `mall_name`, `mall_desc`, `count`, `tblidx`
+        select `id`, `cash`, `mall_name`, `mall_desc`, `count`, `tblidx`, `mall_type`
         from mall
         where `del_flag` = 0;
     </select>
@@ -136,7 +137,7 @@
     </update>
 
     <select id="getAdminEnableMallList" resultMap="MallVOResult">
-        select `id`, `cash`, `mall_name`, `mall_desc`, `count`, `tblidx`
+        select `id`, `cash`, `mall_name`, `mall_desc`, `count`, `tblidx`, `mall_type`
         from mall
         where `del_flag` = 0
            or `del_flag` = 2;

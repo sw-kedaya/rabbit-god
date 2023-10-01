@@ -48,6 +48,7 @@ const signFormValidate = ref() // 用于判断用户是否填写了表单
 const setSignQuest = async (charName, accountID) => {
   const res = await setSignApi(charName, accountID)
   if (res.success) {
+    checkIsSignQuest(user.value.accountID)
     ElMessage.success("签到成功")
   } else {
     ElMessage.warning(res.errorMsg)

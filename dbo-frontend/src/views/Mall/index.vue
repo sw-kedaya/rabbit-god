@@ -5,6 +5,7 @@ import {onMounted, ref, computed, watch} from "vue";
 import {getMallTypeListApi} from "@/apis/category"
 import {getMallList, getAdminEnableMallList, buyOrGiveMallPresentApi} from "@/apis/mall"
 import {getDBOCharListApi} from "@/apis/dboChar"
+import {getLatestMallPointsApi} from "@/apis/account";
 
 const router = useRouter()
 const user = ref()
@@ -116,12 +117,20 @@ function updatePaginationBySelf() {
   currentPageData.value = currentPageData.value.slice(startIndex.value, endIndex.value + 1);
 }
 
+// 赠送/购买后刷新c点
+const getLatestMallPointsQuest = async () => {
+  const res = await getLatestMallPointsApi(user.value.accountID)
+  user.value.mallPoints = res.data
+  localStorage.setItem("user-token", JSON.stringify(user.value))
+}
+
 // 赠送/购买API
 const mall = ref()
 const buyOrGiveMallPresentQuest = async (mall, purchaser, msg) => {
   const requestData = {mall, purchaser}
   const res = await buyOrGiveMallPresentApi(requestData)
   if (res.success) {
+    getLatestMallPointsQuest()
     ElMessage.success(msg + "成功")
   } else {
     ElMessage.error(res.errorMsg)
