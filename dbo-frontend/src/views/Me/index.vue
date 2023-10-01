@@ -330,9 +330,9 @@ const onGetLatestMallPointsClick = () => {
               </el-table-column>
               <el-table-column label="性别" prop="gender" align="center">
                 <template #default="scope">
-                  <span v-if="scope.row.race === 0">男</span>
-                  <span v-else-if="scope.row.race === 1">女</span>
-                  <span v-else-if="scope.row.race === 2">那美克</span>
+                  <span v-if="scope.row.gender === 0">男</span>
+                  <span v-else-if="scope.row.gender === 1">女</span>
+                  <span v-else-if="scope.row.gender === 2">那美克</span>
                   <span v-else>未知</span>
                 </template>
               </el-table-column>

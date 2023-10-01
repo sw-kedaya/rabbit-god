@@ -75,6 +75,8 @@ const loginQuest = async () => {
       location.reload()
     }, 2000);
   } else {
+    // 如果登录失败，继续开放登录按钮
+    disabledLoginButton = ref(true)
     ElMessage({
       message: res.errorMsg,
       type: "error"
