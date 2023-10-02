@@ -31,14 +31,19 @@
 
     <update id="setSign">
         update characters
-        set `Sign` = #{signNum}
+        set `Sign` = `Sign` + #{signNum}
         where `CharName` = #{charName}
-          and `Sign` != #{signNum};
+          and #{signNum} > `Sign`;
     </update>
 
     <select id="checkIsSign" resultMap="DBOCharResult">
         select `CharID` from characters
         where `AccountID` = #{accountID}
-        and `Sign` = #{signNum}
+        and `Sign` >= #{signNum}
     </select>
+
+    <update id="resetSign">
+        update characters
+        set `Sign` = 0;
+    </update>
 </mapper>

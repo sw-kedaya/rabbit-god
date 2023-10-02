@@ -26,7 +26,15 @@ spring:
     host: smtp.qq.com
     username:
     password:
-
+#  # 定时任务参数(不用动)
+#  task:
+#    scheduling:
+#      pool:
+#        size: 1
+#      thread-name-prefix: reset_
+#      shutdown:
+#        await-termination: false
+#        await-termination-period: 10s
 # 注册参数
 register:
   open: true # 是否开放注册(true/false)

@@ -30,15 +30,17 @@ public class DBOCharServiceImpl implements IDBOCharService {
 
     @Override
     public Result setSign(String charName, Long accountID) {
-        // 获取当前时间
-        Integer signNum = getSignNum();
+        // 获取二进制时间
+        Long binarySignNum = getBinarySignNum();
         // 先判断该用户签到了没
         Result result = checkIsSign(accountID);
         if (!result.getSuccess()) return Result.fail("一个账号只能签到一次");
         // 记录签到
-        Integer integer = dboCharMapper.setSign(charName, signNum);
+        Integer integer = dboCharMapper.setSign(charName, binarySignNum);
         if (integer <= 0) return Result.fail("该角色今日已签到");
         // 发送奖励
+        // 获取当前时间(月日)
+        Integer signNum = getSignNum();
         List<Mall> signRewardList = mallMapper.getSignRewardList(signNum);
         for (Mall mall : signRewardList) {
             mailService.generateSignMail(charName, mall.getTblidx(), mall.getCount());
@@ -48,17 +50,26 @@ public class DBOCharServiceImpl implements IDBOCharService {
 
     @Override
     public Result checkIsSign(Long accountID) {
-        // 获取当前时间
-        Integer signNum = getSignNum();
-        List<DBOChar> list = dboCharMapper.checkIsSign(accountID, signNum);
+        // 获取二进制时间
+        Long binarySignNum = getBinarySignNum();
+        // 查询当前用户是否签到
+        List<DBOChar> list = dboCharMapper.checkIsSign(accountID, binarySignNum);
         if (list != null && !list.isEmpty()) return Result.fail("一个账号只能签到一次");
         return Result.ok();
     }
 
-    private Integer getSignNum(){
+    private Integer getSignNum() {
         LocalDateTime now = LocalDateTime.now();
         int mouth = now.getMonthValue();
         int day = now.getDayOfMonth();
         return mouth * 100 + day;
+    }
+
+    private Long getBinarySignNum() {
+        LocalDateTime now = LocalDateTime.now();
+        int day = now.getDayOfMonth();
+        long result = 1L;
+        result <<= day;
+        return result;
     }
 }

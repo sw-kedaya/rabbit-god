@@ -55,4 +55,16 @@ class DboBackendApplicationTests {
         Mail mail = new Mail();
         System.out.println(mail);
     }
+
+    @Test
+    void testBinary() {
+        LocalDateTime now = LocalDateTime.now();
+        int day = now.getDayOfMonth() -1;
+        int result = 1;
+        result <<= day - 1;
+        System.out.println(result);
+        int max = 2147483647;
+        System.out.println(max);
+        System.out.println(max+1);
+    }
 }
