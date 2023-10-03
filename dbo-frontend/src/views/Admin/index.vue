@@ -50,11 +50,6 @@ const getMallTypeListQuest = async () => {
   categoryData.value = res.data;
 }
 
-const getAdminAllMallListQuest = async () => {
-  const res = await getAdminAllMallList()
-  goodsData.value = res.data
-}
-
 // 新增商品类型部分-新增对话框
 const categoryForm = ref({
   userId: 0,
@@ -279,24 +274,35 @@ function handleClick(newCurrentPage) {
   updatePagination();
 }
 
+const getAdminAllMallListQuest = async () => {
+  const res = await getAdminAllMallList()
+  goodsData.value = res.data
+  currentPageData.value = goodsData.value
+  totalGoodsData.value = currentPageData.value.length
+  updatePagination()
+}
 
-const totalGoodsData = computed(() => filteredGoodsData.value.length);
+const totalGoodsData = computed(() => filteredGoodsData.value);
 // 根据分类名、类型和状态筛选商品(计算完后更新数据)
 const filteredGoodsData = computed(() => {
   if (goodsName.value !== '') { // 如果商品名不为空则过滤
-    const res = currentPageData.value.filter(item => item.name.includes(goodsName.value));
+    const res = goodsData.value.filter(item => item.name.includes(goodsName.value));
     currentPageData.value = res;
   }
   if (goodsType.value !== '') { // 如果商品类型不为空则过滤
-    const res = currentPageData.value.filter(item => item.type === goodsType.value);
+    const res = goodsData.value.filter(item => item.type === goodsType.value);
     currentPageData.value = res;
   }
   if (goodsStatus.value !== '') { // 如果商品状态不为空则过滤
-    const res = currentPageData.value.filter(item => item.del_flag === goodsStatus.value);
+    const res = goodsData.value.filter(item => item.del_flag === goodsStatus.value);
     currentPageData.value = res;
   }
+  if (goodsName.value === '' && goodsType.value === '' && goodsStatus.value === ''){
+    currentPageData.value = goodsData.value
+  }
+  const total = currentPageData.value.length
   updatePaginationBySelf() // 分页后渲染
-  return currentPageData.value;
+  return total;
 });
 
 // 搜索商品时自动变成第一页
@@ -402,7 +408,6 @@ const signRules = {
 const showSignForm = (row) => {
   signForm.value.sign = row.sign_reward;
   signForm.value.id = row.id;
-  console.log(signForm.value)
   dialogVisibleForSign.value = true;
 };
 const cancelSign = () => {

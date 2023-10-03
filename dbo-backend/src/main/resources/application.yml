@@ -1,6 +1,6 @@
 # 这里端口改了的话，assets也要改
 server:
-  port: 2406
+  port: 2333
 # 把localhost都改成127.0.0.1，username/password都改成自己的
 spring:
   datasource:
