@@ -59,6 +59,17 @@ watch(showDropdown, (newValue) => {
     dropdownRef.value.style.display = 'none'
   }
 })
+
+// 再次点击当前所在页即为刷新
+const refreshPage = (route) => {
+  if (isCurrentRoute(route)) {
+    window.location.reload()
+  }
+}
+const isCurrentRoute = (route) => {
+  return router.currentRoute.value.fullPath === route;
+}
+
 </script>
 
 <template>
@@ -69,27 +80,27 @@ watch(showDropdown, (newValue) => {
       </h1>
       <ul class="app-header-nav">
         <li>
-          <RouterLink active-class="active" :to="`/home`">首页</RouterLink>
+          <RouterLink active-class="active" :to="`/home`" @click="refreshPage('/home')">首页</RouterLink>
         </li>
         <li>
-          <RouterLink active-class="active" :to="`/activity`">活动列表</RouterLink>
+          <RouterLink active-class="active" :to="`/activity`" @click="refreshPage('/activity')">活动列表</RouterLink>
         </li>
         <li>
-          <RouterLink active-class="active" :to="`/skill`">加点模拟器</RouterLink>
+          <RouterLink active-class="active" :to="`/skill`" @click="refreshPage('/skill')">加点模拟器</RouterLink>
         </li>
         <li>
-          <RouterLink active-class="active" :to="`/signin`">每日签到</RouterLink>
+          <RouterLink active-class="active" :to="`/signin`" @click="refreshPage('/signin')">每日签到</RouterLink>
         </li>
         <li>
-          <RouterLink active-class="active" :to="`/mall`">胶囊商城</RouterLink>
+          <RouterLink active-class="active" :to="`/mall`" @click="refreshPage('/mall')">胶囊商城</RouterLink>
         </li>
       </ul>
-      <div class="container" style="justify-content: flex-end;">
+      <div class="container" style="justify-content: right">
         <ul class="app-nav-nav">
           <template v-if="user != null">
             <template v-if="user.admin === 10">
               <li :class="{ 'active': isAdminPage }" class="enlarge-hover">
-                <RouterLink active-class="active" :to="`/admin`">管理界面</RouterLink>
+                <RouterLink active-class="active" :to="`/admin`" @click="refreshPage('/admin')">管理界面</RouterLink>
               </li>
             </template>
             <template v-else>
@@ -97,16 +108,16 @@ watch(showDropdown, (newValue) => {
                 <a href="javascript:;" :class="{ 'active': isOrderPage }">我的订单</a>
                 <ul ref="dropdownRef" class="dropdown" v-show="showDropdown">
                   <li>
-                    <RouterLink active-class="active" :to="`/orderKey`">卡密订单</RouterLink>
+                    <RouterLink active-class="active" :to="`/orderKey`" @click="refreshPage('/orderKey')">卡密订单</RouterLink>
                   </li>
                   <li>
-                    <RouterLink active-class="active" :to="`/orderMall`">商城订单</RouterLink>
+                    <RouterLink active-class="active" :to="`/orderMall`" @click="refreshPage('/orderMall')">商城订单</RouterLink>
                   </li>
                 </ul>
               </li>
             </template>
             <li :class="{ 'active': isMePage }" class="enlarge-hover">
-              <RouterLink active-class="active" :to="`/me`">个人中心</RouterLink>
+              <RouterLink active-class="active" :to="`/me`" @click="refreshPage('/me')">个人中心</RouterLink>
             </li>
             <li class="enlarge-hover">
               <el-popconfirm title="确认退出吗?" confirm-button-text="确认" cancel-button-text="取消"
@@ -118,15 +129,15 @@ watch(showDropdown, (newValue) => {
             </li>
           </template>
           <template v-else>
-            <div style="padding-left: 190px">
+            <div>
             <template v-if="isLoginOrRegister === 'login'">
               <li class="enlarge-hover">
-                <RouterLink active-class="active" :to="`/login`">登录/注册</RouterLink>
+                <RouterLink active-class="active" :to="`/login`" @click="refreshPage('/login')">登录/注册</RouterLink>
               </li>
             </template>
             <template v-else-if="isLoginOrRegister === 'register'">
               <li class="enlarge-hover">
-                <RouterLink active-class="active" :to="`/register`">登录/注册</RouterLink>
+                <RouterLink active-class="active" :to="`/register`" @click="refreshPage('/register')">登录/注册</RouterLink>
               </li>
             </template>
             <template v-else>
@@ -147,15 +158,15 @@ watch(showDropdown, (newValue) => {
 .dropdown {
   position: absolute;
   top: 100%;
-  left: 585px;
   z-index: 999;
-  padding: 8px;
   background-color: #fff;
   border: 1px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-  width: 100px; /* 设置下拉菜单的宽度 */
-  height: 90px; /* 设置下拉菜单的高度 */
+  width: 105px; /* 设置下拉菜单的宽度 */
+  height: 105px; /* 设置下拉菜单的高度 */
+  left: -1px;
   li {
+    margin-top: 15px;
     margin-bottom: 8px;
 
     &:last-child {
@@ -188,6 +199,7 @@ watch(showDropdown, (newValue) => {
 
   .logo {
     width: 250px;
+    margin-right: 10px;
 
     a {
       display: block;
@@ -201,14 +213,15 @@ watch(showDropdown, (newValue) => {
   .app-header-nav {
     width: 820px;
     display: flex;
-    padding-left: 40px;
     position: relative;
     z-index: 998;
 
     li {
-      margin-right: 30px;
-      width: 85px;
+      margin-left: 20px;
+      margin-right: 20px;
+      width: auto;
       text-align: center;
+      white-space: nowrap;
 
       a {
         font-size: 16px;
@@ -230,16 +243,17 @@ watch(showDropdown, (newValue) => {
   }
 
   .app-nav-nav {
-    width: 900px;
     display: flex;
-    padding-left: 600px;
+    //padding-left: 600px;
     position: relative;
     z-index: 998;
 
     li {
-      margin-right: 30px;
-      width: 80px;
+      margin-left: 20px;
+      margin-right: 20px;
+      width: auto;
       text-align: center;
+      white-space: nowrap;
 
       a {
         font-size: 16px;

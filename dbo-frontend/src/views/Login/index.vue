@@ -132,7 +132,7 @@ function onForgetPageClick() {
               <el-input type="password" placeholder="请输入密码" v-model="userInfo.password"/>
             </el-form-item>
           <div class="button-container">
-            <el-button size="large" class="subBtn" @click="onLoginClick">登录</el-button>
+            <el-button size="large" class="subBtn" @click="onLoginClick" native-type="submit">登录</el-button>
             <el-button size="large" class="register-btn" @click="onRegisterPageClick">
               注册账号
             </el-button>

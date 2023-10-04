@@ -297,7 +297,7 @@ const filteredGoodsData = computed(() => {
     const res = goodsData.value.filter(item => item.del_flag === goodsStatus.value);
     currentPageData.value = res;
   }
-  if (goodsName.value === '' && goodsType.value === '' && goodsStatus.value === ''){
+  if (goodsName.value === '' && goodsType.value === '' && goodsStatus.value === '') {
     currentPageData.value = goodsData.value
   }
   const total = currentPageData.value.length
@@ -711,9 +711,39 @@ const deleteEvent = (id) => {
 
 // 复制卡密按钮
 const onCopyCashKeyClick = (cdKey) => {
-  navigator.clipboard.writeText(cdKey).then(() => {
-    ElMessage.success("已复制卡密")
-  })
+  // navigator.clipboard.writeText(cdKey).then(() => {
+  //   ElMessage.success("已复制卡密")
+  // })
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard
+        .writeText(cdKey)
+        .then(() => {
+          ElMessage.success("已复制卡密")
+        })
+        .catch(() => {
+          ElMessage.error("复制失败")
+        })
+  } else {
+    // 创建text area
+    const textArea = document.createElement('textarea')
+    textArea.value = cdKey
+    // 使text area不在viewport，同时设置不可见
+    document.body.appendChild(textArea)
+    textArea.focus()
+    textArea.select()
+    return new Promise((resolve, reject) => {
+      // 执行复制命令并移除文本框
+      document.execCommand('copy') ? resolve() : reject(new Error('出错了'))
+      textArea.remove()
+    }).then(
+        () => {
+          ElMessage.success("已复制卡密")
+        },
+        () => {
+          ElMessage.error("复制失败")
+        }
+    )
+  }
 }
 </script>
 
@@ -730,7 +760,9 @@ const onCopyCashKeyClick = (cdKey) => {
               <el-input placeholder="请输入管理平台密码" v-model="adminInfo.password" type="password"/>
             </el-form-item>
             <div class="button-container">
-              <el-button size="large" class="subBtn" type="primary" @click="onAdminSubmitClick">进入管理平台</el-button>
+              <el-button size="large" class="subBtn" type="primary" @click="onAdminSubmitClick" native-type="submit">
+                进入管理平台
+              </el-button>
             </div>
           </el-form>
         </div>

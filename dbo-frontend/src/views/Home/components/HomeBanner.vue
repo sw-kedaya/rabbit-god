@@ -23,8 +23,7 @@
 
 <style scoped lang='scss'>
 .home-banner {
-  margin-left: -9px;
-  width: 1920px;
+  width: 100%;
   height: 550px;
   left: 0;
   z-index: 98;
