@@ -38,6 +38,7 @@ const signRules = {
 };
 const dialogVisibleForSign = ref(false)
 const showSignExchangeForm = () => {
+  if (user.value == null) return ElMessage.warning('请先登录')
   dialogVisibleForSign.value = true;
 };
 const cancelSignExchange = () => {
@@ -87,7 +88,7 @@ const sign = () => {
       </div>
     </div>
   </template>
-  <el-dialog v-model="dialogVisibleForSign" title="购买胶囊" width="320px">
+  <el-dialog v-model="dialogVisibleForSign" title="每日签到" width="320px">
     <el-form ref="signFormValidate" :model="signForm" label-position="top" :rules="signRules">
       <div class="myWarning ">
         <span class="el-alert__title">签到前请确保您的信箱位置足够，否则奖励会发送失败</span>
@@ -109,7 +110,7 @@ const sign = () => {
         <el-button type="default" style="width: 70px; height: 40px" @click="cancelSignExchange">取消</el-button>
         <el-button type="primary"
                    style="background-color: #67c23a; color: #FFFFFF; height: 40px; border-color: #67c23a;"
-                   @click="sign">确认购买
+                   @click="sign">确认签到
         </el-button>
       </div>
     </el-form>
