@@ -9,7 +9,7 @@
     </resultMap>
 
     <select id="verifyAdmin" resultMap="WebAdminResult">
-        select *
+        select `Username`, `Password`
         from web_admin
         where `Username` = #{username}
           and `Password` = #{password};

@@ -144,16 +144,31 @@
     </select>
 
     <select id="getAdminAllMallList" resultMap="MallResult">
-        select *
+        select `id`,`mall_name`, `mall_desc`, `cash`, `mall_type`, `del_flag`, `tblidx`, `place`, `pos`, `count`
+        , `rank`, `durability`, `grade`, `NeedToIdentify`, `BattleAttribute`, `Maker`
+        , `OptionTblidx`, `OptionTblidx2`
+        , `OptionRandomId`, `OptionRandomVal`, `OptionRandomId2`, `OptionRandomVal2`
+        , `OptionRandomId3`, `OptionRandomVal3`, `OptionRandomId4`, `OptionRandomVal4`
+        , `OptionRandomId5`, `OptionRandomVal5`, `OptionRandomId6`, `OptionRandomVal6`
+        , `OptionRandomId7`, `OptionRandomVal7`, `OptionRandomId8`, `OptionRandomVal8`
+        , `UseStartTime`, `UseEndTime`, `RestrictState`, `DurationType`,`sign_reward`
         from mall;
     </select>
 
     <select id="getMallById" resultType="com.cc.entity.Mall">
-        select * from mall where `id` = #{id}
+        select `id`,`mall_name`, `mall_desc`, `cash`, `mall_type`, `del_flag`, `tblidx`, `place`, `pos`, `count`
+        , `rank`, `durability`, `grade`, `NeedToIdentify`, `BattleAttribute`, `Maker`
+        , `OptionTblidx`, `OptionTblidx2`
+        , `OptionRandomId`, `OptionRandomVal`, `OptionRandomId2`, `OptionRandomVal2`
+        , `OptionRandomId3`, `OptionRandomVal3`, `OptionRandomId4`, `OptionRandomVal4`
+        , `OptionRandomId5`, `OptionRandomVal5`, `OptionRandomId6`, `OptionRandomVal6`
+        , `OptionRandomId7`, `OptionRandomVal7`, `OptionRandomId8`, `OptionRandomVal8`
+        , `UseStartTime`, `UseEndTime`, `RestrictState`, `DurationType`,`sign_reward`
+        from mall where `id` = #{id}
     </select>
 
     <select id="getSignRewardList" resultType="com.cc.entity.Mall">
-        select *
+        select `tblidx`, `count`
         from mall
         where `sign_reward` = #{signNum}
     </select>

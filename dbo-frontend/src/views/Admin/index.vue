@@ -25,16 +25,24 @@ const admin = ref()
 onMounted(() => {
   // 进入前先判断是否等于且为管理员
   user.value = JSON.parse(localStorage.getItem("user-token"))
-  if (user.value == null) router.push('/login')
-  // 然后判断是否输入了管理员密码
+  if (user.value == null) {
+    router.push('/login')
+    return;
+  }
+  if (user.value.admin !== 10) {
+    router.push('/home')
+    return;
+  }
   admin.value = localStorage.getItem("admin-token")
-  // 其他初始化
-  activeTab.value = localStorage.getItem("activeTab");
-  activeSideTab.value = localStorage.getItem("activeSideTab");
-  getMallTypeListQuest()
-  getAdminAllMallListQuest()
-  getAdminOrderQuest()
-  getEventListQuest()
+  if (admin.value === 'admin') {
+    // // 其他初始化
+    activeTab.value = localStorage.getItem("activeTab");
+    activeSideTab.value = localStorage.getItem("activeSideTab");
+    getMallTypeListQuest()
+    getAdminAllMallListQuest()
+    getAdminOrderQuest()
+    getEventListQuest()
+  }
 })
 // 用于保存用户当前在哪子标签1还是2...
 watch(activeSideTab, () => {
@@ -472,6 +480,13 @@ const verifyWebAdminQuest = async () => {
     admin.value = "admin"
     localStorage.setItem("admin-token", "admin")
     ElMessage.success("欢迎进入管理平台")
+    // 其他初始化
+    activeTab.value = localStorage.getItem("activeTab");
+    activeSideTab.value = localStorage.getItem("activeSideTab");
+    getMallTypeListQuest()
+    getAdminAllMallListQuest()
+    getAdminOrderQuest()
+    getEventListQuest()
   } else {
     ElMessage.error(res.errorMsg)
   }

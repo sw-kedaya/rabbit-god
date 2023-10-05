@@ -82,7 +82,10 @@ onMounted(() => {
   checkOpenQuest()
   // 进入前先判断登录没
   user.value = JSON.parse(localStorage.getItem("user-token"))
-  if (user.value == null) router.push('/login')
+  if (user.value == null) {
+    router.push('/login')
+    return;
+  }
   getDBOCharListQuest(user.value.accountID)
 
   // 30秒只能修改一次密码

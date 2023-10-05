@@ -13,7 +13,8 @@
     </resultMap>
 
     <select id="adminGetCashKeyList" resultMap="CashKeyResult">
-        select * from cash_key;
+        select `id`, `cd_key`, `cash`, `create_time`, `use_time`, `account_id`
+        from cash_key;
     </select>
 
     <insert id="adminAddCashKey">
@@ -36,7 +37,8 @@
 
     <select id="userOrder" resultMap="CashKeyResult">
         <if test="accountID != null">
-            select * from cash_key where `account_id` = #{accountID}
+            select `id`, `cd_key`, `cash`, `create_time`, `use_time`, `account_id`
+            from cash_key where `account_id` = #{accountID}
             order by `create_time` ASC;
         </if>
     </select>

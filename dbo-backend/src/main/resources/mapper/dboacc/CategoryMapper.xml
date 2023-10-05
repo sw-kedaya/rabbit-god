@@ -10,7 +10,7 @@
     </resultMap>
 
     <select id="getMallTypeList" resultMap="CategoryResult">
-        select * from mall_type order by `sort` ASC;
+        select `id`,`type_name`,`sort` from mall_type order by `sort` ASC;
     </select>
 
     <update id="updateMallTypeById">

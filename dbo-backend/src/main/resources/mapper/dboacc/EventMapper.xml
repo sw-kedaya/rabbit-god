@@ -16,7 +16,7 @@
     </resultMap>
 
     <select id="getEventList" resultMap="EventResult">
-        select * from event;
+        select `id`,`event_name`,`monday`,`tuesday`,`wednesday`,`thursday`,`friday`,`saturday`,`sunday` from event;
     </select>
 
     <insert id="adminEventSave">
