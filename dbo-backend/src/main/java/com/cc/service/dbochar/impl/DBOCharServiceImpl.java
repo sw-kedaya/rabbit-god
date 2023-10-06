@@ -39,7 +39,7 @@ public class DBOCharServiceImpl implements IDBOCharService {
         Integer integer = dboCharMapper.setSign(charName, binarySignNum);
         if (integer <= 0) return Result.fail("该角色今日已签到");
         // 发送奖励
-        // 获取当前时间(月日)
+        // 获取当前时间(日)
         Integer signNum = getSignNum();
         List<Mall> signRewardList = mallMapper.getSignRewardList(signNum);
         for (Mall mall : signRewardList) {
@@ -59,10 +59,7 @@ public class DBOCharServiceImpl implements IDBOCharService {
     }
 
     private Integer getSignNum() {
-        LocalDateTime now = LocalDateTime.now();
-        int mouth = now.getMonthValue();
-        int day = now.getDayOfMonth();
-        return mouth * 100 + day;
+        return LocalDateTime.now().getDayOfMonth();
     }
 
     private Long getBinarySignNum() {

@@ -410,7 +410,7 @@ const dialogVisibleForSign = ref(false);
 const signForm = ref({id: '', sign: '',});
 const signRules = {
   sign: [
-    {required: true, message: '请输入日期数字(例如2月6号：206)'},
+    {required: true, message: '请输入日期数字(例如2号：2)'},
   ]
 };
 const showSignForm = (row) => {
@@ -438,7 +438,7 @@ const signSubmit = () => {
       dialogVisibleForSign.value = false;
       setSignRewardByIdQuest(signForm.value, user.value.accountID)
     } else {
-      ElMessage.warning("请输入日期数字(例如10月3号：1003)")
+      ElMessage.warning("请输入日期数字(例如10号：10)")
     }
   })
 }
@@ -1041,7 +1041,8 @@ const onCopyCashKeyClick = (cdKey) => {
 
     <!-- 新增商品对话框 -->
     <el-dialog v-model="dialogVisibleForGoodsRules" title="新增商品" width="955px">
-      <el-form ref="goodsFormValidate" :model="goodsForm" label-position="top" :rules="goodsRules">
+      <el-form ref="goodsFormValidate" :model="goodsForm" label-position="top" :rules="goodsRules"
+               @submit.prevent="">
         <div class="mall-form-row">
           <span class="mall-dialogLabel">商品名称</span>
           <el-form-item class="mall-myInput" prop="name">
@@ -1096,222 +1097,226 @@ const onCopyCashKeyClick = (cdKey) => {
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">place</span>
-          <el-form-item class="mall-myInput" prop="place">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.place"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">pos</span>
-          <el-form-item class="mall-myInput" prop="pos">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.pos"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
           <span class="mall-dialogLabel">count</span>
           <el-form-item class="mall-myInput" prop="count">
             <el-input style="height: 38px; width: 760px;" type="text"
                       v-model="goodsForm.count"></el-input>
           </el-form-item>
         </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">rank</span>
-          <el-form-item class="mall-myInput" prop="rank">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.rank"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">durability</span>
-          <el-form-item class="mall-myInput" prop="durability">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.durability"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">grade</span>
-          <el-form-item class="mall-myInput" prop="grade">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.grade"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">needToIdentify</span>
-          <el-form-item class="mall-myInput" prop="needToIdentify">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.needToIdentify"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">battleAttribute</span>
-          <el-form-item class="mall-myInput" prop="battleAttribute">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.battleAttribute"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">maker</span>
-          <el-form-item class="mall-myInput" prop="maker">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.maker"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionTblidx</span>
-          <el-form-item class="mall-myInput" prop="optionTblidx">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionTblidx"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionTblidx2</span>
-          <el-form-item class="mall-myInput" prop="optionTblidx2">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionTblidx2"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId</span>
-          <el-form-item class="mall-myInput" prop="optionRandomId">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomId"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal</span>
-          <el-form-item class="mall-myInput" prop="optionRandomVal">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomVal"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId2</span>
-          <el-form-item class="mall-myInput" prop="optionRandomId2">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomId2"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal2</span>
-          <el-form-item class="mall-myInput" prop="optionRandomVal2">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomVal2"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId3</span>
-          <el-form-item class="mall-myInput" prop="optionRandomId3">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomId3"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal3</span>
-          <el-form-item class="mall-myInput" prop="optionRandomVal3">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomVal3"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId4</span>
-          <el-form-item class="mall-myInput" prop="optionRandomId4">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomId4"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal4</span>
-          <el-form-item class="mall-myInput" prop="optionRandomVal4">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomVal4"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId5</span>
-          <el-form-item class="mall-myInput" prop="optionRandomId5">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomId5"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal5</span>
-          <el-form-item class="mall-myInput" prop="optionRandomVal5">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomVal5"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId6</span>
-          <el-form-item class="mall-myInput" prop="optionRandomId6">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomId6"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal6</span>
-          <el-form-item class="mall-myInput" prop="optionRandomVal6">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomVal6"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId7</span>
-          <el-form-item class="mall-myInput" prop="optionRandomId7">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomId7"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal7</span>
-          <el-form-item class="mall-myInput" prop="optionRandomVal7">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomVal7"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId8</span>
-          <el-form-item class="mall-myInput" prop="optionRandomId8">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomId8"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal8</span>
-          <el-form-item class="mall-myInput" prop="optionRandomVal8">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.optionRandomVal8"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">useStartTime</span>
-          <el-form-item class="mall-myInput" prop="useStartTime">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.useStartTime"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">useEndTime</span>
-          <el-form-item class="mall-myInput" prop="useEndTime">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.useEndTime"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">restrictState</span>
-          <el-form-item class="mall-myInput" prop="restrictState">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.restrictState"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">durationType</span>
-          <el-form-item class="mall-myInput" prop="durationType">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="goodsForm.durationType"></el-input>
-          </el-form-item>
-        </div>
+        <el-collapse>
+          <el-collapse-item title="更多设置" name="moreSettingsBySave">
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel">place</span>
+              <el-form-item class="mall-myInput" prop="place">
+                <el-input style="height: 38px; width: 760px;" type="text"
+                          v-model="goodsForm.place"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel">pos</span>
+              <el-form-item class="mall-myInput" prop="pos">
+                <el-input style="height: 38px; width: 760px;" type="text"
+                          v-model="goodsForm.pos"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel">rank</span>
+              <el-form-item class="mall-myInput" prop="rank">
+                <el-input style="height: 38px; width: 760px;" type="text"
+                          v-model="goodsForm.rank"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel">durability</span>
+              <el-form-item class="mall-myInput" prop="durability">
+                <el-input style="height: 38px; width: 760px;" type="text"
+                          v-model="goodsForm.durability"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel">grade</span>
+              <el-form-item class="mall-myInput" prop="grade">
+                <el-input style="height: 38px; width: 760px;" type="text"
+                          v-model="goodsForm.grade"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel">needToIdentify</span>
+              <el-form-item class="mall-myInput" prop="needToIdentify">
+                <el-input style="height: 38px; width: 760px;" type="text"
+                          v-model="goodsForm.needToIdentify"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel">battleAttribute</span>
+              <el-form-item class="mall-myInput" prop="battleAttribute">
+                <el-input style="height: 38px; width: 760px;" type="text"
+                          v-model="goodsForm.battleAttribute"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel">maker</span>
+              <el-form-item class="mall-myInput" prop="maker">
+                <el-input style="height: 38px; width: 760px;" type="text"
+                          v-model="goodsForm.maker"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel">optionTblidx</span>
+              <el-form-item class="mall-myInput" prop="optionTblidx">
+                <el-input style="height: 38px; width: 760px;" type="text"
+                          v-model="goodsForm.optionTblidx"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel">optionTblidx2</span>
+              <el-form-item class="mall-myInput" prop="optionTblidx2">
+                <el-input style="height: 38px; width: 760px;" type="text"
+                          v-model="goodsForm.optionTblidx2"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomId</span>
+              <el-form-item class="mall-myInput" prop="optionRandomId">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomId"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomVal</span>
+              <el-form-item class="mall-myInput" prop="optionRandomVal">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomVal"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomId2</span>
+              <el-form-item class="mall-myInput" prop="optionRandomId2">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomId2"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomVal2</span>
+              <el-form-item class="mall-myInput" prop="optionRandomVal2">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomVal2"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomId3</span>
+              <el-form-item class="mall-myInput" prop="optionRandomId3">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomId3"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomVal3</span>
+              <el-form-item class="mall-myInput" prop="optionRandomVal3">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomVal3"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomId4</span>
+              <el-form-item class="mall-myInput" prop="optionRandomId4">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomId4"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomVal4</span>
+              <el-form-item class="mall-myInput" prop="optionRandomVal4">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomVal4"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomId5</span>
+              <el-form-item class="mall-myInput" prop="optionRandomId5">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomId5"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomVal5</span>
+              <el-form-item class="mall-myInput" prop="optionRandomVal5">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomVal5"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomId6</span>
+              <el-form-item class="mall-myInput" prop="optionRandomId6">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomId6"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomVal6</span>
+              <el-form-item class="mall-myInput" prop="optionRandomVal6">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomVal6"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomId7</span>
+              <el-form-item class="mall-myInput" prop="optionRandomId7">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomId7"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomVal7</span>
+              <el-form-item class="mall-myInput" prop="optionRandomVal7">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomVal7"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomId8</span>
+              <el-form-item class="mall-myInput" prop="optionRandomId8">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomId8"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">optionRandomVal8</span>
+              <el-form-item class="mall-myInput" prop="optionRandomVal8">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.optionRandomVal8"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">useStartTime</span>
+              <el-form-item class="mall-myInput" prop="useStartTime">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.useStartTime"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">useEndTime</span>
+              <el-form-item class="mall-myInput" prop="useEndTime">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.useEndTime"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">restrictState</span>
+              <el-form-item class="mall-myInput" prop="restrictState">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.restrictState"></el-input>
+              </el-form-item>
+            </div>
+            <div class="mall-form-row">
+              <span class="mall-dialogLabel" style="width: 115px">durationType</span>
+              <el-form-item class="mall-myInput" prop="durationType">
+                <el-input style="height: 38px; width: 730px;" type="text"
+                          v-model="goodsForm.durationType"></el-input>
+              </el-form-item>
+            </div>
+          </el-collapse-item>
+        </el-collapse>
         <div class="mall-form-row" style="justify-content: flex-end; margin-top: 40px;">
           <el-button type="default" style="width: 70px; height: 40px" @click="cancelGoodsExchange">取消</el-button>
           <el-button type="primary" style="height: 40px;"
@@ -1323,7 +1328,8 @@ const onCopyCashKeyClick = (cdKey) => {
     </el-dialog>
     <!-- 修改商品对话框 ------------------------------修改--------------------------------->
     <el-dialog v-model="dialogVisibleForUpdateGoodsRules" title="新增商品" width="955px">
-      <el-form ref="updateGoodsFormValidate" :model="updateGoodsForm" label-position="top" :rules="updateGoodsRules">
+      <el-form ref="updateGoodsFormValidate" :model="updateGoodsForm" label-position="top" :rules="updateGoodsRules"
+               @submit.prevent="">
         <div class="mall-form-row">
           <span class="mall-dialogLabel">商品名称</span>
           <el-form-item class="mall-myInput" prop="name">
@@ -1378,6 +1384,15 @@ const onCopyCashKeyClick = (cdKey) => {
           </el-form-item>
         </div>
         <div class="mall-form-row">
+          <span class="mall-dialogLabel">count</span>
+          <el-form-item class="mall-myInput" prop="count">
+            <el-input style="height: 38px; width: 760px;" type="text"
+                      v-model="updateGoodsForm.count"></el-input>
+          </el-form-item>
+        </div>
+        <el-collapse>
+          <el-collapse-item title="更多设置" name="moreSettingsByUpdate">
+        <div class="mall-form-row">
           <span class="mall-dialogLabel">place</span>
           <el-form-item class="mall-myInput" prop="place">
             <el-input style="height: 38px; width: 760px;" type="text"
@@ -1389,13 +1404,6 @@ const onCopyCashKeyClick = (cdKey) => {
           <el-form-item class="mall-myInput" prop="pos">
             <el-input style="height: 38px; width: 760px;" type="text"
                       v-model="updateGoodsForm.pos"></el-input>
-          </el-form-item>
-        </div>
-        <div class="mall-form-row">
-          <span class="mall-dialogLabel">count</span>
-          <el-form-item class="mall-myInput" prop="count">
-            <el-input style="height: 38px; width: 760px;" type="text"
-                      v-model="updateGoodsForm.count"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
@@ -1455,145 +1463,147 @@ const onCopyCashKeyClick = (cdKey) => {
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomId</span>
           <el-form-item class="mall-myInput" prop="optionRandomId">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomId"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomVal</span>
           <el-form-item class="mall-myInput" prop="optionRandomVal">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomVal"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId2</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomId2</span>
           <el-form-item class="mall-myInput" prop="optionRandomId2">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomId2"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal2</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomVal2</span>
           <el-form-item class="mall-myInput" prop="optionRandomVal2">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomVal2"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId3</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomId3</span>
           <el-form-item class="mall-myInput" prop="optionRandomId3">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomId3"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal3</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomVal3</span>
           <el-form-item class="mall-myInput" prop="optionRandomVal3">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomVal3"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId4</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomId4</span>
           <el-form-item class="mall-myInput" prop="optionRandomId4">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomId4"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal4</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomVal4</span>
           <el-form-item class="mall-myInput" prop="optionRandomVal4">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomVal4"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId5</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomId5</span>
           <el-form-item class="mall-myInput" prop="optionRandomId5">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomId5"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal5</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomVal5</span>
           <el-form-item class="mall-myInput" prop="optionRandomVal5">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomVal5"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId6</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomId6</span>
           <el-form-item class="mall-myInput" prop="optionRandomId6">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomId6"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal6</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomVal6</span>
           <el-form-item class="mall-myInput" prop="optionRandomVal6">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomVal6"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId7</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomId7</span>
           <el-form-item class="mall-myInput" prop="optionRandomId7">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomId7"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal7</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomVal7</span>
           <el-form-item class="mall-myInput" prop="optionRandomVal7">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomVal7"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomId8</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomId8</span>
           <el-form-item class="mall-myInput" prop="optionRandomId8">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomId8"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">optionRandomVal8</span>
+          <span class="mall-dialogLabel" style="width: 115px">optionRandomVal8</span>
           <el-form-item class="mall-myInput" prop="optionRandomVal8">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.optionRandomVal8"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">useStartTime</span>
+          <span class="mall-dialogLabel" style="width: 115px">useStartTime</span>
           <el-form-item class="mall-myInput" prop="useStartTime">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.useStartTime"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">useEndTime</span>
+          <span class="mall-dialogLabel" style="width: 115px">useEndTime</span>
           <el-form-item class="mall-myInput" prop="useEndTime">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.useEndTime"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">restrictState</span>
+          <span class="mall-dialogLabel" style="width: 115px">restrictState</span>
           <el-form-item class="mall-myInput" prop="restrictState">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.restrictState"></el-input>
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">durationType</span>
+          <span class="mall-dialogLabel" style="width: 115px">durationType</span>
           <el-form-item class="mall-myInput" prop="durationType">
-            <el-input style="height: 38px; width: 760px;" type="text"
+            <el-input style="height: 38px; width: 730px;" type="text"
                       v-model="updateGoodsForm.durationType"></el-input>
           </el-form-item>
         </div>
+          </el-collapse-item>
+        </el-collapse>
         <div class="mall-form-row" style="justify-content: flex-end; margin-top: 40px;">
           <el-button type="default" style="width: 70px; height: 40px" @click="cancelUpdateGoodsExchange">取消
           </el-button>
@@ -1750,8 +1760,9 @@ const onCopyCashKeyClick = (cdKey) => {
     <!-- 签到奖励 -->
     <el-dialog v-model="dialogVisibleForSign" title="设置签到奖励" width="300px">
       <el-form ref="signFormValidate" :model="signForm" label-position="top" :rules="signRules">
-        <div style="text-align: center; background-color: #cccccc">月日各2位数字，例如：5月8日</div>
-        <div style="text-align: center; background-color: #cccccc">则写：508（填0表示取消该签到礼物）</div>
+        <div style="text-align: center; background-color: #cccccc">请输入日期(个位数不用补零)，例如：8号</div>
+        <div style="text-align: center; background-color: #cccccc">则写：8（填0表示取消该签到礼物）</div>
+        <div style="text-align: center; background-color: #cccccc">支持每日设置多个奖励</div>
         <br>
         <div class="form-row">
           <span class="signLabel">日期时间</span>
