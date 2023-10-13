@@ -17,4 +17,6 @@ public interface DBOCharMapper {
     List<DBOChar> checkIsSign(@PathVariable("accountID") Long accountID, @PathVariable("signNum") Long signNum);
 
     void resetSign();
+
+    DBOChar getSignMessageByCharName(@PathVariable("roleName") String roleName);
 }

@@ -52,6 +52,7 @@
         <result property="count" column="count"/>
         <result property="tblidx" column="tblidx"/>
         <result property="type" column="mall_type"/>
+        <result property="sign_reward" column="sign_reward"/>
     </resultMap>
 
     <select id="getMallList" resultMap="MallVOResult">
@@ -171,5 +172,14 @@
         select `tblidx`, `count`
         from mall
         where `sign_reward` = #{signNum}
+    </select>
+
+    <select id="getSignRewardListByList" resultMap="MallVOResult">
+        select `tblidx`, `count`, `mall_name`, `sign_reward`
+        from mall
+        where `sign_reward` in
+        <foreach collection="list" item="num" open="(" separator="," close=")">
+            #{num}
+        </foreach>
     </select>
 </mapper>

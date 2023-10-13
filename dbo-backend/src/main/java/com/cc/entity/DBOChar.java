@@ -26,4 +26,6 @@ public class DBOChar {
     private Integer gender;
     // GuildName-流派
     private String guildName;
+    // 签到信息
+    private Long sign;
 }

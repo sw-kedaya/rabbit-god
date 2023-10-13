@@ -5,9 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-@SpringBootTest
+//@SpringBootTest
 class DboBackendApplicationTests {
 
     @Test
@@ -29,12 +31,12 @@ class DboBackendApplicationTests {
     void testLocalDateTime() {
         long current = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
         long ten = LocalDateTime.now().plusDays(10).toEpochSecond(ZoneOffset.UTC);
-        System.out.println("当前的时间戳(秒)："+current);
-        System.out.println("十天后时间戳(秒)："+ten);
+        System.out.println("当前的时间戳(秒)：" + current);
+        System.out.println("十天后时间戳(秒)：" + ten);
         LocalDateTime currentDate = LocalDateTime.ofInstant(Instant.ofEpochSecond(current), ZoneId.systemDefault());
         LocalDateTime tenDate = LocalDateTime.ofInstant(Instant.ofEpochSecond(ten), ZoneId.systemDefault());
-        System.out.println("当前的日期："+currentDate);
-        System.out.println("十天后日期："+tenDate);
+        System.out.println("当前的日期：" + currentDate);
+        System.out.println("十天后日期：" + tenDate);
         System.out.println("-------------------------------------");
         int year = LocalDateTime.now().getYear();
         int month = LocalDateTime.now().getMonthValue();
@@ -59,12 +61,41 @@ class DboBackendApplicationTests {
     @Test
     void testBinary() {
         LocalDateTime now = LocalDateTime.now();
-        int day = now.getDayOfMonth() -1;
+        int day = now.getDayOfMonth() - 1;
         int result = 1;
         result <<= day - 1;
         System.out.println(result);
         int max = 2147483647;
         System.out.println(max);
-        System.out.println(max+1);
+        System.out.println(max + 1);
+    }
+
+    @Test
+    void testSignedAnalysis() {
+        long sign = 12388L;
+        // 解析
+        int[] result = new int[32];
+        // 已签到日期
+        List<Integer> signed = new ArrayList<>();
+        // 未签到日期
+        List<Integer> notSigned = new ArrayList<>();
+        for (int i = 0; i < result.length; i++) {
+            long isSigned = sign & 1;
+            sign = sign >>> 1;
+            result[i] = (int) isSigned;
+            if (i > LocalDate.now().getDayOfMonth()) break;
+            if (isSigned == 1) {
+                signed.add(i);
+            } else {
+                notSigned.add(i);
+            }
+        }
+        for (int i = 0; i < result.length; i++) {
+            System.out.print(result[i]);
+            if (i % 4 == 0) System.out.print(" ");
+        }
+        System.out.println();
+        System.out.println(signed);
+        System.out.println(notSigned);
     }
 }

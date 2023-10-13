@@ -35,4 +35,9 @@ public class DBOCharController {
         if (!isOpenSignIn) return Result.fail("管理员未开启签到");
         return dboCharService.checkIsSign(accountID);
     }
+
+    @GetMapping("sign/message")
+    public Result getSignMessage(String roleName){
+        return dboCharService.getSignMessage(roleName);
+    }
 }

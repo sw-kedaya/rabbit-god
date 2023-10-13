@@ -27,4 +27,6 @@ public interface MallMapper {
     Mall getMallById(@PathVariable("id") Long id);
 
     List<Mall> getSignRewardList(@PathVariable("signNum") Integer signNum);
+
+    List<MallVO> getSignRewardListByList(List<Integer> list);
 }

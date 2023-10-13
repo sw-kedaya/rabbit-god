@@ -12,6 +12,7 @@
         <result property="dboClass" column="Class"/>
         <result property="gender" column="Gender"/>
         <result property="guildName" column="GuildName"/>
+        <result property="sign" column="Sign"/>
     </resultMap>
 
     <select id="getDBOCharList" resultMap="DBOCharResult">
@@ -46,4 +47,10 @@
         update characters
         set `Sign` = 0;
     </update>
+
+    <select id="getSignMessageByCharName" resultType="com.cc.entity.DBOChar">
+        select `Sign`
+        from characters
+        where `CharName` = #{roleName}
+    </select>
 </mapper>

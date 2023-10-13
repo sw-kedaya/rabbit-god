@@ -8,4 +8,6 @@ public interface IDBOCharService {
     Result setSign(String charName, Long accountID);
 
     Result checkIsSign(Long accountID);
+
+    Result getSignMessage(String roleName);
 }

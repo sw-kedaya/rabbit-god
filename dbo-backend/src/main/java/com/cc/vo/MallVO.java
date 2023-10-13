@@ -11,4 +11,5 @@ public class MallVO {
     private Long count;
     private Long tblidx;
     private Long type;
+    private Long sign_reward;
 }

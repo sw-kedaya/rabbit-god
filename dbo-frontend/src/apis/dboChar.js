@@ -25,3 +25,11 @@ export function checkIsSignApi(accountID) {
         params: {accountID}
     })
 }
+
+export function getSignMessageApi(roleName) {
+    return instance({
+        method: "get",
+        url: "/char/sign/message",
+        params: {roleName}
+    })
+}
