@@ -30,4 +30,10 @@ public interface AccountMapper {
                            @PathVariable("price") Long price);
 
     Account getLatestMallPoints(@PathVariable("id") Long id);
+
+    Account getCardCount(@PathVariable("id") Long id);
+
+    Integer addCardCountById(@PathVariable("id") Long id);
+
+    Integer subCardCountById(@PathVariable("id") Long id);
 }

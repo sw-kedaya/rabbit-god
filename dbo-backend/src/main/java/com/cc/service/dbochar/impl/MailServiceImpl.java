@@ -47,4 +47,18 @@ public class MailServiceImpl implements IMailService {
         mail.setCount(count);
         mailMapper.generateMail(mail);
     }
+
+    @Override
+    public void generateReplacementSignMail(String roleName, Long itemId, Long count) {
+        DBOChar dboChar = dboCharMapper.getCharIDByCharName(roleName);
+        if (dboChar == null || dboChar.getCharID() == null) return;
+        Mail mail = new Mail();
+        mail.setFromName("补签奖励");
+        mail.setText("感谢使用Web在线补签功能，祝您游戏愉快！");
+        mail.setCharID(dboChar.getCharID());
+        mail.setTargetName(roleName);
+        mail.setItemId(itemId);
+        mail.setCount(count);
+        mailMapper.generateMail(mail);
+    }
 }

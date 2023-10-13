@@ -19,4 +19,10 @@ public interface DBOCharMapper {
     void resetSign();
 
     DBOChar getSignMessageByCharName(@PathVariable("roleName") String roleName);
+
+    List<DBOChar> checkActivity(@PathVariable("accountID") Long accountID);
+
+    Integer setIsGetCardById(@PathVariable("charID") Long charID);
+
+    Integer setReplacementSign(@PathVariable("charName") String charName, @PathVariable("signNum") Long signNum);
 }

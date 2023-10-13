@@ -2,7 +2,15 @@
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 import {onMounted, ref, watch} from "vue";
-import {getDBOCharListApi, setSignApi, checkIsSignApi, getSignMessageApi} from "@/apis/dboChar";
+import {
+  getDBOCharListApi,
+  setSignApi,
+  checkIsSignApi,
+  getSignMessageApi,
+  checkActivity,
+  replacementSignApi
+} from "@/apis/dboChar";
+import {getCardCountApi} from "@/apis/account"
 
 const router = useRouter()
 const user = ref()
@@ -12,6 +20,8 @@ onMounted(() => {
   if (user.value !== null) {
     getDBOCharListQuest(user.value.accountID)
     checkIsSignQuest(user.value.accountID)
+    getCardCountQuest(user.value.accountID)
+    checkActivityQuest(user.value.accountID)
   }
 })
 
@@ -50,6 +60,7 @@ const setSignQuest = async (charName, accountID) => {
   const res = await setSignApi(charName, accountID)
   if (res.success) {
     checkIsSignQuest(user.value.accountID)
+    getSignMessageQuest()
     ElMessage.success("签到成功")
   } else {
     ElMessage.warning(res.errorMsg)
@@ -153,6 +164,7 @@ calendar.value = generateCalendar(year, month);
 
 const dialogVisibleForReplacement = ref(false)
 const showReplacementExchangeForm = () => {
+  if (replacementForm.value.roleName === '') return ElMessage.warning("请选择补签角色")
   if (replacementSignCount.value <= 0) {
     ElMessage.warning("补签次数不足");
     return;
@@ -166,15 +178,39 @@ const cancelReplacementExchange = () => {
 const replacementFormValidate = ref() // 用于判断用户是否填写了表单
 
 // 获取剩余补签次数
-const replacementSignCount = ref(1)
+const replacementSignCount = ref(0)
+const getCardCountQuest = async (id) => {
+  const res = await getCardCountApi(id)
+  replacementSignCount.value = res.data
+}
+// 检查是否有角色满足2w活跃度
+const checkActivityQuest = async (id) => {
+  await checkActivity(id);
+}
+
+const replacementSignQuest = async (accountID, roleName, day, itemId, count) => {
+  const res = await replacementSignApi(accountID, roleName, day, itemId, count);
+  if (res.success) {
+    // 补签完再次查询签到信息和补签卡次数
+    getSignMessageQuest()
+    getCardCountQuest(user.value.accountID)
+    ElMessage.success("补签成功")
+  } else {
+    ElMessage.error(res.errorMsg)
+  }
+}
+
 const onReplacementClick = () => {
   if (replacementForm.value.roleName === '') return ElMessage.warning("请选择补签角色")
   replacementFormValidate.value.validate(valid => {
     if (valid) {
       dialogVisibleForReplacement.value = false;
+      // 根据补签的天数获取当天的签到礼物
+      const day = replacementForm.value.replaceNum.toString();
+      const itemId = notSignedGift.value.find(item => item.sign_reward === day).tblidx;
+      const count = notSignedGift.value.find(item => item.sign_reward === day).count;
+      replacementSignQuest(user.value.accountID, replacementForm.value.roleName, day, itemId, count);
       replacementForm.value.replaceNum = '';
-      // getSignMessageQuest()
-      // ElMessage.success("补签成功")
     } else {
       ElMessage.warning("请选择补签日期")
     }
@@ -189,7 +225,7 @@ const onReplacementClick = () => {
       <el-button class="myButton" type="success" round size="large" @click="showSignExchangeForm" v-if="isCanSign">
         立即签到
       </el-button>
-      <el-button class="myButton2" type="info" round size="large" disabled="true" v-else>
+      <el-button class="myButton2" type="info" round size="large" disabled v-else>
         已完成签到
       </el-button>
       <div class="check-sign-in-button">
@@ -225,7 +261,7 @@ const onReplacementClick = () => {
           </div>
           <div class="my-replacement-sign-button">
             <el-button round class="my-replacement-button" @click="showReplacementExchangeForm">补签</el-button>
-            <span style="margin-top: 5px; margin-left: 5px">剩余补签次数：{{ replacementSignCount }}次</span>
+            <span style="margin-top: 6px; margin-left: 5px">剩余补签次数：{{ replacementSignCount }}次</span>
           </div>
         </el-card>
       </div>

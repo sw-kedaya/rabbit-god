@@ -30,4 +30,6 @@ public class Account {
     private String bz;
     private Integer newPlayer;
     private Long firstCharID;
+    /** 新增：补签卡 */
+    private Integer replacementCard;
 }

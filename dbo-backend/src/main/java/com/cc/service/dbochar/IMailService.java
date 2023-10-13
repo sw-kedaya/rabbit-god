@@ -7,4 +7,6 @@ public interface IMailService {
     MallOrderDTO generateMail(String roleName, Long itemId, Long count);
 
     void generateSignMail(String roleName, Long itemId, Long count);
+
+    void generateReplacementSignMail(String roleName, Long itemId, Long count);
 }

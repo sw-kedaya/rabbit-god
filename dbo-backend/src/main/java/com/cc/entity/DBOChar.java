@@ -28,4 +28,8 @@ public class DBOChar {
     private String guildName;
     // 签到信息
     private Long sign;
+    // 活跃度
+    private Long activity;
+    // 是否获取过补签卡
+    private Integer isGetCard;
 }

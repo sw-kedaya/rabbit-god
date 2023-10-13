@@ -40,4 +40,15 @@ public class DBOCharController {
     public Result getSignMessage(String roleName){
         return dboCharService.getSignMessage(roleName);
     }
+
+    @GetMapping("sign/activity")
+    public Result checkActivity(Long accountID){
+        return dboCharService.checkActivity(accountID);
+    }
+
+    @GetMapping("sign/replacement")
+    public Result replacementSign(Long accountID, String roleName, Integer day,
+                                  Long itemId, Long count){
+        return dboCharService.replacementSign(accountID, roleName, day, itemId, count);
+    }
 }

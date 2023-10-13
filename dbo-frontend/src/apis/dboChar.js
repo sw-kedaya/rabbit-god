@@ -25,11 +25,26 @@ export function checkIsSignApi(accountID) {
         params: {accountID}
     })
 }
-
 export function getSignMessageApi(roleName) {
     return instance({
         method: "get",
         url: "/char/sign/message",
         params: {roleName}
+    })
+}
+
+export function checkActivity(accountID) {
+    return instance({
+        method: "get",
+        url: "/char/sign/activity",
+        params: {accountID}
+    })
+}
+
+export function replacementSignApi(accountID, roleName, day, itemId, count) {
+    return instance({
+        method: "get",
+        url: "/char/sign/replacement",
+        params: {accountID, roleName, day, itemId, count}
     })
 }

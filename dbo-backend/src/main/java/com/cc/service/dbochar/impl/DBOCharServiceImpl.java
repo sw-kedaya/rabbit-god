@@ -2,6 +2,7 @@ package com.cc.service.dbochar.impl;
 
 import com.cc.entity.DBOChar;
 import com.cc.entity.Mall;
+import com.cc.mapper.dboacc.AccountMapper;
 import com.cc.mapper.dboacc.MallMapper;
 import com.cc.mapper.dbochar.DBOCharMapper;
 import com.cc.service.dbochar.IDBOCharService;
@@ -28,6 +29,8 @@ public class DBOCharServiceImpl implements IDBOCharService {
     private MallMapper mallMapper;
     @Resource
     private IMailService mailService;
+    @Resource
+    private AccountMapper accountMapper;
 
     @Override
     public Result getDBOCharList(Long accountID) {
@@ -91,6 +94,36 @@ public class DBOCharServiceImpl implements IDBOCharService {
         return Result.ok(signMessage);
     }
 
+    @Override
+    public Result checkActivity(Long accountID) {
+        List<DBOChar> list = dboCharMapper.checkActivity(accountID);
+        // 判断该账户是否有活跃度超过2w且没发放过补签卡的角色
+        // - 若无，则返回
+        if (list == null || list.isEmpty()) return Result.ok();
+        // - 若有，则发放并设置为已发放
+        for (DBOChar dboChar : list) {
+            Integer integer1 = accountMapper.addCardCountById(accountID);
+            if (integer1 <= 0) break;
+            dboCharMapper.setIsGetCardById(dboChar.getCharID());
+        }
+        return Result.ok();
+    }
+
+    @Override
+    public Result replacementSign(Long accountID, String roleName, Integer day,
+                                  Long itemId, Long count) {
+        // 扣减补签卡
+        Integer integer1 = accountMapper.subCardCountById(accountID);
+        if (integer1 <= 0) return Result.fail("补签卡不足");
+        // 修改签到信息
+        Long sign = getReplacementNum(day);
+        Integer integer2 = dboCharMapper.setReplacementSign(roleName, sign);
+        if (integer2 <= 0) return Result.fail("补签失败");
+        // 发送补签的签到礼物
+        mailService.generateReplacementSignMail(roleName, itemId, count);
+        return Result.ok();
+    }
+
     private Integer getSignNum() {
         return LocalDateTime.now().getDayOfMonth();
     }
@@ -103,18 +136,7 @@ public class DBOCharServiceImpl implements IDBOCharService {
         return result;
     }
 
-    private Integer[] getSigned(Long sign) {
-        Integer[] result = new Integer[31];
-        for (int i = 0; i < result.length; i++) {
-            long isSigned = sign & 1;
-            sign = sign >>> 1;
-            result[i] = (int) isSigned;
-        }
-        return result;
-    }
-
-    private Integer[] getNotSigned(Long sign) {
-
-        return null;
+    private Long getReplacementNum(Integer day){
+        return 1L << day;
     }
 }

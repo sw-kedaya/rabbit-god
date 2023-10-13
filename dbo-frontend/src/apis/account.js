@@ -51,3 +51,11 @@ export function getLatestMallPointsApi(id) {
         params: {id}
     })
 }
+
+export function getCardCountApi(id) {
+    return instance({
+        method: "get",
+        url: "/user/cardCount",
+        params: {id}
+    })
+}

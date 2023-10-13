@@ -13,6 +13,8 @@
         <result property="gender" column="Gender"/>
         <result property="guildName" column="GuildName"/>
         <result property="sign" column="Sign"/>
+        <result property="activity" column="Activity"/>
+        <result property="isGetCard" column="is_get_card"/>
     </resultMap>
 
     <select id="getDBOCharList" resultMap="DBOCharResult">
@@ -53,4 +55,24 @@
         from characters
         where `CharName` = #{roleName}
     </select>
+
+    <select id="checkActivity" resultType="com.cc.entity.DBOChar">
+        select `CharID`
+        from characters
+        where `AccountID` = #{accountID}
+          and `is_get_card` = 0
+          and `Activity` >= 20000;
+    </select>
+
+    <update id="setIsGetCardById">
+        update characters
+        set `is_get_card` = 1
+        where `CharID` = #{charID};
+    </update>
+
+    <update id="setReplacementSign">
+        update characters
+        set `Sign` = `Sign` + #{signNum}
+        where `CharName` = #{charName};
+    </update>
 </mapper>

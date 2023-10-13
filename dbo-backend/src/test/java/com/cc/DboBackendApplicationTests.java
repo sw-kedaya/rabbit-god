@@ -98,4 +98,13 @@ class DboBackendApplicationTests {
         System.out.println(signed);
         System.out.println(notSigned);
     }
+
+    @Test
+    void getReplacementNum() {
+        Long sign = 12388L;
+        int day = 3;
+        int mark = 1 << day;
+        sign = sign | mark;
+        System.out.println(sign);
+    }
 }

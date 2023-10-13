@@ -45,4 +45,9 @@ public class AccountController {
     public Result getLatestMallPoints(Long id) {
         return accountService.getLatestMallPoints(id);
     }
+
+    @GetMapping("/cardCount")
+    public Result getCardCount(Long id){
+        return accountService.getCardCount(id);
+    }
 }

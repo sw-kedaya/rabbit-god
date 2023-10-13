@@ -20,4 +20,6 @@ public interface IAccountService {
     boolean checkUserCashById(Long id, Long price);
 
     Result getLatestMallPoints(Long id);
+
+    Result getCardCount(Long accountID);
 }

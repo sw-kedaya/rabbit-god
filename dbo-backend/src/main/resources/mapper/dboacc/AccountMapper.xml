@@ -29,6 +29,7 @@
         <result property="bz" column="bz"/>
         <result property="newPlayer" column="NewPlayer"/>
         <result property="firstCharID" column="firstCharID"/>
+        <result property="replacementCard" column="replacement_card"/>
     </resultMap>
 
     <insert id="register">
@@ -96,4 +97,24 @@
         from accounts
         where `AccountID` = #{id}
     </select>
+
+    <select id="getCardCount" resultMap="AccountResult">
+        select `replacement_card`
+        from accounts
+        where `AccountID` = #{id}
+    </select>
+
+    <update id="addCardCountById">
+        update accounts
+        set `replacement_card` = `replacement_card` + 1
+        where `AccountID` = #{id}
+          and `replacement_card` &lt; 3;
+    </update>
+
+    <update id="subCardCountById">
+        update accounts
+        set `replacement_card` = `replacement_card` - 1
+        where `AccountID` = #{id}
+          and `replacement_card` > 0;
+    </update>
 </mapper>

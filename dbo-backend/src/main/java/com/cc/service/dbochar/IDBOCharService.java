@@ -10,4 +10,8 @@ public interface IDBOCharService {
     Result checkIsSign(Long accountID);
 
     Result getSignMessage(String roleName);
+
+    Result checkActivity(Long accountID);
+
+    Result replacementSign(Long accountID, String roleName, Integer day, Long itemId, Long count);
 }
