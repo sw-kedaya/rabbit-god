@@ -1,6 +1,7 @@
 package com.cc.mapper.dbochar;
 
 import com.cc.entity.DBOChar;
+import com.cc.vo.DBOCharVO;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -27,4 +28,8 @@ public interface DBOCharMapper {
     Integer setReplacementSign(@PathVariable("charName") String charName, @PathVariable("signNum") Long signNum);
 
     void resetIsGetCardById();
+
+    List<DBOCharVO> getActivityTop();
+
+    List<DBOCharVO> getMoneyTop();
 }

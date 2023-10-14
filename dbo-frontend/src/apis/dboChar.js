@@ -25,6 +25,7 @@ export function checkIsSignApi(accountID) {
         params: {accountID}
     })
 }
+
 export function getSignMessageApi(roleName) {
     return instance({
         method: "get",
@@ -46,5 +47,19 @@ export function replacementSignApi(accountID, roleName, day, itemId, count) {
         method: "get",
         url: "/char/sign/replacement",
         params: {accountID, roleName, day, itemId, count}
+    })
+}
+
+export function getActivityRankApi() {
+    return instance({
+        method: "get",
+        url: "/char/rank/activity"
+    })
+}
+
+export function getMoneyRankApi() {
+    return instance({
+        method: "get",
+        url: "/char/rank/money"
     })
 }

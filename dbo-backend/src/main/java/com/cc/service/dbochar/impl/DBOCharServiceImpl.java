@@ -8,6 +8,8 @@ import com.cc.mapper.dbochar.DBOCharMapper;
 import com.cc.service.dboacc.IAccountService;
 import com.cc.service.dbochar.IDBOCharService;
 import com.cc.service.dbochar.IMailService;
+import com.cc.util.DBOCharParseFiledUtils;
+import com.cc.vo.DBOCharVO;
 import com.cc.vo.MallVO;
 import com.cc.vo.Result;
 import com.cc.vo.SignMessage;
@@ -77,13 +79,13 @@ public class DBOCharServiceImpl implements IDBOCharService {
         List<Integer> signed = new ArrayList<>();
         // 未签到日期
         List<Integer> notSigned = new ArrayList<>();
-        for (int i = 0;; i++) {
+        for (int i = 0; ; i++) {
             long isSigned = sign & 1;
             sign = sign >>> 1;
             if (i > LocalDate.now().getDayOfMonth()) break;
             if (isSigned == 1) {
                 signed.add(i);
-            } else if (i != 0){
+            } else if (i != 0) {
                 notSigned.add(i);
             }
         }
@@ -128,6 +130,22 @@ public class DBOCharServiceImpl implements IDBOCharService {
         return Result.ok();
     }
 
+    @Override
+    public Result getActivityRank() {
+        List<DBOCharVO> activityTop = dboCharMapper.getActivityTop();
+        if (activityTop == null || activityTop.isEmpty()) return Result.fail("数据异常");
+        // 封装排名号，并解析职业号对应名称
+        return Result.ok(setRankAndParseClass(activityTop));
+    }
+
+    @Override
+    public Result getMoneyRank() {
+        List<DBOCharVO> moneyTop = dboCharMapper.getMoneyTop();
+        if (moneyTop == null || moneyTop.isEmpty()) return Result.fail("数据异常");
+        // 封装排名号，并解析职业号对应名称
+        return Result.ok(setRankAndParseClass(moneyTop));
+    }
+
     private Integer getSignNum() {
         return LocalDateTime.now().getDayOfMonth();
     }
@@ -140,7 +158,16 @@ public class DBOCharServiceImpl implements IDBOCharService {
         return result;
     }
 
-    private Long getReplacementNum(Integer day){
+    private Long getReplacementNum(Integer day) {
         return 1L << day;
+    }
+
+    private List<DBOCharVO> setRankAndParseClass(List<DBOCharVO> list) {
+        for (int i = 0; i < list.size(); i++) {
+            DBOCharVO dboCharVO = list.get(i);
+            dboCharVO.setRank(i + 1);
+            dboCharVO.setDboClassName(DBOCharParseFiledUtils.parseDboClass(dboCharVO.getDboClass()));
+        }
+        return list;
     }
 }

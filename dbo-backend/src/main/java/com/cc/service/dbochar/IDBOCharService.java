@@ -14,4 +14,8 @@ public interface IDBOCharService {
     Result checkActivity(Long accountID);
 
     Result replacementSign(Long accountID, String roleName, Integer day, Long itemId, Long count);
+
+    Result getActivityRank();
+
+    Result getMoneyRank();
 }

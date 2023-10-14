@@ -27,7 +27,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/code/**")
                 .excludePathPatterns("/mall/list")
                 .excludePathPatterns("/category/list")
-                .excludePathPatterns("/event/list");
+                .excludePathPatterns("/event/list")
+                .excludePathPatterns("/char/rank/activity")
+                .excludePathPatterns("/char/rank/money");
     }
 
 //    @Override

@@ -1,5 +1,12 @@
 <script setup>
-import {ref} from "vue"
+import {ref, onMounted} from "vue"
+import {ElMessage} from "element-plus";
+import {getActivityRankApi, getMoneyRankApi} from "@/apis/dboChar"
+
+onMounted(()=>{
+  getActivityRankQuest()
+  getMoneyRankQuest()
+})
 
 // 菜单栏部分
 const initActiveIndex = ref('1')
@@ -9,221 +16,26 @@ const handleSelect = (key, keyPath) => {
 }
 
 // 表格数据-活跃度
-const tableDataForActivity = [
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    activity: '2333',
-  },
-]
+const tableDataForActivity = ref()
+const getActivityRankQuest = async () => {
+  const res = await getActivityRankApi()
+  if (res.success){
+    tableDataForActivity.value = res.data
+    console.log(tableDataForActivity.value)
+  }else {
+    ElMessage.error(res.errorMsg)
+  }
+}
 // 表格数据-索尼
-const tableDataForMoney = [
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-  {
-    charName: '九木铃子九木铃子九木铃子九木铃子',
-    level: '70',
-    race: '龟仙流',
-    guildName: '兔神领域',
-    money: '2333',
-  },
-]
+const tableDataForMoney = ref()
+const getMoneyRankQuest = async () => {
+  const res = await getMoneyRankApi()
+  if (res.success){
+    tableDataForMoney.value = res.data
+  }else {
+    ElMessage.error(res.errorMsg)
+  }
+}
 
 </script>
 
@@ -245,6 +57,11 @@ const tableDataForMoney = [
       <el-table :data="tableDataForActivity" border stripe size="large"
                 style="width: 55%;"
                 :cell-style="{textAlign: 'center'}">
+        <el-table-column prop="rank" label="排名" width="70">
+          <template #header="{ column }">
+            <div class="my-table-header">{{ column.label }}</div>
+          </template>
+        </el-table-column>
         <el-table-column prop="charName" label="角色名" width="260">
           <template #header="{ column }">
             <div class="my-table-header">{{ column.label }}</div>
@@ -255,7 +72,7 @@ const tableDataForMoney = [
             <div class="my-table-header">{{ column.label }}</div>
           </template>
         </el-table-column>
-        <el-table-column prop="race" label="职业" width="140">
+        <el-table-column prop="dboClassName" label="职业" width="140">
           <template #header="{ column }">
             <div class="my-table-header">{{ column.label }}</div>
           </template>
@@ -263,6 +80,9 @@ const tableDataForMoney = [
         <el-table-column prop="guildName" label="流派" width="260">
           <template #header="{ column }">
             <div class="my-table-header">{{ column.label }}</div>
+          </template>
+          <template #default="{ row }">
+            <div>{{ row.guildName || '无' }}</div>
           </template>
         </el-table-column>
         <el-table-column prop="activity" label="活跃度">
@@ -276,6 +96,11 @@ const tableDataForMoney = [
       <el-table :data="tableDataForMoney" border stripe size="large"
                 style="width: 55%;"
                 :cell-style="{textAlign: 'center'}">
+        <el-table-column prop="rank" label="排名" width="70">
+          <template #header="{ column }">
+            <div class="my-table-header">{{ column.label }}</div>
+          </template>
+        </el-table-column>
         <el-table-column prop="charName" label="角色名" width="260">
           <template #header="{ column }">
             <div class="my-table-header">{{ column.label }}</div>
@@ -286,7 +111,7 @@ const tableDataForMoney = [
             <div class="my-table-header">{{ column.label }}</div>
           </template>
         </el-table-column>
-        <el-table-column prop="race" label="职业" width="140">
+        <el-table-column prop="dboClassName" label="职业" width="140">
           <template #header="{ column }">
             <div class="my-table-header">{{ column.label }}</div>
           </template>
@@ -294,6 +119,9 @@ const tableDataForMoney = [
         <el-table-column prop="guildName" label="流派" width="260">
           <template #header="{ column }">
             <div class="my-table-header">{{ column.label }}</div>
+          </template>
+          <template #default="{ row }">
+            <div>{{ row.guildName || '无' }}</div>
           </template>
         </el-table-column>
         <el-table-column prop="money" label="索尼">

@@ -361,18 +361,18 @@ const onSendCodeClick = () => {
                   <span v-else-if="scope.row.dboClass === 4">那美克龙族</span>
                   <span v-else-if="scope.row.dboClass === 5">大魔人</span>
                   <span v-else-if="scope.row.dboClass === 6">意魔人</span>
-                  <span v-else-if="scope.row.dboClass === 7">格斗</span>
-                  <span v-else-if="scope.row.dboClass === 8">剑术</span>
+                  <span v-else-if="scope.row.dboClass === 7">格斗家</span>
+                  <span v-else-if="scope.row.dboClass === 8">剑术家</span>
                   <span v-else-if="scope.row.dboClass === 9">鹤仙流</span>
                   <span v-else-if="scope.row.dboClass === 10">龟仙流</span>
-                  <span v-else-if="scope.row.dboClass === 13">魔界</span>
-                  <span v-else-if="scope.row.dboClass === 14">魔道</span>
-                  <span v-else-if="scope.row.dboClass === 15">天天</span>
-                  <span v-else-if="scope.row.dboClass === 16">博客</span>
-                  <span v-else-if="scope.row.dboClass === 17">奥迪</span>
-                  <span v-else-if="scope.row.dboClass === 18">葛兰</span>
-                  <span v-else-if="scope.row.dboClass === 19">普利珠</span>
-                  <span v-else-if="scope.row.dboClass === 20">卡尔</span>
+                  <span v-else-if="scope.row.dboClass === 13">魔界战士</span>
+                  <span v-else-if="scope.row.dboClass === 14">魔道战士</span>
+                  <span v-else-if="scope.row.dboClass === 15">天天导师</span>
+                  <span v-else-if="scope.row.dboClass === 16">波可导师</span>
+                  <span v-else-if="scope.row.dboClass === 17">奥迪魔</span>
+                  <span v-else-if="scope.row.dboClass === 18">葛兰魔</span>
+                  <span v-else-if="scope.row.dboClass === 19">普利兹魔</span>
+                  <span v-else-if="scope.row.dboClass === 20">卡尔魔</span>
                   <span v-else>未知</span>
                 </template>
               </el-table-column>

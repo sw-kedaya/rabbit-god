@@ -16,6 +16,15 @@
         <result property="activity" column="Activity"/>
         <result property="isGetCard" column="is_get_card"/>
     </resultMap>
+    <resultMap type="com.cc.vo.DBOCharVO" id="DBOCharVOResult">
+        <id property="charName" column="CharName"/>
+        <result property="level" column="Level"/>
+        <result property="dboClass" column="Class"/>
+        <result property="guildName" column="GuildName"/>
+        <result property="activity" column="Activity"/>
+        <result property="money" column="Money"/>
+    </resultMap>
+
 
     <select id="getDBOCharList" resultMap="DBOCharResult">
         select `CharID`,`CharName`,`AccountID`,`Level`,`Race`,`Class`,`Gender`,`GuildName` from characters
@@ -80,4 +89,16 @@
         update characters
         set `is_get_card` = 0;
     </update>
+
+    <select id="getActivityTop" resultMap="DBOCharVOResult">
+        select `CharName`, `Level`, `Class`, `GuildName`, `Activity`
+        from characters
+        order by `Activity` desc,`Level` desc  limit 15;
+    </select>
+
+    <select id="getMoneyTop" resultMap="DBOCharVOResult">
+        select `CharName`, `Level`, `Class`, `GuildName`, `Money`
+        from characters
+        order by `Money` desc,`Level` desc limit 15;
+    </select>
 </mapper>

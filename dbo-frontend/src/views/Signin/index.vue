@@ -18,6 +18,7 @@ onMounted(() => {
   // 进入前先判断登录没
   user.value = JSON.parse(localStorage.getItem("user-token"))
   if (user.value !== null) {
+    onSignInCard.value = true; // 登录后默认打开历史签到卡片
     getDBOCharListQuest(user.value.accountID)
     checkIsSignQuest(user.value.accountID)
     checkActivityQuest(user.value.accountID)

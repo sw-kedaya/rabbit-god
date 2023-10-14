@@ -51,4 +51,14 @@ public class DBOCharController {
                                   Long itemId, Long count){
         return dboCharService.replacementSign(accountID, roleName, day, itemId, count);
     }
+
+    @GetMapping("rank/activity")
+    public Result getActivityRank(){
+        return dboCharService.getActivityRank();
+    }
+
+    @GetMapping("rank/money")
+    public Result getMoneyRank(){
+        return dboCharService.getMoneyRank();
+    }
 }
