@@ -30,6 +30,7 @@ public class Account {
     private String bz;
     private Integer newPlayer;
     private Long firstCharID;
-    /** 新增：补签卡 */
+    /** 新增：补签卡和数量限制 */
     private Integer replacementCard;
+    private Integer cardCountLimit;
 }

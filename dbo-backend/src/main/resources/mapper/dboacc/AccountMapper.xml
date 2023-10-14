@@ -30,6 +30,7 @@
         <result property="newPlayer" column="NewPlayer"/>
         <result property="firstCharID" column="firstCharID"/>
         <result property="replacementCard" column="replacement_card"/>
+        <result property="cardCountLimit" column="card_count_limit"/>
     </resultMap>
 
     <insert id="register">
@@ -108,7 +109,8 @@
         update accounts
         set `replacement_card` = `replacement_card` + 1
         where `AccountID` = #{id}
-          and `replacement_card` &lt; 3;
+          and `replacement_card` &lt; 3
+          and `card_count_limit` &lt; 3;
     </update>
 
     <update id="subCardCountById">
@@ -116,5 +118,18 @@
         set `replacement_card` = `replacement_card` - 1
         where `AccountID` = #{id}
           and `replacement_card` > 0;
+    </update>
+
+    <update id="addCardCountLimit">
+        update accounts
+        set `card_count_limit` = `card_count_limit` + 1
+        where `AccountID` = #{id}
+          and `card_count_limit` &lt; 3;
+    </update>
+
+    <update id="resetCardCount">
+        update accounts
+        set `replacement_card` = 0,
+            `card_count_limit` = 0;
     </update>
 </mapper>

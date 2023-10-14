@@ -20,8 +20,8 @@ onMounted(() => {
   if (user.value !== null) {
     getDBOCharListQuest(user.value.accountID)
     checkIsSignQuest(user.value.accountID)
-    getCardCountQuest(user.value.accountID)
     checkActivityQuest(user.value.accountID)
+    getCardCountQuest(user.value.accountID)
   }
 })
 
@@ -207,8 +207,13 @@ const onReplacementClick = () => {
       dialogVisibleForReplacement.value = false;
       // 根据补签的天数获取当天的签到礼物
       const day = replacementForm.value.replaceNum.toString();
-      const itemId = notSignedGift.value.find(item => item.sign_reward === day).tblidx;
-      const count = notSignedGift.value.find(item => item.sign_reward === day).count;
+      const mall = notSignedGift.value.find(item => item.sign_reward === day);
+      let itemId = -1;
+      let count = -1;
+      if (mall) {
+        itemId = notSignedGift.value.find(item => item.sign_reward === day).tblidx;
+        count = notSignedGift.value.find(item => item.sign_reward === day).count;
+      }
       replacementSignQuest(user.value.accountID, replacementForm.value.roleName, day, itemId, count);
       replacementForm.value.replaceNum = '';
     } else {

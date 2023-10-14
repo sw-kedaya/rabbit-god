@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 @EnableWebMvc
 @EnableTransactionManagement
-//@EnableScheduling
+@EnableScheduling
 public class DboBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(DboBackendApplication.class, args);

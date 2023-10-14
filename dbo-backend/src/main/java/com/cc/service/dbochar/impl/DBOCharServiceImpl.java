@@ -5,6 +5,7 @@ import com.cc.entity.Mall;
 import com.cc.mapper.dboacc.AccountMapper;
 import com.cc.mapper.dboacc.MallMapper;
 import com.cc.mapper.dbochar.DBOCharMapper;
+import com.cc.service.dboacc.IAccountService;
 import com.cc.service.dbochar.IDBOCharService;
 import com.cc.service.dbochar.IMailService;
 import com.cc.vo.MallVO;
@@ -30,7 +31,7 @@ public class DBOCharServiceImpl implements IDBOCharService {
     @Resource
     private IMailService mailService;
     @Resource
-    private AccountMapper accountMapper;
+    private IAccountService accountService;
 
     @Override
     public Result getDBOCharList(Long accountID) {
@@ -86,11 +87,13 @@ public class DBOCharServiceImpl implements IDBOCharService {
                 notSigned.add(i);
             }
         }
-        List<MallVO> mallList = mallMapper.getSignRewardListByList(notSigned);
         SignMessage signMessage = new SignMessage();
         signMessage.setSigned(signed);
         signMessage.setNotSigned(notSigned);
-        signMessage.setMallList(mallList);
+        if (!notSigned.isEmpty()) {
+            List<MallVO> mallList = mallMapper.getSignRewardListByList(notSigned);
+            signMessage.setMallList(mallList);
+        }
         return Result.ok(signMessage);
     }
 
@@ -102,8 +105,8 @@ public class DBOCharServiceImpl implements IDBOCharService {
         if (list == null || list.isEmpty()) return Result.ok();
         // - 若有，则发放并设置为已发放
         for (DBOChar dboChar : list) {
-            Integer integer1 = accountMapper.addCardCountById(accountID);
-            if (integer1 <= 0) break;
+            Result result = accountService.checkCardCountLimit(accountID);
+            if (!result.getSuccess()) return Result.ok();
             dboCharMapper.setIsGetCardById(dboChar.getCharID());
         }
         return Result.ok();
@@ -113,13 +116,14 @@ public class DBOCharServiceImpl implements IDBOCharService {
     public Result replacementSign(Long accountID, String roleName, Integer day,
                                   Long itemId, Long count) {
         // 扣减补签卡
-        Integer integer1 = accountMapper.subCardCountById(accountID);
-        if (integer1 <= 0) return Result.fail("补签卡不足");
+        Result result = accountService.subCardCountById(accountID);
+        if (!result.getSuccess()) return result;
         // 修改签到信息
         Long sign = getReplacementNum(day);
         Integer integer2 = dboCharMapper.setReplacementSign(roleName, sign);
         if (integer2 <= 0) return Result.fail("补签失败");
         // 发送补签的签到礼物
+        if (itemId == -1 || count == -1) return Result.ok();
         mailService.generateReplacementSignMail(roleName, itemId, count);
         return Result.ok();
     }

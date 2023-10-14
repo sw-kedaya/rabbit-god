@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
@@ -124,5 +125,21 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public Result getCardCount(Long id) {
         return Result.ok(accountMapper.getCardCount(id).getReplacementCard());
+    }
+
+    @Override
+    public Result subCardCountById(Long accountID) {
+        Integer integer = accountMapper.subCardCountById(accountID);
+        return integer <= 0 ? Result.fail("补签卡不足") : Result.ok();
+    }
+
+
+    @Transactional("dboAccTransactionManager")
+    @Override
+    public Result checkCardCountLimit(Long accountID) {
+        Integer integer1 = accountMapper.addCardCountById(accountID);
+        Integer integer = accountMapper.addCardCountLimit(accountID);
+        if (integer <=0 || integer1 <= 0) return Result.fail("每个账户最多获取三张补签卡");
+        return Result.ok();
     }
 }

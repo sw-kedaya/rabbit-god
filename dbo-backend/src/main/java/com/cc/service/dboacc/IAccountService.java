@@ -22,4 +22,8 @@ public interface IAccountService {
     Result getLatestMallPoints(Long id);
 
     Result getCardCount(Long accountID);
+
+    Result subCardCountById(Long accountID);
+
+    Result checkCardCountLimit(Long accountID);
 }

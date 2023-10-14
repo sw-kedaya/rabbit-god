@@ -36,4 +36,8 @@ public interface AccountMapper {
     Integer addCardCountById(@PathVariable("id") Long id);
 
     Integer subCardCountById(@PathVariable("id") Long id);
+
+    Integer addCardCountLimit(@PathVariable("id") Long id);
+
+    void resetCardCount();
 }

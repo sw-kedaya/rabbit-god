@@ -25,4 +25,6 @@ public interface DBOCharMapper {
     Integer setIsGetCardById(@PathVariable("charID") Long charID);
 
     Integer setReplacementSign(@PathVariable("charName") String charName, @PathVariable("signNum") Long signNum);
+
+    void resetIsGetCardById();
 }
