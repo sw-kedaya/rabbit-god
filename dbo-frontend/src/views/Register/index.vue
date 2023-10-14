@@ -270,7 +270,7 @@ function onLoginPageClick(){
   justify-content: center;
   align-items: center;
   height: 620px;
-  margin-bottom: 115px;
+  margin-bottom: 205px;
 }
 
 .login-wrapper {

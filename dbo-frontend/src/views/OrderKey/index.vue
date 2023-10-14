@@ -144,8 +144,8 @@ onMounted(() => {
   display: flex;
   justify-content: flex-end;
   position: absolute;
-  bottom: 180px;
-  right: 287px;
+  bottom: 190px;
+  right: 258px;
 }
 
 .order-list-container {
@@ -153,7 +153,7 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  height: 738px;
+  height: 825px;
 }
 
 .order-list-title {

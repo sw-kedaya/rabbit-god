@@ -16,5 +16,7 @@ const local = zhCN
 .container {
   width: 100%;
   min-width: 512px;
+  background-image: url("@/assets/images/bg.png"); /* 设置背景图片的 URL */
+  background-repeat: repeat; /* 将背景图片设置为平铺 */
 }
 </style>

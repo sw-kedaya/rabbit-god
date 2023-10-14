@@ -336,9 +336,7 @@ const onReplacementClick = () => {
 .sign-in-container {
   display: flex;
   justify-content: center;
-  height: 738px;
-  background-image: url("@/assets/images/bg.png"); /* 设置背景图片的 URL */
-  background-repeat: repeat; /* 将背景图片设置为平铺 */
+  height: 825px;
   text-align: center;
 
   .myButton {

@@ -94,6 +94,9 @@ const isCurrentRoute = (route) => {
         <li>
           <RouterLink active-class="active" :to="`/mall`" @click="refreshPage('/mall')">胶囊商城</RouterLink>
         </li>
+        <li>
+          <RouterLink active-class="active" :to="`/rank`" @click="refreshPage('/rank')">排行榜</RouterLink>
+        </li>
       </ul>
       <div class="container" style="justify-content: right">
         <ul class="app-nav-nav">

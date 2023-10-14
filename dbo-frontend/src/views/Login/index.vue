@@ -154,7 +154,7 @@ function onForgetPageClick() {
   justify-content: center;
   align-items: center;
   height: 50vh;
-  margin-bottom: 270px;
+  margin-bottom: 359px;
 }
 
 .login-wrapper {

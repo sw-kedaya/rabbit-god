@@ -461,7 +461,7 @@ const onSendCodeClick = () => {
 <style scoped lang="scss">
 .me {
   margin-top: 40px;
-  margin-bottom: 78px;
+  margin-bottom: 164px;
 }
 
 .el-tag {

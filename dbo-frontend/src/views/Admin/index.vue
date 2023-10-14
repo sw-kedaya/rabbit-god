@@ -1780,6 +1780,7 @@ const onCopyCashKeyClick = (cdKey) => {
       </el-form>
     </el-dialog>
   </template>
+  <div style="margin-bottom: 35px; background: #fff;"/>
 </template>
 
 <style>
@@ -1845,8 +1846,7 @@ const onCopyCashKeyClick = (cdKey) => {
 }
 
 .my-tab {
-  background-image: url("@/assets/images/bg.png"); /* 设置背景图片的 URL */
-  background-repeat: repeat; /* 将背景图片设置为平铺 */
+
 }
 
 .my-tab-pane {

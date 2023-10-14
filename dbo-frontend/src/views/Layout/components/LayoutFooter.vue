@@ -49,7 +49,7 @@ async function fetchPublicFile(filename) {
 .app_footer {
   overflow: visible;
   background-color: #fff;
-  padding-top: 20px;
+  padding-top: 5px;
 
   .contact {
     background: #fff;
@@ -61,12 +61,11 @@ async function fetchPublicFile(filename) {
   }
 
   .extra {
-    background-color: #ffffff;
+    background-color: transparent;
   }
 
   .copyright {
-    height: 100px;
-    padding-top: 40px;
+    height: 40px;
     text-align: center;
     color: #999;
     font-size: 15px;

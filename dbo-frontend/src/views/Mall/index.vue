@@ -308,6 +308,7 @@ const buy = () => {
       </div>
     </el-form>
   </el-dialog>
+  <div style="margin-bottom: 125px;"/>
 </template>
 
 <style lang="scss">
@@ -360,8 +361,6 @@ const buy = () => {
 }
 
 .shop-container {
-  background-image: url("@/assets/images/bg.png"); /* 设置背景图片的 URL */
-  background-repeat: repeat; /* 将背景图片设置为平铺 */
   height: 650px;
   width: 1000px;
   margin: 50px auto;

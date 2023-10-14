@@ -10,6 +10,6 @@ import HomeBanner from './components/HomeBanner.vue'
 
 <style scoped>
 .container{
-  margin-bottom: 280px;
+  margin-bottom: 325px;
 }
 </style>
