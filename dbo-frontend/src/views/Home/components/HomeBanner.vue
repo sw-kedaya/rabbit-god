@@ -77,7 +77,7 @@ async function fetchPublicFile(filename) {
             </button>
           </a>
         </div>
-        <div class="card-inner-other-contain">
+        <div class="card-inner-link-contain">
           <span class="other-link-bg"></span>
         </div>
       </div>
@@ -115,7 +115,7 @@ async function fetchPublicFile(filename) {
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
-  width: 425px;
+  width: 405px;
   height: 90px;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 100;
@@ -207,9 +207,19 @@ async function fetchPublicFile(filename) {
     }
   }
 
+  .card-inner-link-contain {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border: none;
+    float: right;
+    margin-left: 5px;
+    margin-top: 5px;
+  }
+
   .other-link-bg {
     position: absolute;
-    width: 100px;
+    width: 80px;
     height: 80px;
     background-image: url('/home/QR.jpg');
     background-size: 100% 100%;
