@@ -121,7 +121,7 @@ async function fetchPublicFile(filename) {
   z-index: 100;
 
   .card-inner-download-button:hover {
-    background-image: linear-gradient(to bottom, #f0dc8a, #f0dc8a); /* 悬停时的渐变色背景 */
+    background-image: url("@/assets/home/download-bg-hover.png");
   }
 
   .card-inner-download-button {
@@ -130,7 +130,7 @@ async function fetchPublicFile(filename) {
     width: 100px;
     height: 80px;
     float: right; /* 向右浮动 */
-    background-image: linear-gradient(to bottom, #f0dc8a, #c5a63e); /* 渐变色背景 */
+    background-image: url("@/assets/home/download-bg.png");
     cursor: pointer; /* 设置为手势光标 */
     border: none;
 
@@ -165,7 +165,7 @@ async function fetchPublicFile(filename) {
   }
 
   .card-inner-other-button-top:hover {
-    background-image: linear-gradient(to bottom, #f0dc8a, #f0dc8a); /* 悬停时的渐变色背景 */
+    background-image: url("@/assets/home/other-top-bg-hover.png");
   }
 
   .card-inner-other-button-top{
@@ -173,7 +173,7 @@ async function fetchPublicFile(filename) {
     width: 100px;
     height: 37.5px;
     float: right; /* 向右浮动 */
-    background-image: linear-gradient(to bottom, #f0dc8a, #c5a63e); /* 渐变色背景 */
+    background-image: url("@/assets/home/other-top-bg.png");
     cursor: pointer; /* 设置为手势光标 */
     border: none;
 
@@ -186,7 +186,7 @@ async function fetchPublicFile(filename) {
   }
 
   .card-inner-other-button-bottom:hover {
-    background-image: linear-gradient(to bottom, #a1a1a1, #a1a1a1); /* 悬停时的渐变色背景 */
+    background-image: url("@/assets/home/other-bottom-bg-hover.png");
   }
 
   .card-inner-other-button-bottom{
@@ -195,7 +195,7 @@ async function fetchPublicFile(filename) {
     width: 100px;
     height: 37.5px;
     float: right; /* 向右浮动 */
-    background-image: linear-gradient(to bottom, #ffffff, #a1a1a1); /* 渐变色背景 */
+    background-image: url("@/assets/home/other-bottom-bg.png");
     cursor: pointer; /* 设置为手势光标 */
     border: none;
 
