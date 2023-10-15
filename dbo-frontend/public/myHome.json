@@ -1,0 +1,9 @@
+{
+  "homeUrl": {
+    "downloadUrl": "https://www.baidu.com",
+    "customButton1": "自定义按钮1",
+    "customButton2": "自定义按钮2",
+    "customUrl1": "https://www.bilibili.com",
+    "customUrl2": "https://www.taobao.com"
+  }
+}

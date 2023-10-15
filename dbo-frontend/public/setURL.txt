@@ -1,3 +1,5 @@
 进入assets目录，右键编辑.js后缀的文件，然后ctrl+f搜索：ct=UL.create({baseURL
 例如搜到是这样的：ct=UL.create({baseURL:"http://localhost:2333"
 把localhost和端口改成服务器ip和后端端口即可。
+
+下载游戏路径和自定义按钮的文件是：myHome.json
