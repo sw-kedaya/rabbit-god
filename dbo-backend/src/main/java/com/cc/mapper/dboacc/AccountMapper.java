@@ -1,6 +1,5 @@
 package com.cc.mapper.dboacc;
 
-import com.cc.dto.PasswordDTO;
 import com.cc.entity.Account;
 import org.springframework.web.bind.annotation.PathVariable;
 

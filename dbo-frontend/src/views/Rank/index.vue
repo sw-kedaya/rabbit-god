@@ -21,7 +21,6 @@ const getActivityRankQuest = async () => {
   const res = await getActivityRankApi()
   if (res.success){
     tableDataForActivity.value = res.data
-    console.log(tableDataForActivity.value)
   }else {
     ElMessage.error(res.errorMsg)
   }
