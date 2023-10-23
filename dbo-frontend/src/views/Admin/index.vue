@@ -2053,7 +2053,7 @@ const deleteWp = (id) => {
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">商品最小价格</span>
+          <span class="mall-dialogLabel">限制数量</span>
           <el-form-item class="mall-myInput" prop="dwInventory">
             <el-input style="height: 38px; width: 240px;" type="text" placeholder="请输入限制数量"
                       v-model="wpForm.dwInventory"></el-input>
@@ -2109,7 +2109,7 @@ const deleteWp = (id) => {
           </el-form-item>
         </div>
         <div class="mall-form-row">
-          <span class="mall-dialogLabel">商品最小价格</span>
+          <span class="mall-dialogLabel">限制数量</span>
           <el-form-item class="mall-myInput" prop="dwInventory">
             <el-input style="height: 38px; width: 240px;" type="text" placeholder="请输入限制数量"
                       v-model="updateWpForm.dwInventory"></el-input>

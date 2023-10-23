@@ -1,9 +1,9 @@
 {
   "homeUrl": {
-    "downloadUrl": "https://www.baidu.com",
-    "customButton1": "自定义按钮1",
-    "customButton2": "自定义按钮2",
-    "customUrl1": "https://www.bilibili.com",
-    "customUrl2": "https://www.taobao.com"
+    "downloadUrl": "https://123.ly93.cc/535/3268970/Dragonball Online.7z",
+    "customButton1": "账号登录",
+    "customButton2": "游戏排行",
+    "customUrl1": "http://106.52.203.45:2406/login",
+    "customUrl2": "http://106.52.203.45:2406/rank"
   }
 }

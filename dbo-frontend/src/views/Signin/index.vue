@@ -92,9 +92,11 @@ const year = currentDateTime.getFullYear();
 const month = (currentDateTime.getMonth() + 1).toString().padStart(2, "0"); // 不足两位则补0
 const day = (currentDateTime.getDate()).toString().padStart(2, "0"); // 不足两位则补0
 const formattedDate = `${year}年${month}月${day}日`;
+// 其中0表示星期天，1表示星期一，2表示星期二，以此类推，到6表示星期六。
+const week = currentDateTime.getDay()
 
 // 定义顶部星期
-const weekTitle = ref(["一", "二", "三", "四", "五", "六", "日"])
+const weekTitle = ref(["日", "一", "二", "三", "四", "五", "六"])
 
 // 获取当月的天数
 const getDaysInMonth = (year, month) => {
@@ -148,8 +150,18 @@ const getSignMessageQuest = async () => {
 
 const generateCalendar = (year, month) => {
   const daysInMonth = getDaysInMonth(year, month);
-
   const calendar = [];
+  // 定位到1号的星期数
+  for (let i = 0; i < week; i++){
+    const day = {
+      date: '-',
+      isSigned: false, // 判断该日期是否已签到
+      isNotSigned: false, // 判断该日期是否未签到
+    };
+    calendar.push(day);
+  }
+
+  // 填写日期
   for (let i = 1; i <= daysInMonth; i++) {
     const day = {
       date: i,
