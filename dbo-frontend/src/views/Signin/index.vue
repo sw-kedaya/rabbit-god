@@ -93,7 +93,9 @@ const month = (currentDateTime.getMonth() + 1).toString().padStart(2, "0"); // �
 const day = (currentDateTime.getDate()).toString().padStart(2, "0"); // 不足两位则补0
 const formattedDate = `${year}年${month}月${day}日`;
 // 其中0表示星期天，1表示星期一，2表示星期二，以此类推，到6表示星期六。
-const week = currentDateTime.getDay()
+const startDateDay = new Date();
+startDateDay.setDate(1);
+const week = startDateDay.getDay();
 
 // 定义顶部星期
 const weekTitle = ref(["日", "一", "二", "三", "四", "五", "六"])
