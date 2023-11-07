@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import {ref, onMounted} from 'vue';
 
 const homeUrl = ref({
   downloadUrl: '',
@@ -15,7 +15,9 @@ onMounted(() => {
 
 async function fetchPublicFile(filename) {
   try {
-    const response = await fetch(filename);
+    // const response = await fetch(filename);
+    // 增加时间戳，防止浏览器缓存
+    const response = await fetch(filename + '?t=' + Date.now());
     if (response.ok) {
       const content = await response.json();
       homeUrl.value = content.homeUrl;
@@ -34,19 +36,19 @@ async function fetchPublicFile(filename) {
       <el-carousel-item>
         <img src="/banner/10.jpg" alt="" class="carousel-image">
       </el-carousel-item>
-            <el-carousel-item>
-              <img src="/banner/11.jpg" alt="" class="carousel-image">
-            </el-carousel-item>
-            <el-carousel-item>
-              <img src="/banner/12.jpg" alt="" class="carousel-image">
-            </el-carousel-item>
-            <el-carousel-item>
-              <img src="/banner/13.jpg" alt="" class="carousel-image">
-            </el-carousel-item>
+      <el-carousel-item>
+        <img src="/banner/11.jpg" alt="" class="carousel-image">
+      </el-carousel-item>
+      <el-carousel-item>
+        <img src="/banner/12.jpg" alt="" class="carousel-image">
+      </el-carousel-item>
+      <el-carousel-item>
+        <img src="/banner/13.jpg" alt="" class="carousel-image">
+      </el-carousel-item>
       <div class="home-inner-log"/>
       <div class="home-inner-card">
         <div>
-          <a :href= "homeUrl.downloadUrl">
+          <a :href="homeUrl.downloadUrl">
             <button class="card-inner-download-button">
               <span class="button-top-bg"></span>
               <span class="button-inner-font">游戏下载</span>
@@ -54,26 +56,26 @@ async function fetchPublicFile(filename) {
           </a>
         </div>
         <div class="card-inner-other-contain">
-          <a href= "/register">
+          <a href="/register">
             <button class="card-inner-other-button-top">
               <span class="button-inner-font">账号注册</span>
             </button>
           </a>
-          <a href= "/mall">
+          <a href="/mall">
             <button class="card-inner-other-button-bottom">
               <span class="button-inner-font">游戏商城</span>
             </button>
           </a>
         </div>
         <div class="card-inner-other-contain">
-          <a :href= "homeUrl.customUrl1">
+          <a :href="homeUrl.customUrl1">
             <button class="card-inner-other-button-top">
-              <span class="button-inner-font">{{homeUrl.customButton1}}</span>
+              <span class="button-inner-font">{{ homeUrl.customButton1 }}</span>
             </button>
           </a>
-          <a :href= "homeUrl.customUrl2">
+          <a :href="homeUrl.customUrl2">
             <button class="card-inner-other-button-bottom">
-              <span class="button-inner-font">{{homeUrl.customButton2}}</span>
+              <span class="button-inner-font">{{ homeUrl.customButton2 }}</span>
             </button>
           </a>
         </div>
@@ -168,7 +170,7 @@ async function fetchPublicFile(filename) {
     background-image: url("@/assets/home/other-top-bg-hover.png");
   }
 
-  .card-inner-other-button-top{
+  .card-inner-other-button-top {
     position: relative;
     width: 100px;
     height: 37.5px;
@@ -189,7 +191,7 @@ async function fetchPublicFile(filename) {
     background-image: url("@/assets/home/other-bottom-bg-hover.png");
   }
 
-  .card-inner-other-button-bottom{
+  .card-inner-other-button-bottom {
     position: relative;
     margin-top: 5px;
     width: 100px;

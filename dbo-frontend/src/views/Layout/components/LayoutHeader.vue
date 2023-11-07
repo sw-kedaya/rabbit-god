@@ -3,6 +3,7 @@ import {ref, computed, onMounted} from "vue";
 import {watch} from "vue";
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
+import {checkApi} from "@/apis/account";
 
 const router = useRouter()
 const user = ref()
@@ -34,6 +35,7 @@ const isAdminPage = computed(() => {
 
 onMounted(() => {
   user.value = JSON.parse(localStorage.getItem("user-token"))
+  checkQuest()
 })
 
 function logoutClick() {
@@ -70,6 +72,17 @@ const isCurrentRoute = (route) => {
   return router.currentRoute.value.fullPath === route;
 }
 
+// 检查用户登录状态
+const checkQuest = async () => {
+  if (user.value != null) {
+    const res = await checkApi(user.value.token)
+    if (!res.data) {
+      localStorage.removeItem("user-token")
+      localStorage.removeItem("admin-token")
+      window.location.reload()
+    }
+  }
+}
 </script>
 
 <template>
