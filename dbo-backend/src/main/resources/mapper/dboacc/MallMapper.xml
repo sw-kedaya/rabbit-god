@@ -182,4 +182,10 @@
             #{num}
         </foreach>
     </select>
+
+    <select id="getSignRewardListByDay" resultMap="MallVOResult">
+        select `mall_name`, `sign_reward`
+        from mall
+        where `sign_reward` = #{signNum}
+    </select>
 </mapper>

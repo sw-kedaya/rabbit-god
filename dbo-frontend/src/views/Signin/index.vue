@@ -11,12 +11,14 @@ import {
   replacementSignApi
 } from "@/apis/dboChar";
 import {getCardCountApi} from "@/apis/account"
+import {getCurrentSignRewardMessageApi} from "@/apis/mall"
 
 const router = useRouter()
 const user = ref()
 onMounted(() => {
   // 进入前先判断登录没
   user.value = JSON.parse(localStorage.getItem("user-token"))
+  getCurrentSignRewardMessageQuest()
   if (user.value !== null) {
     onSignInCard.value = true; // 登录后默认打开历史签到卡片
     getDBOCharListQuest(user.value.accountID)
@@ -154,7 +156,7 @@ const generateCalendar = (year, month) => {
   const daysInMonth = getDaysInMonth(year, month);
   const calendar = [];
   // 定位到1号的星期数
-  for (let i = 0; i < week; i++){
+  for (let i = 0; i < week; i++) {
     const day = {
       date: '-',
       isSigned: false, // 判断该日期是否已签到
@@ -237,6 +239,17 @@ const onReplacementClick = () => {
   })
 }
 
+// 获取当日签到礼物信息
+const currentSignRewardMessage = ref()
+const getCurrentSignRewardMessageQuest = async () => {
+  const res = await getCurrentSignRewardMessageApi()
+  if (res.success){
+    currentSignRewardMessage.value = res.data;
+  }else {
+    currentSignRewardMessage.value = res.errorMsg;
+  }
+}
+
 </script>
 
 <template>
@@ -248,6 +261,9 @@ const onReplacementClick = () => {
       <el-button class="myButton2" type="info" round size="large" disabled v-else>
         已完成签到
       </el-button>
+      <div style="margin-top: 10px;">
+        今日签到礼物：{{ currentSignRewardMessage }}
+      </div>
       <div class="check-sign-in-button">
         <el-button type="text" round @click="showSignInCard">查看历史签到</el-button>
       </div>

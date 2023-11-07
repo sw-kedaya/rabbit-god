@@ -105,15 +105,15 @@ onMounted(() => {
 const passwordRules = {
   oldPassword: [
     {required: true, message: '请输入原密码'},
-    {min: 6, max: 32, message: '密码长度应为6到32位'}
+    {min: 6, max: 14, message: '密码长度应为6到14位'}
   ],
   newPassword: [
     {required: true, message: '请输入新密码'},
-    {min: 6, max: 32, message: '密码长度应为6到32位'}
+    {min: 6, max: 14, message: '密码长度应为6到14位'}
   ],
   confirmPassword: [
     {required: true, message: '请确认密码'},
-    {min: 6, max: 32, message: '密码长度应为6到32位'},
+    {min: 6, max: 14, message: '密码长度应为6到14位'},
     {validator: confirmPasswordValidator}
   ],
   code: [

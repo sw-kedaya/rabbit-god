@@ -69,3 +69,10 @@ export function buyOrGiveMallPresentApi(data) {
         data
     })
 }
+
+export function getCurrentSignRewardMessageApi() {
+    return instance({
+        method: "get",
+        url: "/mall/sign/message"
+    })
+}

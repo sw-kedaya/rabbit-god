@@ -51,7 +51,7 @@ const userInfo = ref({
 const rules = {
   username: [
     {required: true, message: '账号不能为空'},
-    {min: 6, max: 14, message: '账号长度要求6-14个字符'},
+    {min: 3, max: 14, message: '账号长度要求3-14个字符'},
     {validator: validateUser, message: '账号只能由英文和数字组成'}
   ]
 }

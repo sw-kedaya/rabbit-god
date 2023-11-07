@@ -20,6 +20,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -124,7 +126,21 @@ public class MallServiceImpl implements IMallService {
         return Result.ok();
     }
 
-    private void deleteAllMallKey(){
+    @Override
+    public Result getCurrentSignRewardMessage() {
+        int day = LocalDateTime.now().getDayOfMonth();
+        List<MallVO> list = mallMapper.getSignRewardListByDay(day);
+        if (list == null || list.isEmpty()) return Result.fail("无");
+        StringBuilder message = new StringBuilder("[");
+        for (MallVO mallVO : list) {
+            message.append(mallVO.getName()).append(", ");
+        }
+        message.delete(message.length() - 2, message.length());
+        message.append("]");
+        return Result.ok(message);
+    }
+
+    private void deleteAllMallKey() {
         redisTemplate.delete(CommonConstant.MALL_LIST_USER_KEY);
         redisTemplate.delete(CommonConstant.MALL_LIST_ADMIN_KEY);
         redisTemplate.delete(CommonConstant.MALL_LIST_ADMIN_CRUD_KEY);

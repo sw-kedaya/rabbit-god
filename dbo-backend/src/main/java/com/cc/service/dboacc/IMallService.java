@@ -23,4 +23,6 @@ public interface IMallService {
     Result getAdminAllMallList();
 
     Result buyOrGiveMallPresent(Mall mall, Purchaser purchaser);
+
+    Result getCurrentSignRewardMessage();
 }

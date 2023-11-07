@@ -29,4 +29,6 @@ public interface MallMapper {
     List<Mall> getSignRewardList(@PathVariable("signNum") Integer signNum);
 
     List<MallVO> getSignRewardListByList(List<Integer> list);
+
+    List<MallVO> getSignRewardListByDay(@PathVariable("signNum") Integer signNum);
 }

@@ -68,4 +68,9 @@ public class MallController {
     public Result buyOrGiveMallPresent(@RequestBody MallAndPurchaserDTO dto){
         return mallService.buyOrGiveMallPresent(dto.getMall(), dto.getPurchaser());
     }
+
+    @GetMapping("/sign/message")
+    public Result getCurrentSignRewardMessage(){
+        return mallService.getCurrentSignRewardMessage();
+    }
 }
