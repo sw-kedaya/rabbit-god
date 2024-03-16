@@ -10,4 +10,6 @@ public class CommonConstant {
     public static final String MALL_LIST_ADMIN_KEY = "MALL_LIST_ADMIN";
     public static final String MALL_LIST_ADMIN_CRUD_KEY = "MALL_LIST_ADMIN_CRUD";
     public static final long MALL_LIST_TTL_HOURS = 2L;
+    public static final String LOGIN_CODE_KEY = "login_code_key_";
+    public static final long LOGIN_CODE_KEY_TTL = 1L;
 }

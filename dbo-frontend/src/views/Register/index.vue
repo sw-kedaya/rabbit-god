@@ -219,8 +219,8 @@ function onLoginPageClick(){
 </script>
 
 <template>
-  <div class="login-container">
-    <div class="login-wrapper">
+  <div class="register-container">
+    <div class="register-wrapper">
       <div style="font-size: large; margin-bottom: 10px">七龙珠Online账号注册</div>
       <br><br>
       <div class="form">
@@ -265,15 +265,14 @@ function onLoginPageClick(){
 </template>
 
 <style scoped lang='scss'>
-.login-container {
+.register-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 620px;
-  margin-bottom: 205px;
+  height: 80vh;
 }
 
-.login-wrapper {
+.register-wrapper {
   width: 400px;
   padding: 20px;
   border-radius: 4px;

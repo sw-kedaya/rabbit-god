@@ -41,6 +41,10 @@ register:
   email-check: true # 是否开启邮箱验证(true/false)
   ip-max-num: 5 # ip注册最大数
   email-max-num: 5 # 邮箱注册最大数
+# 登录验证码参数
+login-code:
+  open: false # 是否开启登录验证码（true/false）
+  type: char # math是数字验证码，char是字母验证码
 
 # 签到参数
 signin:

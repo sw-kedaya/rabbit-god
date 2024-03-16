@@ -16,3 +16,10 @@ export function checkOpen(){
         url: "/code/check"
     })
 }
+
+export function getCodeImgApi(){
+    return instance({
+        method: "get",
+        url: "/code/captchaImage"
+    })
+}

@@ -15,12 +15,17 @@ const handleSelect = (key, keyPath) => {
   activeIndex.value = key;
 }
 
+// 新增加载组件
+const loadingForActivity = ref(true)
+const loadingForMoney = ref(true)
+
 // 表格数据-活跃度
 const tableDataForActivity = ref()
 const getActivityRankQuest = async () => {
   const res = await getActivityRankApi()
   if (res.success){
-    tableDataForActivity.value = res.data
+    tableDataForActivity.value = res.data;
+    loadingForActivity.value = false;
   }else {
     ElMessage.error(res.errorMsg)
   }
@@ -30,7 +35,8 @@ const tableDataForMoney = ref()
 const getMoneyRankQuest = async () => {
   const res = await getMoneyRankApi()
   if (res.success){
-    tableDataForMoney.value = res.data
+    tableDataForMoney.value = res.data;
+    loadingForMoney.value = false;
   }else {
     ElMessage.error(res.errorMsg)
   }
@@ -54,7 +60,7 @@ const getMoneyRankQuest = async () => {
     </div>
     <div v-if="activeIndex === '1'" class="my-table">
       <el-table :data="tableDataForActivity" border stripe size="large"
-                style="width: 55%;"
+                style="width: 55%;" v-loading="loadingForActivity"
                 :cell-style="{textAlign: 'center'}">
         <el-table-column prop="rank" label="排名" width="70">
           <template #header="{ column }">
@@ -93,7 +99,7 @@ const getMoneyRankQuest = async () => {
     </div>
     <div v-else-if="activeIndex === '2'" class="my-table">
       <el-table :data="tableDataForMoney" border stripe size="large"
-                style="width: 55%;"
+                style="width: 55%;" v-loading="loadingForMoney"
                 :cell-style="{textAlign: 'center'}">
         <el-table-column prop="rank" label="排名" width="70">
           <template #header="{ column }">

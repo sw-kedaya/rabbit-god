@@ -123,8 +123,8 @@ function onLoginPageClick(){
 </script>
 
 <template>
-  <div class="login-container">
-    <div class="login-wrapper">
+  <div class="forget-container">
+    <div class="forget-wrapper">
       <div style="font-size: large; margin-bottom: 10px">忘记密码</div>
       <br>
       <div class="form">
@@ -148,19 +148,14 @@ function onLoginPageClick(){
 </template>
 
 <style scoped lang='scss'>
-.login-link {
-  text-align: right;
-}
-
-.login-container {
+.forget-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 360px;
-  margin-bottom: 465px;
+  height: 80vh;
 }
 
-.login-wrapper {
+.forget-wrapper {
   width: 400px;
   padding: 20px;
   border-radius: 4px;
@@ -200,7 +195,7 @@ function onLoginPageClick(){
   margin-left: 80px;
 }
 
-.login-btn {
+.forget-btn {
   background-color: #fff;
   color: #000;
   width: 35%;

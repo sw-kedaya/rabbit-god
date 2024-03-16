@@ -7,10 +7,13 @@ import {getMallOrderByUserId} from "@/apis/mallOrder";
 const router = useRouter()
 // 查询订单
 const orders = ref([])
+// 新增加载组件
+const loading = ref(true)
 const getMallOrderByUserIdQuest = async () => {
   const res = await getMallOrderByUserId(user.value.accountID)
   if (res.success) {
-    orders.value = res.data
+    orders.value = res.data;
+    loading.value = false;
   } else {
     ElMessage.error(res.errorMsg)
   }
@@ -65,7 +68,7 @@ onMounted(() => {
 <template>
   <div class="order-list-container">
     <h2 class="order-list-title">商城订单</h2>
-    <el-table :data="currentPageData" style="width: 75%; font-size: 15px;"
+    <el-table :data="currentPageData" style="width: 75%; font-size: 15px;" v-loading="loading"
               :cell-style="{textAlign: 'center'}" align="center" :border="true"
               :current-page="currentPage" :page-size="pageSize" :total="orders.length" stripe>
       <el-table-column prop="id" label="订单编号" width="230%">

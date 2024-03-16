@@ -14,7 +14,15 @@ import {
 import {verifyWebAdminApi} from "@/apis/webAdmin"
 import {getAdminOrderApi, adminAddCashKeyApi, deleteAllKeyApi} from "@/apis/cashKey"
 import {getEventList, adminEventSaveApi, adminEventUpdateApi, adminEventDeleteApi} from "@/apis/event"
-import {adminGetAllWpShopListApi, adminSaveWpShopApi, adminUpdateWpShopApi, adminDeleteWpShopByIdApi} from "@/apis/wpShop"
+import {
+  adminGetAllWpShopListApi,
+  adminSaveWpShopApi,
+  adminUpdateWpShopApi,
+  adminDeleteWpShopByIdApi
+} from "@/apis/wpShop"
+import GiftKey from "./newly/GiftKey.vue"
+import Equipment from "./newly/Equipment.vue"
+import AdvancedFunctions from "./newly/AdvancedFunctions.vue"
 
 // 切换tab时的记录(默认打开第一个tab的第一个子tab)
 const activeTab = ref();
@@ -295,21 +303,22 @@ const getAdminAllMallListQuest = async () => {
 const totalGoodsData = computed(() => filteredGoodsData.value);
 // 根据分类名、类型和状态筛选商品(计算完后更新数据)
 const filteredGoodsData = computed(() => {
+  let filteredData = [...goodsData.value]; // 使用扩展运算符创建数据的浅拷贝
+
   if (goodsName.value !== '') { // 如果商品名不为空则过滤
-    const res = goodsData.value.filter(item => item.name.includes(goodsName.value));
-    currentPageData.value = res;
+    filteredData = filteredData.filter(item => item.name.includes(goodsName.value));
   }
   if (goodsType.value !== '') { // 如果商品类型不为空则过滤
-    const res = goodsData.value.filter(item => item.type === goodsType.value);
-    currentPageData.value = res;
+    filteredData = filteredData.filter(item => item.type === goodsType.value);
   }
   if (goodsStatus.value !== '') { // 如果商品状态不为空则过滤
-    const res = goodsData.value.filter(item => item.del_flag === goodsStatus.value);
-    currentPageData.value = res;
+    filteredData = filteredData.filter(item => item.del_flag === goodsStatus.value);
   }
   if (goodsName.value === '' && goodsType.value === '' && goodsStatus.value === '') {
-    currentPageData.value = goodsData.value
+    filteredData = goodsData.value
   }
+
+  currentPageData.value = filteredData;
   const total = currentPageData.value.length
   updatePaginationBySelf() // 分页后渲染
   return total;
@@ -607,7 +616,7 @@ const deleteAllKey = () => {
   }).then(() => {
     deleteAllKeyQuest()
   }).catch(() => {
-    ElMessage.info("取消生成")
+    ElMessage.info("取消删除")
   })
 }
 // 查看所有未使用
@@ -853,13 +862,17 @@ function wpHandleClick(newCurrentPage) {
 const totalWpData = computed(() => filteredWpData.value);
 // 根据WP的物品ID查找(计算完后更新数据)
 const filteredWpData = computed(() => {
+  let filteredData = [...wpData.value]; // 使用扩展运算符创建数据的浅拷贝
+
   if (wpIdxItemTbl.value !== '') { // 如果商品名不为空则过滤
-    const res = wpData.value.filter(item => item.idxItemTbl.includes(wpIdxItemTbl.value));
-    wpCurrentPageData.value = res;
+    filteredData = filteredData.filter(item => item.idxItemTbl.includes(wpIdxItemTbl.value));
   }
+
   if (wpIdxItemTbl.value === '') {
-    wpCurrentPageData.value = wpData.value
+    filteredData = wpData.value
   }
+
+  wpCurrentPageData.value = filteredData;
   const total = wpCurrentPageData.value.length
   updatePaginationForWpBySelf() // 分页后渲染
   return total;
@@ -963,8 +976,8 @@ const deleteWp = (id) => {
 
 <template>
   <template v-if="admin === null">
-    <div class="login-container">
-      <div class="login-wrapper">
+    <div class="admin-container">
+      <div class="admin-wrapper">
         <div style="font-size: large; margin-bottom: 10px">七龙珠Online管理平台</div>
         <br>
         <div class="form">
@@ -1213,6 +1226,13 @@ const deleteWp = (id) => {
               </el-table-column>
             </el-table>
           </div>
+        </el-tab-pane>
+        <el-tab-pane label="新增功能" name="tab4">
+          <el-tabs tab-position="left" v-model="activeSideTab">
+            <GiftKey/>
+            <Equipment/>
+            <AdvancedFunctions/>
+          </el-tabs>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -2138,7 +2158,7 @@ const deleteWp = (id) => {
   text-align: right;
 }
 
-.login-container {
+.admin-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2146,7 +2166,7 @@ const deleteWp = (id) => {
   margin-bottom: 376px;
 }
 
-.login-wrapper {
+.admin-wrapper {
   width: 400px;
   padding: 20px;
   border-radius: 4px;

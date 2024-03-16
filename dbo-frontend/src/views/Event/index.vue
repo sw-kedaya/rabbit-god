@@ -1,12 +1,22 @@
 <script setup>
-import {getEventVal} from '@/views/composables/event'
+import {ref, onMounted} from 'vue'
+import {getEventList} from "@/apis/event";
 
-const tableData = getEventVal().eventList
+const tableData = ref([])
+const loading = ref(true);
+
+const getEvent = async () => {
+  const res = await getEventList()
+  tableData.value = res.data;
+  loading.value = false;
+}
+
+onMounted(()=> getEvent())
 </script>
 
 <template>
   <div class="event-contain">
-    <el-table :data="tableData" stripe style="width: 75%; font-size: 15px;" align="center" :border="true">
+    <el-table :data="tableData" stripe style="width: 75%; font-size: 15px;" align="center" :border="true" v-loading="loading">
       <el-table-column prop="event_name" label="活动名称" width="180">
         <template #header="{ column }">
           <div class="header-wrapper">

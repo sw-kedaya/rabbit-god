@@ -14,4 +14,6 @@ public class AccountDTO {
     private String delCharPw;
     private String verification;
     private String UUID;
+    /** 验证码 */
+    private String code;
 }

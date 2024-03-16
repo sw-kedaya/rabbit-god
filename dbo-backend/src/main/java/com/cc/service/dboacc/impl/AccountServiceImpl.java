@@ -1,5 +1,6 @@
 package com.cc.service.dboacc.impl;
 
+import com.cc.config.LoginCodeConfiguration;
 import com.cc.config.RegisterConfiguration;
 import com.cc.dto.AccountDTO;
 import com.cc.dto.PasswordDTO;
@@ -31,6 +32,8 @@ public class AccountServiceImpl implements IAccountService {
     private RegisterConfiguration registerConfiguration;
     @Resource
     private ISendMailService sendMailService;
+    @Resource
+    private LoginCodeConfiguration loginCodeConfiguration;
 
     @Override
     public Result register(AccountDTO accountDTO, HttpServletRequest request) {
@@ -65,6 +68,16 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public Result login(AccountDTO accountDTO) {
+        // 先判断验证码是否正确
+        if (loginCodeConfiguration.getOpen()){
+            String uuid = accountDTO.getUUID();
+            String code = accountDTO.getCode();
+            if (uuid == null || code == null || uuid.isEmpty() || code.isEmpty()) return Result.fail("验证码错误");
+            String key = CommonConstant.LOGIN_CODE_KEY + uuid;
+            String redisCode = redisTemplate.opsForValue().get(key);
+            if (!code.equalsIgnoreCase(redisCode)) return Result.fail("验证码错误");
+            redisTemplate.delete(key);
+        }
         Account account = new Account();
         BeanUtils.copyProperties(accountDTO, account);
         Account userAccount = accountMapper.checkUserPwd(account);

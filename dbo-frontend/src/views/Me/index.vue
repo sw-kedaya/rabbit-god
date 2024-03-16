@@ -38,10 +38,13 @@ const dialogVisibleForCdKey = ref(false);
 const router = useRouter()
 
 // 获取用户角色信息
+// 新增加载组件
+const loading = ref(true)
 const tableData = ref([]);
 const getDBOCharListQuest = async (data) => {
   const res = await getDBOCharListApi(data)
   tableData.value = res.data;
+  loading.value = false;
 }
 // 给角色信息分表
 const currentPage = ref(1);
@@ -78,6 +81,11 @@ watch(tableData, () => {
 // 钩子
 let updateFlag = ref(true)
 onMounted(() => {
+  if (router.currentRoute.value.query.key === 'isMe') {
+    // 删除网址?isMe再重新加载，否则会无限循环
+    window.location.replace(window.location.href.split('?')[0])
+  }
+
   // 判断是否开启了邮箱验证
   checkOpenQuest()
   // 进入前先判断登录没
@@ -341,7 +349,7 @@ const onSendCodeClick = () => {
         <el-card class="grid-content bg-purple is-always-shadow">
           <div class="el-card__body">
             <el-table :data="currentPageData" style="width: 100%;" stripe fit :current-page="currentPage"
-                      :page-size="pageSize" :total="tableData.length">
+                      :page-size="pageSize" :total="tableData.length" v-loading="loading">
               <el-table-column label="角色" prop="charName" align="center"></el-table-column>
               <el-table-column label="等级" prop="level" align="center"></el-table-column>
               <el-table-column label="种族" prop="race" align="center">
