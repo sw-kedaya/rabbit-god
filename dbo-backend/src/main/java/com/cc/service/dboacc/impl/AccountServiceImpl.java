@@ -155,4 +155,9 @@ public class AccountServiceImpl implements IAccountService {
         if (integer <=0 || integer1 <= 0) return Result.fail("每个账户最多获取三张补签卡");
         return Result.ok();
     }
+
+    @Override
+    public boolean isBlock(Long accountID) {
+        return accountMapper.isBlock(accountID) > 0;
+    }
 }

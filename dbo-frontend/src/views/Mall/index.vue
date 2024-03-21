@@ -162,7 +162,8 @@ const cancelGivePresentExchange = () => {
 const givePresentFormValidate = ref() // 用于判断用户是否填写了表单
 
 const givePresent = () => {
-  if (user.value == null) return ElMessage.warning('请先登录')
+  if (user.value == null) return ElMessage.warning('请先登录');
+  if (user.value.accStatus === 'block') return ElMessage.error('禁止封禁账号赠送礼物！');
   givePresentFormValidate.value.validate((valid) => {
     if (valid) {
       dialogVisibleForGivePresent.value = false;
@@ -196,7 +197,8 @@ const cancelBuyExchange = () => {
 const buyFormValidate = ref() // 用于判断用户是否填写了表单
 
 const buy = () => {
-  if (user.value == null) return ElMessage.warning('请先登录')
+  if (user.value == null) return ElMessage.warning('请先登录');
+  if (user.value.accStatus === 'block') return ElMessage.error('禁止封禁账号购买物品！');
   buyFormValidate.value.validate((valid) => {
     if (valid) {
       dialogVisibleForBuy.value = false;

@@ -39,4 +39,6 @@ public interface AccountMapper {
     Integer addCardCountLimit(@PathVariable("id") Long id);
 
     void resetCardCount();
+
+    Integer isBlock(@PathVariable("id") Long id);
 }

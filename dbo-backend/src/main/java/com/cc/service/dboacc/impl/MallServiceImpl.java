@@ -110,6 +110,8 @@ public class MallServiceImpl implements IMallService {
 
     @Override
     public Result buyOrGiveMallPresent(Mall mall, Purchaser purchaser) {
+        // 新增：禁止封禁账号购买/赠送
+        if(accountService.isBlock(purchaser.getAccountID())) return Result.fail("禁止封禁账号购买物品！");
         // 判断用户余额是否足够：足够-扣减(内部自动)，不足够-返回
         boolean enough;
         try {

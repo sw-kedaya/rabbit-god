@@ -66,12 +66,13 @@ const setSignQuest = async (charName, accountID) => {
     getSignMessageQuest()
     ElMessage.success("签到成功")
   } else {
-    ElMessage.warning(res.errorMsg)
+    ElMessage.error(res.errorMsg);
   }
 }
 const sign = () => {
   if (user.value == null) return ElMessage.warning('请先登录')
   if (!isCanSign.value) return ElMessage.warning('一个账号只能签到一次')
+  if (user.value.accStatus === 'block') return ElMessage.error('禁止封禁账号签到！');
   signFormValidate.value.validate((valid) => {
     if (valid) {
       dialogVisibleForSign.value = false;

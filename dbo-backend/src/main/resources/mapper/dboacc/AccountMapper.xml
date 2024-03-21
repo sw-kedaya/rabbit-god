@@ -132,4 +132,11 @@
         set `replacement_card` = 0,
             `card_count_limit` = 0;
     </update>
+
+    <select id="isBlock" resultType="java.lang.Integer">
+        select count(*)
+        from accounts
+        where `AccountID` = #{id}
+          and `acc_status` = 'block';
+    </select>
 </mapper>

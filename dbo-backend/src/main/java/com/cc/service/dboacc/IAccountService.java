@@ -26,4 +26,6 @@ public interface IAccountService {
     Result subCardCountById(Long accountID);
 
     Result checkCardCountLimit(Long accountID);
+
+    boolean isBlock(Long accountID);
 }

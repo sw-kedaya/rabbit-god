@@ -42,6 +42,8 @@ public class DBOCharServiceImpl implements IDBOCharService {
 
     @Override
     public Result setSign(String charName, Long accountID) {
+        // 新增：禁止封禁账号签到
+        if(accountService.isBlock(accountID)) return Result.fail("禁止封禁账号签到！");
         // 获取二进制时间
         Long binarySignNum = getBinarySignNum();
         // 先判断该用户签到了没
