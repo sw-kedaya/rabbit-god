@@ -248,7 +248,7 @@ const getLatestMallPointsQuest = async () => {
     isLatest.value = true;
     user.value.mallPoints = res.data
     localStorage.setItem("user-token", JSON.stringify(user.value))
-    setTimeout(()=>{
+    setTimeout(() => {
       isLatest.value = false;
     }, 3000)
   } else {
@@ -256,7 +256,7 @@ const getLatestMallPointsQuest = async () => {
   }
 }
 const onGetLatestMallPointsClick = () => {
-  if(isLatest.value) return;
+  if (isLatest.value) return;
   getLatestMallPointsQuest()
 }
 
@@ -271,7 +271,7 @@ const sendCodeQuest = async () => {
 const isClickSendCode = ref(true)
 const sendCodeText = ref('获取')
 const onSendCodeClick = () => {
-  if (isClickSendCode.value){
+  if (isClickSendCode.value) {
     isClickSendCode.value = false;
     ElMessage.success("获取成功")
     sendCodeQuest()
@@ -286,7 +286,7 @@ const onSendCodeClick = () => {
         sendCodeText.value = '获取';
       }
     }, 1000);
-  }else {
+  } else {
     ElMessage.warning("请勿重复获取验证码")
   }
 }
@@ -313,7 +313,7 @@ const onSendCodeClick = () => {
             邮箱：
             <el-tag class="el-tag--light" style="font-size: 15px;">{{ user.email }}</el-tag>
             <div style="height: 5px;"></div>
-            余额：
+            余额<img src="/me/cash.png" alt="" style="margin-left: 3px">：
             <el-tooltip content="若不同步请点击刷新按钮">
               <el-tag class="el-tag--light" style="font-size: 15px;">{{ user.mallPoints }}</el-tag>
             </el-tooltip>
@@ -321,10 +321,10 @@ const onSendCodeClick = () => {
                        @click="onGetLatestMallPointsClick">刷新
             </el-button>
             <div style="height: 5px;"></div>
-            现金扭蛋币：
+            现金扭蛋币<img src="/me/cashcoin.png" alt="" style="margin-left: 3px">：
             <el-tag class="el-tag--light" style="font-size: 15px;">{{ user.waguCoins }}</el-tag>
             <div style="height: 5px;"></div>
-            活动扭蛋币：
+            活动扭蛋币<img src="/me/eventcoin.png" alt="" style="margin-left: 3px">：
             <el-tag class="el-tag--light" style="font-size: 15px;">{{ user.eventCoins }}</el-tag>
             <div style="height: 15px;"></div>
             <div style="height: 35px;">
@@ -360,27 +360,80 @@ const onSendCodeClick = () => {
                   <span v-else>未知</span>
                 </template>
               </el-table-column>
-              <el-table-column label="职业" prop="dboClass" align="center">
-                <template #default="scope">
-                  <span v-if="scope.row.dboClass === 0">武道家</span>
-                  <span v-else-if="scope.row.dboClass === 1">气功师</span>
-                  <span v-else-if="scope.row.dboClass === 2">工程师</span>
-                  <span v-else-if="scope.row.dboClass === 3">那美克战士</span>
-                  <span v-else-if="scope.row.dboClass === 4">那美克龙族</span>
-                  <span v-else-if="scope.row.dboClass === 5">大魔人</span>
-                  <span v-else-if="scope.row.dboClass === 6">意魔人</span>
-                  <span v-else-if="scope.row.dboClass === 7">格斗家</span>
-                  <span v-else-if="scope.row.dboClass === 8">剑术家</span>
-                  <span v-else-if="scope.row.dboClass === 9">鹤仙流</span>
-                  <span v-else-if="scope.row.dboClass === 10">龟仙流</span>
-                  <span v-else-if="scope.row.dboClass === 13">魔界战士</span>
-                  <span v-else-if="scope.row.dboClass === 14">魔道战士</span>
-                  <span v-else-if="scope.row.dboClass === 15">天天导师</span>
-                  <span v-else-if="scope.row.dboClass === 16">波可导师</span>
-                  <span v-else-if="scope.row.dboClass === 17">奥迪魔</span>
-                  <span v-else-if="scope.row.dboClass === 18">葛兰魔</span>
-                  <span v-else-if="scope.row.dboClass === 19">普利兹魔</span>
-                  <span v-else-if="scope.row.dboClass === 20">卡尔魔</span>
+              <el-table-column label="职业" prop="dboClass" align="center" width="130px">
+                <template #default="{ row }">
+                  <span v-if="row.dboClass === 0" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/1_small.png" alt=""/>
+                    <span style="margin-left: 10px">武道家</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 1" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/2_small.png" alt=""/>
+                    <span style="margin-left: 10px">气功师</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 3" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/3_small.png" alt=""/>
+                    <span style="margin-left: 10px">那美克战士</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 4" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/4_small.png" alt=""/>
+                    <span style="margin-left: 10px">那美克龙族</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 5" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/5_small.png" alt=""/>
+                    <span style="margin-left: 10px">大魔人</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 6" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/6_small.png" alt=""/>
+                    <span style="margin-left: 10px">意魔人</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 7" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/11_small.png" alt=""/>
+                    <span style="margin-left: 10px">格斗家</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 9" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/12_small.png" alt=""/>
+                    <span style="margin-left: 10px">鹤仙流</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 13" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/13_small.png" alt=""/>
+                    <span style="margin-left: 10px">魔界战士</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 15" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/14_small.png" alt=""/>
+                    <span style="margin-left: 10px">天天导师</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 17" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/15_small.png" alt=""/>
+                    <span style="margin-left: 10px">奥迪魔</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 19" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/16_small.png" alt=""/>
+                    <span style="margin-left: 10px">普利兹魔</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 8" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/17_small.png" alt=""/>
+                    <span style="margin-left: 10px">剑术家</span>
+                    </span>
+                  <span v-else-if="row.dboClass === 10" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/18_small.png" alt=""/>
+                    <span style="margin-left: 10px">龟仙流</span>
+                    </span>
+                  <span v-else-if="row.dboClass === 14" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/19_small.png" alt=""/>
+                    <span style="margin-left: 10px">魔导战士</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 16" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/20_small.png" alt=""/>
+                    <span style="margin-left: 10px">波可导师</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 18" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/21_small.png" alt=""/>
+                    <span style="margin-left: 10px">格兰魔</span>
+                  </span>
+                  <span v-else-if="row.dboClass === 20" class="me-icon">
+                    <img src="/MyHTML/skill-web/img/skill/22_small.png" alt=""/>
+                    <span style="margin-left: 10px">卡尔魔</span>
+                  </span>
                   <span v-else>未知</span>
                 </template>
               </el-table-column>
@@ -435,7 +488,10 @@ const onSendCodeClick = () => {
         <el-form-item class="myInput" prop="code" v-if="isOpenEmailCheck">
           <el-input style="height: 40px; width: 120px" type="text" placeholder="请输入验证码"
                     v-model="passwordForm.code"></el-input>
-          <el-button type="default" size="large" style="margin-left: 4px" @click="onSendCodeClick">{{ sendCodeText }}</el-button>
+          <el-button type="default" size="large" style="margin-left: 4px" @click="onSendCodeClick">{{
+              sendCodeText
+            }}
+          </el-button>
         </el-form-item>
       </div>
       <div class="form-row" style="justify-content: flex-end; margin-top: 20px;">
@@ -507,5 +563,11 @@ const onSendCodeClick = () => {
   text-align: right;
   margin-bottom: 15px;
   font-size: 15px;
+}
+
+.me-icon{
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
 }
 </style>
