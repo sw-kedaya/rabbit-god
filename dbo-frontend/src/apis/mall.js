@@ -23,28 +23,27 @@ export function updateMallApi(data) {
     })
 }
 
-export function deleteMallByIdApi(id, userId) {
+export function deleteMallByIdApi(id) {
     return instance({
         method: "delete",
         url: "/mall/admin/delete",
-        params: {id, userId}
+        params: {id}
     })
 }
 
-export function setSignRewardByIdApi(data, userId) {
+export function setSignRewardByIdApi(data) {
     return instance({
         method: "put",
         url: "/mall/admin/set",
-        data,
-        params: {userId}
+        data
     })
 }
 
-export function cancelSignRewardByIdApi(id, userId) {
+export function cancelSignRewardByIdApi(id) {
     return instance({
         method: "put",
         url: "/mall/admin/cancel",
-        params: {id, userId}
+        params: {id}
     })
 }
 

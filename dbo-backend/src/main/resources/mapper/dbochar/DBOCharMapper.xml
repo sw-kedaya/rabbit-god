@@ -24,6 +24,19 @@
         <result property="activity" column="Activity"/>
         <result property="money" column="Money"/>
     </resultMap>
+    <resultMap type="com.cc.dto.CharManagementDTO" id="CharManagementDTOResult">
+        <id property="charID" column="CharID"/>
+        <result property="charName" column="CharName"/>
+        <result property="accountID" column="AccountID"/>
+        <result property="level" column="Level"/>
+        <result property="dboClass" column="Class"/>
+        <result property="guildName" column="GuildName"/>
+        <result property="createTimeLong" column="CreateTime"/>
+        <result property="IP" column="IP"/>
+        <result property="money" column="Money"/>
+        <result property="playTime" column="PlayTime"/>
+        <result property="isOnline" column="IsOnline"/>
+    </resultMap>
 
 
     <select id="getDBOCharList" resultMap="DBOCharResult">
@@ -101,4 +114,27 @@
         from characters
         order by `Money` desc,`Level` desc limit 15;
     </select>
+
+    <select id="adminGetCharacterList" resultMap="CharManagementDTOResult">
+        select `CharID`,
+               `CharName`,
+               `AccountID`,
+               `Level`,
+               `Class`,
+               `GuildName`,
+               `CreateTime`,
+               `IP`,
+               `Money`,
+               `PlayTime`,
+               `IsOnline`
+        from characters;
+    </select>
+
+    <update id="adminUpdateCharacter">
+        update characters
+        set `CharName` = #{charName},
+            `Level` = #{level},
+            `Money` = #{money}
+        where `CharID` = #{charID};
+    </update>
 </mapper>

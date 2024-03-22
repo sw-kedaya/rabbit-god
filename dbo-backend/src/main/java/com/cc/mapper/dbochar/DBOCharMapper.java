@@ -1,7 +1,9 @@
 package com.cc.mapper.dbochar;
 
+import com.cc.dto.CharManagementDTO;
 import com.cc.entity.DBOChar;
 import com.cc.vo.DBOCharVO;
+import com.cc.vo.Result;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -32,4 +34,8 @@ public interface DBOCharMapper {
     List<DBOCharVO> getActivityTop();
 
     List<DBOCharVO> getMoneyTop();
+
+    List<CharManagementDTO> adminGetCharacterList();
+
+    Integer adminUpdateCharacter(CharManagementDTO dto);
 }

@@ -1,6 +1,7 @@
 package com.cc.service.dboacc;
 
 import com.cc.dto.AccountDTO;
+import com.cc.dto.AccountManagementDTO;
 import com.cc.dto.PasswordDTO;
 import com.cc.vo.Result;
 
@@ -28,4 +29,12 @@ public interface IAccountService {
     Result checkCardCountLimit(Long accountID);
 
     boolean isBlock(Long accountID);
+
+    Result adminGetList();
+
+    Result adminUpdateBalance(AccountManagementDTO accountManagementDTO);
+
+    Result blockedAccount(Long id);
+
+    Result unblockedAccount(Long id);
 }

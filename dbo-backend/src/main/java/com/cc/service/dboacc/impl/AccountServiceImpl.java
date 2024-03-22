@@ -3,6 +3,7 @@ package com.cc.service.dboacc.impl;
 import com.cc.config.LoginCodeConfiguration;
 import com.cc.config.RegisterConfiguration;
 import com.cc.dto.AccountDTO;
+import com.cc.dto.AccountManagementDTO;
 import com.cc.dto.PasswordDTO;
 import com.cc.entity.Account;
 import com.cc.entity.CommonConstant;
@@ -159,5 +160,25 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public boolean isBlock(Long accountID) {
         return accountMapper.isBlock(accountID) > 0;
+    }
+
+    @Override
+    public Result adminGetList() {
+        return Result.ok(accountMapper.adminGetList());
+    }
+
+    @Override
+    public Result adminUpdateBalance(AccountManagementDTO accountManagementDTO) {
+        return accountMapper.adminUpdateBalance(accountManagementDTO) > 0 ? Result.ok() : Result.fail("编辑错误，请查看源码");
+    }
+
+    @Override
+    public Result blockedAccount(Long id) {
+        return accountMapper.blockedAccount(id) > 0 ? Result.ok() : Result.fail("封禁错误，请查看源码");
+    }
+
+    @Override
+    public Result unblockedAccount(Long id) {
+        return accountMapper.unblockedAccount(id) > 0 ? Result.ok() : Result.fail("解封错误，请查看源码");
     }
 }

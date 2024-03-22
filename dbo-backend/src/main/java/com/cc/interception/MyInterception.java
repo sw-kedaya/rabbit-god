@@ -3,6 +3,7 @@ package com.cc.interception;
 import cn.hutool.json.JSONUtil;
 import com.cc.entity.User;
 import com.cc.util.JwtUtils;
+import com.cc.util.ThreadLocalUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -15,7 +16,7 @@ public class MyInterception implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String header = request.getHeader("Rg-Msg");
         String json = request.getHeader("authorization");
-        if (json == null || json.isEmpty()){
+        if (json == null || json.isEmpty()) {
             // 设置响应状态码为 401（未授权）
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             // 设置响应内容为错误信息
@@ -23,6 +24,7 @@ public class MyInterception implements HandlerInterceptor {
             return false;
         }
         User user = JSONUtil.toBean(json, User.class);
+        ThreadLocalUtils.setUserId(user.getAccountID());
         boolean isSuccess = JwtUtils.checkToken(user.getToken());
         if (!"Online".equals(header) || !isSuccess) {
             // 设置响应状态码为 401（未授权）
@@ -32,5 +34,10 @@ public class MyInterception implements HandlerInterceptor {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        ThreadLocalUtils.removeUserId();
     }
 }

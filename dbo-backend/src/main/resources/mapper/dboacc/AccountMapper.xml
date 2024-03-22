@@ -32,6 +32,19 @@
         <result property="replacementCard" column="replacement_card"/>
         <result property="cardCountLimit" column="card_count_limit"/>
     </resultMap>
+    <resultMap type="com.cc.dto.AccountManagementDTO" id="AccountManagementDTOResult">
+        <id property="accountID" column="AccountID"/>
+        <result property="username" column="Username"/>
+        <result property="email" column="email"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="regIp" column="reg_ip"/>
+        <result property="lastLogin" column="last_login"/>
+        <result property="lastIp" column="last_ip"/>
+        <result property="accStatus" column="acc_status"/>
+        <result property="mallPoints" column="mallpoints"/>
+        <result property="waguCoins"  column="WaguCoins"/>
+        <result property="eventCoins" column="EventCoins"/>
+    </resultMap>
 
     <insert id="register">
         insert into accounts(`Username`, `Password_hash`, `email`, `reg_ip`, `web_ip`, `del_char_pw`)
@@ -139,4 +152,39 @@
         where `AccountID` = #{id}
           and `acc_status` = 'block';
     </select>
+
+    <select id="adminGetList" resultMap="AccountManagementDTOResult">
+        select `AccountID`,
+               `Username`,
+               `email`,
+               `reg_date`,
+               `reg_ip`,
+               `last_login`,
+               `last_ip`,
+               `acc_status`,
+               `mallpoints`,
+               `WaguCoins`,
+               `EventCoins`
+        from `accounts`;
+    </select>
+
+    <update id="adminUpdateBalance">
+        update accounts
+        set `mallpoints` = #{mallPoints},
+            `WaguCoins` = #{waguCoins},
+            `EventCoins` = #{eventCoins}
+        where `AccountID` = #{accountID};
+    </update>
+
+    <update id="blockedAccount">
+        update accounts
+        set `acc_status` = 'block'
+        where `AccountID` = #{id};
+    </update>
+
+    <update id="unblockedAccount">
+        update accounts
+        set `acc_status` = 'active'
+        where `AccountID` = #{id};
+    </update>
 </mapper>

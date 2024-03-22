@@ -1,7 +1,10 @@
 package com.cc.mapper.dboacc;
 
+import com.cc.dto.AccountManagementDTO;
 import com.cc.entity.Account;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 public interface AccountMapper {
     void register(Account account);
@@ -41,4 +44,12 @@ public interface AccountMapper {
     void resetCardCount();
 
     Integer isBlock(@PathVariable("id") Long id);
+
+    List<AccountManagementDTO> adminGetList();
+
+    Integer adminUpdateBalance(AccountManagementDTO accountManagementDTO);
+
+    Integer blockedAccount(@PathVariable("id") Long id);
+
+    Integer unblockedAccount(@PathVariable("id") Long id);
 }

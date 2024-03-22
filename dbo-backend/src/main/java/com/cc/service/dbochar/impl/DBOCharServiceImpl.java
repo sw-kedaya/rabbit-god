@@ -1,5 +1,6 @@
 package com.cc.service.dbochar.impl;
 
+import com.cc.dto.CharManagementDTO;
 import com.cc.entity.DBOChar;
 import com.cc.entity.Mall;
 import com.cc.mapper.dboacc.AccountMapper;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,7 +45,7 @@ public class DBOCharServiceImpl implements IDBOCharService {
     @Override
     public Result setSign(String charName, Long accountID) {
         // 新增：禁止封禁账号签到
-        if(accountService.isBlock(accountID)) return Result.fail("禁止封禁账号签到！");
+        if (accountService.isBlock(accountID)) return Result.fail("禁止封禁账号签到！");
         // 获取二进制时间
         Long binarySignNum = getBinarySignNum();
         // 先判断该用户签到了没
@@ -148,6 +150,26 @@ public class DBOCharServiceImpl implements IDBOCharService {
         return Result.ok(setRankAndParseClass(moneyTop));
     }
 
+    @Override
+    public Result adminGetCharacterList() {
+        List<CharManagementDTO> list = dboCharMapper.adminGetCharacterList();
+        adminParseClass(list); // 映射职业名称
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        for (CharManagementDTO dto : list) {
+            // 将 20230925001526 转化为 2023-09-25T00:15:26
+            LocalDateTime dateTime = LocalDateTime.parse(dto.getCreateTimeLong().toString(), formatter);
+            dto.setCreateTime(dateTime);
+            // 将游玩时长单位: 秒->时 (不保留小数点)
+            dto.setPlayTime(dto.getPlayTime() / 3600);
+        }
+        return Result.ok(list);
+    }
+
+    @Override
+    public Result adminUpdateCharacter(CharManagementDTO dto) {
+        return dboCharMapper.adminUpdateCharacter(dto) > 0 ? Result.ok() : Result.fail("编辑失败，请查看源码");
+    }
+
     private Integer getSignNum() {
         return LocalDateTime.now().getDayOfMonth();
     }
@@ -171,5 +193,11 @@ public class DBOCharServiceImpl implements IDBOCharService {
             dboCharVO.setDboClassName(DBOCharParseFiledUtils.parseDboClass(dboCharVO.getDboClass()));
         }
         return list;
+    }
+
+    private void adminParseClass(List<CharManagementDTO> list) {
+        for (CharManagementDTO dto : list) {
+            dto.setDboClassName(DBOCharParseFiledUtils.parseDboClass(dto.getDboClass()));
+        }
     }
 }

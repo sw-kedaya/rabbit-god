@@ -1,5 +1,6 @@
 package com.cc.service.dbochar;
 
+import com.cc.dto.CharManagementDTO;
 import com.cc.vo.Result;
 
 public interface IDBOCharService {
@@ -18,4 +19,8 @@ public interface IDBOCharService {
     Result getActivityRank();
 
     Result getMoneyRank();
+
+    Result adminGetCharacterList();
+
+    Result adminUpdateCharacter(CharManagementDTO dto);
 }

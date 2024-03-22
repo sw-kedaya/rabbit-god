@@ -1,11 +1,12 @@
 package com.cc.controller.dbochar;
 
+import com.cc.dto.CharManagementDTO;
+import com.cc.service.dboacc.IAccountService;
 import com.cc.service.dbochar.IDBOCharService;
+import com.cc.util.ThreadLocalUtils;
 import com.cc.vo.Result;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -18,6 +19,8 @@ public class DBOCharController {
 
     @Resource
     private IDBOCharService dboCharService;
+    @Resource
+    private IAccountService accountService;
 
     @GetMapping("/list")
     public Result getDBOCharList(Long accountID){
@@ -60,5 +63,18 @@ public class DBOCharController {
     @GetMapping("rank/money")
     public Result getMoneyRank(){
         return dboCharService.getMoneyRank();
+    }
+
+
+    @GetMapping("/admin/list")
+    public Result adminGetCharacterList(){
+        if (!accountService.isAdmin(ThreadLocalUtils.getUserId())) return Result.fail("禁止非管理员操作");
+        return dboCharService.adminGetCharacterList();
+    }
+
+    @PutMapping("/admin/update")
+    public Result adminUpdateCharacter(@RequestBody CharManagementDTO dto){
+        if (!accountService.isAdmin(ThreadLocalUtils.getUserId())) return Result.fail("禁止非管理员操作");
+        return dboCharService.adminUpdateCharacter(dto);
     }
 }

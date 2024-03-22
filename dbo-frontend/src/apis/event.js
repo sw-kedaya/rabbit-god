@@ -7,28 +7,26 @@ export function getEventList() {
     })
 }
 
-export function adminEventSaveApi(data, userId){
+export function adminEventSaveApi(data){
     return instance({
         method: "post",
         url: "/event/admin/save",
-        data,
-        params:{userId}
+        data
     })
 }
 
-export function adminEventUpdateApi(data, userId){
+export function adminEventUpdateApi(data){
     return instance({
         method: "put",
         url: "/event/admin/update",
-        data,
-        params:{userId}
+        data
     })
 }
 
-export function adminEventDeleteApi(id, userId){
+export function adminEventDeleteApi(id){
     return instance({
         method: "delete",
         url: "/event/admin/delete",
-        params:{id, userId}
+        params:{id}
     })
 }

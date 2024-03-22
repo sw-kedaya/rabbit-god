@@ -7,7 +7,6 @@ import lombok.Data;
  */
 @Data
 public class Mall {
-    private Long userId;
     private Long id;
     private String name;
     private String description;

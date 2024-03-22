@@ -15,11 +15,11 @@ export function updateMallTypeByIdApi(data) {
     })
 }
 
-export function deleteByIdApi(id, userId) {
+export function deleteByIdApi(id) {
     return instance({
         method: "delete",
         url: "/category/admin/delete",
-        params: {id, userId}
+        params: {id}
     })
 }
 

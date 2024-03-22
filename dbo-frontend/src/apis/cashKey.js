@@ -18,19 +18,18 @@ export function getUseCdKeyApi(data) {
     })
 }
 
-export function getAdminOrderApi(userId) {
+export function getAdminOrderApi() {
     return instance({
         method: "get",
-        url: "/cash/admin/order",
-        params: {userId}
+        url: "/cash/admin/order"
     })
 }
 
-export function adminAddCashKeyApi(cash, num, userId) {
+export function adminAddCashKeyApi(cash, num) {
     return instance({
         method: "get",
         url: "/cash/admin/save",
-        params: {cash, num, userId}
+        params: {cash, num}
     })
 }
 

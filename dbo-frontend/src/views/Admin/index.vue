@@ -20,9 +20,8 @@ import {
   adminUpdateWpShopApi,
   adminDeleteWpShopByIdApi
 } from "@/apis/wpShop"
-import GiftKey from "./newly/GiftKey.vue"
-import Equipment from "./newly/Equipment.vue"
-import AdvancedFunctions from "./newly/AdvancedFunctions.vue"
+import AccountManagement from "./account/AccountManagement.vue"
+import CharacterManagement from "./account/CharacterManagement.vue"
 
 // 切换tab时的记录(默认打开第一个tab的第一个子tab)
 const activeTab = ref();
@@ -70,7 +69,6 @@ const getMallTypeListQuest = async () => {
 
 // 新增商品类型部分-新增对话框
 const categoryForm = ref({
-  userId: 0,
   name: '',
   sort: 0
 });
@@ -110,7 +108,6 @@ const categorySubmit = () => {
   categoryFormValidate.value.validate((valid) => {
     if (valid) {
       dialogVisibleForCategoryRules.value = false;
-      categoryForm.value.userId = user.value.accountID
       saveMallTypeQuest()
     } else {
       ElMessage.warning("请输入商品类型名称")
@@ -119,7 +116,6 @@ const categorySubmit = () => {
 }
 // 修改商品类型部分-修改对话框
 const updateCategoryForm = ref({
-  userId: 0,
   id: 0,
   name: '',
   sort: 0
@@ -156,7 +152,6 @@ const updateCategorySubmit = () => {
   updateCategoryFormValidate.value.validate((valid) => {
     if (valid) {
       dialogVisibleForUpdateCategoryRules.value = false;
-      updateCategoryForm.value.userId = user.value.accountID;
       updateMallTypeByIdQuest()
     } else {
       ElMessage.warning("请输入修改内容")
@@ -164,8 +159,8 @@ const updateCategorySubmit = () => {
   })
 }
 // 删除商品类型部分
-const deleteByIdQuest = async (id, userId) => {
-  const res = await deleteByIdApi(id, userId)
+const deleteByIdQuest = async (id) => {
+  const res = await deleteByIdApi(id)
   if (res.success) {
     ElMessage.success('删除成功')
     getMallTypeListQuest()
@@ -179,7 +174,7 @@ const deleteCategory = (id) => {
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    deleteByIdQuest(id, user.value.accountID)
+    deleteByIdQuest(id)
   }).catch(() => {
     ElMessage.info("取消删除")
   })
@@ -240,7 +235,7 @@ const showGoodsExchangeForm = () => {
 };
 const cancelGoodsExchange = () => {
   goodsForm.value = {
-    name: '', description: '', price: '', type: '', del_flag: '0', tblidx: '', userId: 0,
+    name: '', description: '', price: '', type: '', del_flag: '0', tblidx: ''
   };
   dialogVisibleForGoodsRules.value = false;
 }
@@ -264,7 +259,6 @@ const goodsSubmit = () => {
   goodsFormValidate.value.validate((valid) => {
     if (valid) {
       dialogVisibleForGoodsRules.value = false;
-      goodsForm.value.userId = user.value.accountID // 判断是否为管理员
       saveMallQuest()
     } else {
       ElMessage.warning("请输入商品信息")
@@ -386,7 +380,6 @@ const updateGoodsSubmit = () => {
   updateGoodsFormValidate.value.validate((valid) => {
     if (valid) {
       dialogVisibleForUpdateGoodsRules.value = false;
-      updateGoodsForm.value.userId = user.value.accountID // 判断是否为管理员
       updateMallQuest()
     } else {
       ElMessage.warning("请输入商品信息")
@@ -395,8 +388,8 @@ const updateGoodsSubmit = () => {
 }
 
 // 删除商品
-const deleteMallByIdQuest = async (id, userId) => {
-  const res = await deleteMallByIdApi(id, userId);
+const deleteMallByIdQuest = async (id) => {
+  const res = await deleteMallByIdApi(id);
   if (res.success) {
     getAdminAllMallListQuest()
     ElMessage.success('删除成功')
@@ -410,7 +403,7 @@ const deleteGoods = (id) => {
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    deleteMallByIdQuest(id, user.value.accountID)
+    deleteMallByIdQuest(id)
   }).catch(() => {
     ElMessage.info("取消删除")
   })
@@ -434,8 +427,8 @@ const cancelSign = () => {
 }
 const signFormValidate = ref()
 // 设置为签到奖励
-const setSignRewardByIdQuest = async (data, userId) => {
-  const res = await setSignRewardByIdApi(data, userId)
+const setSignRewardByIdQuest = async (data) => {
+  const res = await setSignRewardByIdApi(data)
   if (res.success) {
     getAdminAllMallListQuest()
     ElMessage.success('设置成功')
@@ -447,15 +440,15 @@ const signSubmit = () => {
   signFormValidate.value.validate((valid) => {
     if (valid) {
       dialogVisibleForSign.value = false;
-      setSignRewardByIdQuest(signForm.value, user.value.accountID)
+      setSignRewardByIdQuest(signForm.value)
     } else {
       ElMessage.warning("请输入日期数字(例如10号：10)")
     }
   })
 }
 // 取消该签到奖励
-const cancelSignRewardByIdQuest = async (id, userId) => {
-  const res = await cancelSignRewardByIdApi(id, userId)
+const cancelSignRewardByIdQuest = async (id) => {
+  const res = await cancelSignRewardByIdApi(id)
   if (res.success) {
     getAdminAllMallListQuest()
     ElMessage.success('设置成功')
@@ -469,7 +462,7 @@ const cancelSignRewardGoods = (id) => {
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    cancelSignRewardByIdQuest(id, user.value.accountID)
+    cancelSignRewardByIdQuest(id)
   }).catch(() => {
     ElMessage.info("取消设置")
   })
@@ -531,7 +524,7 @@ const endIndexForKey = ref(0);
 const currentPageDataForKey = ref([]);
 const totalDataForKey = ref(0)
 const getAdminOrderQuest = async () => {
-  const res = await getAdminOrderApi(user.value.accountID)
+  const res = await getAdminOrderApi()
   ordersForKey.value = res.data;
   currentPageDataForKey.value = ordersForKey.value
   totalDataForKey.value = currentPageDataForKey.value.length
@@ -578,8 +571,8 @@ watch(ordersForKey, () => {
   updatePagination();
 });
 // 生成卡密
-const adminAddCashKeyQuest = async (cash, num, userId) => {
-  const res = await adminAddCashKeyApi(cash, num, userId)
+const adminAddCashKeyQuest = async (cash, num) => {
+  const res = await adminAddCashKeyApi(cash, num)
   if (res.success) {
     getAdminOrderQuest()
     ElMessage.success('生成卡密成功')
@@ -593,7 +586,7 @@ const generateKey = () => {
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    adminAddCashKeyQuest(cashNum.value, cdKeyNum.value, user.value.accountID)
+    adminAddCashKeyQuest(cashNum.value, cdKeyNum.value)
   }).catch(() => {
     ElMessage.info("取消生成")
   })
@@ -658,7 +651,7 @@ const cancelEventSaveExchange = () => {
 }
 const eventSaveFormValidate = ref() // 用于判断用户是否填写了表单
 const adminEventSaveQuest = async () => {
-  const res = await adminEventSaveApi(eventSaveForm.value, user.value.accountID)
+  const res = await adminEventSaveApi(eventSaveForm.value)
   if (res.success) {
     getEventListQuest()
     eventSaveForm.value = {
@@ -695,7 +688,7 @@ const cancelEventUpdateExchange = () => {
 }
 const eventUpdateFormValidate = ref() // 用于判断用户是否填写了表单
 const adminEventUpdateQuest = async () => {
-  const res = await adminEventUpdateApi(eventUpdateForm.value, user.value.accountID)
+  const res = await adminEventUpdateApi(eventUpdateForm.value)
   if (res.success) {
     getEventListQuest()
     ElMessage.success('修改活动成功')
@@ -715,7 +708,7 @@ const eventUpdateSubmit = () => {
 }
 // 删除活动
 const adminEventDeleteQuest = async (id) => {
-  const res = await adminEventDeleteApi(id, user.value.accountID)
+  const res = await adminEventDeleteApi(id)
   if (res.success) {
     getEventListQuest()
     ElMessage.success('删除活动成功')
@@ -1227,11 +1220,17 @@ const deleteWp = (id) => {
             </el-table>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="新增功能" name="tab4">
+        <!--        <el-tab-pane label="新增功能" name="tab4">-->
+        <!--          <el-tabs tab-position="left" v-model="activeSideTab">-->
+        <!--            <GiftKey/>-->
+        <!--            <Equipment/>-->
+        <!--            <AdvancedFunctions/>-->
+        <!--          </el-tabs>-->
+        <!--        </el-tab-pane>-->
+        <el-tab-pane label="账号管理" name="tab4">
           <el-tabs tab-position="left" v-model="activeSideTab">
-            <GiftKey/>
-            <Equipment/>
-            <AdvancedFunctions/>
+            <el-tab-pane label="用户管理" name="sideTab1" class="my-tab-pane"><AccountManagement/></el-tab-pane>
+            <el-tab-pane label="角色管理" name="sideTab2" class="my-tab-pane"><CharacterManagement/></el-tab-pane>
           </el-tabs>
         </el-tab-pane>
       </el-tabs>

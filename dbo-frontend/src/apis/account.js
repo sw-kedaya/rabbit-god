@@ -3,7 +3,7 @@ import instance from '@/utils/http'
 export function registerApi(data) {
     return instance({
         method: "post",
-        url: "/user/register",
+        url: "/user/open/register",
         data
     })
 }
@@ -11,7 +11,7 @@ export function registerApi(data) {
 export function loginApi(data) {
     return instance({
         method: "post",
-        url: "/user/login",
+        url: "/user/open/login",
         data
     })
 }
@@ -19,7 +19,7 @@ export function loginApi(data) {
 export function checkApi(token) {
     return instance({
         method: "get",
-        url: "/user/check",
+        url: "/user/open/check",
         params: {
             token
         }
@@ -29,7 +29,7 @@ export function checkApi(token) {
 export function forgetApi(username) {
     return instance({
         method: "get",
-        url: "/user/forget",
+        url: "/user/open/forget",
         params: {
             username
         }
@@ -39,7 +39,7 @@ export function forgetApi(username) {
 export function updateApi(data) {
     return instance({
         method: "post",
-        url: "/user/update",
+        url: "/user/open/update",
         data
     })
 }
@@ -47,7 +47,7 @@ export function updateApi(data) {
 export function getLatestMallPointsApi(id) {
     return instance({
         method: "get",
-        url: "/user/latest",
+        url: "/user/open/latest",
         params: {id}
     })
 }
@@ -55,7 +55,7 @@ export function getLatestMallPointsApi(id) {
 export function getCardCountApi(id) {
     return instance({
         method: "get",
-        url: "/user/cardCount",
+        url: "/user/open/cardCount",
         params: {id}
     })
 }
