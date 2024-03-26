@@ -133,7 +133,7 @@ public class AccountServiceImpl implements IAccountService {
     public Result getLatestMallPoints(Long id) {
         Account account = accountMapper.getLatestMallPoints(id);
         if (account == null) return Result.fail("刷新出错了");
-        return Result.ok(account.getMallPoints());
+        return Result.ok(account);
     }
 
     @Override

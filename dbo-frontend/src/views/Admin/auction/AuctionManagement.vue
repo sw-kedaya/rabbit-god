@@ -3,7 +3,6 @@ import {useRouter} from "vue-router";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {computed, onMounted, ref, watch} from "vue";
 import {adminDeleteAuction, adminGetAuctionList, adminSaveAuction, adminUpdateAuction} from "@/apis/auction";
-import axios from "axios"
 
 const router = useRouter()
 const user = ref()
@@ -179,6 +178,8 @@ const saveFormValidate = ref();
 const adminSaveAuctionQuest = async (data) => {
   const res = await adminSaveAuction(data);
   if (res.success) {
+    saveForm.value.auction = {};
+    saveForm.value.file = {};
     dialogVisibleForSaveRules.value = false;
     adminGetAuctionListQuest();
     ElMessage.success("新增成功");
@@ -258,6 +259,7 @@ const adminUpdateAuctionQuest = async (data) => {
   const res = await adminUpdateAuction(data)
   if (res.success) {
     updateForm.value.auction = {};
+    updateForm.value.file = {};
     dialogVisibleForUpdateRules.value = false;
     adminGetAuctionListQuest();
     ElMessage.success('修改成功')
@@ -402,7 +404,9 @@ const submitDeleteAuction = (id) => {
               :auto-upload="false"
               :on-change="hanchange">
             <img v-if="saveForm.auction.mallIcon" :src="saveForm.auction.mallIcon" alt="" class="my-auction-icon">
-            <el-icon v-else class="avatar-uploader-icon">+</el-icon>
+            <el-icon v-else class="avatar-uploader-icon"
+                     style="width: 35px; height: 35px;box-shadow: 2px 2px 4px #cccccc; margin-bottom: 10px">
+              +</el-icon>
           </el-upload>
         </el-form-item>
       </div>

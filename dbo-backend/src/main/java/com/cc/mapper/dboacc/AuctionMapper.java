@@ -14,4 +14,6 @@ public interface AuctionMapper {
     Integer adminUpdateAuction(Auction auction);
 
     Integer adminDeleteAuction(@PathVariable("id") Long id);
+
+    List<Auction> getListForUser();
 }

@@ -13,4 +13,6 @@ public interface IAuctionService {
     Result adminUpdateAuction(Auction auction);
 
     Result adminDeleteAuction(Long id);
+
+    Result getListForUser();
 }

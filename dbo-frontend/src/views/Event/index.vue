@@ -16,7 +16,7 @@ onMounted(()=> getEvent())
 
 <template>
   <div class="event-contain">
-    <el-table :data="tableData" stripe style="width: 75%; font-size: 15px;" align="center" :border="true" v-loading="loading">
+    <el-table :data="tableData" stripe style="width: 80%; font-size: 15px;" align="center" :border="true" v-loading="loading">
       <el-table-column prop="event_name" label="活动名称" width="180">
         <template #header="{ column }">
           <div class="header-wrapper">

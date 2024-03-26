@@ -62,4 +62,17 @@
         from `auction`
         where `id` = #{id};
     </delete>
+
+    <select id="getListForUser" resultMap="AuctionResult">
+        select `id`,
+               `mall_id`,
+               `mall_name`,
+               `mall_icon`,
+               `starting_price`,
+               `current_price`,
+               `lowest_makeup`,
+               `shelf_time`,
+               `end_time`
+        from `auction`;
+    </select>
 </mapper>

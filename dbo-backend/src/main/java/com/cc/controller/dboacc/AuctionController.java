@@ -40,7 +40,7 @@ public class AuctionController {
     }
 
     @GetMapping("/admin/list")
-    public Result adminGetAuctionList(){
+    public Result adminGetAuctionList() {
         if (!accountService.isAdmin(ThreadLocalUtils.getUserId())) return Result.fail("禁止非管理员操作");
         return auctionService.adminGetAuctionList();
     }
@@ -54,7 +54,7 @@ public class AuctionController {
             if (file != null) {
                 byte[] bytes = file.getBytes();
                 auction.setMallIcon(bytes);
-            }else {
+            } else {
                 auction.setMallIcon(null);
             }
             auctionService.parseStatus(auction);
@@ -65,10 +65,14 @@ public class AuctionController {
         return result;
     }
 
-
     @DeleteMapping("/admin/delete")
-    public Result adminDeleteAuction(Long id){
+    public Result adminDeleteAuction(Long id) {
         if (!accountService.isAdmin(ThreadLocalUtils.getUserId())) return Result.fail("禁止非管理员操作");
         return auctionService.adminDeleteAuction(id);
+    }
+
+    @GetMapping("/user/list")
+    public Result getListForUser() {
+        return auctionService.getListForUser();
     }
 }

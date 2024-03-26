@@ -32,25 +32,25 @@ public class AuctionServiceImpl implements IAuctionService {
     public Result adminGetAuctionList() {
         List<Auction> list = auctionMapper.adminGetAuctionList();
         for (Auction auction : list) {
-            parseStatus(auction);
-
-            // 将 BLOB 数据转换为 BufferedImage
-            byte[] imageData = auction.getMallIcon();
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(imageData);
-            // 转换流信息写出
-            FastByteArrayOutputStream os = new FastByteArrayOutputStream();
-            try
-            {
-                BufferedImage image = ImageIO.read(inputStream);
-                ImageIO.write(image, "png", os);
-            }
-            catch (IOException e)
-            {
-                return Result.fail(e.getMessage());
-            }
-            auction.setImage(Base64.encode(os.toByteArray()));
+            parseStatus(auction); // 解析状态
+            setImg(auction); // 解析图片
         }
         return Result.ok(list);
+    }
+
+    private void setImg(Auction auction) {
+        // 将 BLOB 数据转换为 BufferedImage
+        byte[] imageData = auction.getMallIcon();
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(imageData);
+        // 转换流信息写出
+        FastByteArrayOutputStream os = new FastByteArrayOutputStream();
+        try {
+            BufferedImage image = ImageIO.read(inputStream);
+            ImageIO.write(image, "png", os);
+        } catch (IOException e) {
+            throw  new RuntimeException();
+        }
+        auction.setImage(Base64.encode(os.toByteArray()));
     }
 
     @Override
@@ -72,5 +72,14 @@ public class AuctionServiceImpl implements IAuctionService {
     @Override
     public Result adminDeleteAuction(Long id) {
         return auctionMapper.adminDeleteAuction(id) > 0 ? Result.ok() : Result.fail("删除拍卖商品失败, 请刷新页面");
+    }
+
+    @Override
+    public Result getListForUser() {
+        List<Auction> list = auctionMapper.getListForUser();
+        for (Auction auction : list) {
+            setImg(auction); // 解析图片
+        }
+        return Result.ok(list);
     }
 }

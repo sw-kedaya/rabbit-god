@@ -1237,7 +1237,7 @@ const deleteWp = (id) => {
         <el-tab-pane label="拍卖管理" name="tab5">
           <el-tabs tab-position="left" v-model="activeSideTab">
             <el-tab-pane label="拍卖商品" name="sideTab1" class="my-tab-pane">
-              <AuctionManagement v-if="goodsData != null" :goods-data="goodsData"/>
+              <AuctionManagement v-if="Array.isArray(goodsData) && goodsData.length > 0" :goods-data="goodsData"/>
             </el-tab-pane>
           </el-tabs>
         </el-tab-pane>

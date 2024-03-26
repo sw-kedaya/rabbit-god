@@ -246,7 +246,8 @@ const getLatestMallPointsQuest = async () => {
   const res = await getLatestMallPointsApi(user.value.accountID)
   if (res.success) {
     isLatest.value = true;
-    user.value.mallPoints = res.data
+    user.value.mallPoints = res.data.mallPoints
+    user.value.auctionPoint = res.data.auctionPoint
     localStorage.setItem("user-token", JSON.stringify(user.value))
     setTimeout(() => {
       isLatest.value = false;
@@ -326,6 +327,9 @@ const onSendCodeClick = () => {
             <div style="height: 5px;"></div>
             活动扭蛋币<img src="/me/eventcoin.png" alt="" style="margin-left: 3px">：
             <el-tag class="el-tag--light" style="font-size: 15px;">{{ user.eventCoins }}</el-tag>
+            <div style="height: 5px;"></div>
+            拍卖点数<img src="/me/P币.png" alt="" style="margin-left: 3px; width: 20px; height: 20px">：
+            <el-tag class="el-tag--light" style="font-size: 15px;">{{ user.auctionPoint }}</el-tag>
             <div style="height: 15px;"></div>
             <div style="height: 35px;">
               <el-button class="el-button--primary el-button--mini" style="width: 100%;" @click="showPasswordForm">

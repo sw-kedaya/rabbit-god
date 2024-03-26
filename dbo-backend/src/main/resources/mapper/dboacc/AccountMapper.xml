@@ -31,6 +31,7 @@
         <result property="firstCharID" column="firstCharID"/>
         <result property="replacementCard" column="replacement_card"/>
         <result property="cardCountLimit" column="card_count_limit"/>
+        <result property="auctionPoint" column="auction_point"/>
     </resultMap>
     <resultMap type="com.cc.dto.AccountManagementDTO" id="AccountManagementDTOResult">
         <id property="accountID" column="AccountID"/>
@@ -58,7 +59,8 @@
     </select>
 
     <select id="checkUserPwd" resultMap="AccountResult">
-        select `AccountID`,`Username`,`acc_status`,`email`,`mallpoints`,`WaguCoins`,`EventCoins`,`admin` from accounts
+        select `AccountID`,`Username`,`acc_status`,`email`,`mallpoints`,`WaguCoins`,`EventCoins`,`admin`, `auction_point`
+        from accounts
         <if test="username != null">where #{username} = `Username`</if>
         <if test="password != null">and #{password} = `Password_hash`</if>
         ;
@@ -107,7 +109,7 @@
     </update>
 
     <select id="getLatestMallPoints" resultMap="AccountResult">
-        select `mallpoints`
+        select `mallpoints`, `auction_point`
         from accounts
         where `AccountID` = #{id}
     </select>

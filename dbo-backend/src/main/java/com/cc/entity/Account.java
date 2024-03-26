@@ -33,4 +33,5 @@ public class Account {
     /** 新增：补签卡和数量限制 */
     private Integer replacementCard;
     private Integer cardCountLimit;
+    private Long auctionPoint;
 }

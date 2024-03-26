@@ -18,4 +18,6 @@ public class User {
     private Integer admin;
     // 用户登录凭证
     private String token;
+    // 新增：P点(用于P点)
+    private Long auctionPoint;
 }
