@@ -22,6 +22,7 @@ import {
 } from "@/apis/wpShop"
 import AccountManagement from "./account/AccountManagement.vue"
 import CharacterManagement from "./account/CharacterManagement.vue"
+import AuctionManagement from "./auction/AuctionManagement.vue"
 
 // 切换tab时的记录(默认打开第一个tab的第一个子tab)
 const activeTab = ref();
@@ -1041,7 +1042,7 @@ const deleteWp = (id) => {
               </div>
               <el-table :data="currentPageData" border style="width: 100%;" max-height="618" size="large">
                 <el-table-column prop="name" label="商品名称" width="300"/>
-                <el-table-column prop="price" label="商品价格" width="120"/>
+                <el-table-column prop="price" label="商品价格C点" width="120"/>
                 <el-table-column prop="type" label="商品类型" width="180">
                   <template #default="{ row }">
                   <span v-if="categoryData && categoryData.length > 0">
@@ -1102,7 +1103,7 @@ const deleteWp = (id) => {
                 <el-table-column prop="serverChannelID" label="上架频道" width="110"/>
                 <el-table-column prop="merchantTab" label="商品窗口" width="120"/>
                 <el-table-column prop="idxItemTbl" label="物品ID" width="180"/>
-                <el-table-column prop="dwPrice" label="商品价格" width="180"/>
+                <el-table-column prop="dwPrice" label="商品价格WP" width="180"/>
                 <el-table-column prop="dwMinPrice" label="商品最小价格" width="180"/>
                 <el-table-column prop="dwInventory" label="限制数量" width="180"/>
                 <el-table-column fixed="right" label="操作">
@@ -1231,6 +1232,13 @@ const deleteWp = (id) => {
           <el-tabs tab-position="left" v-model="activeSideTab">
             <el-tab-pane label="用户管理" name="sideTab1" class="my-tab-pane"><AccountManagement/></el-tab-pane>
             <el-tab-pane label="角色管理" name="sideTab2" class="my-tab-pane"><CharacterManagement/></el-tab-pane>
+          </el-tabs>
+        </el-tab-pane>
+        <el-tab-pane label="拍卖管理" name="tab5">
+          <el-tabs tab-position="left" v-model="activeSideTab">
+            <el-tab-pane label="拍卖商品" name="sideTab1" class="my-tab-pane">
+              <AuctionManagement v-if="goodsData != null" :goods-data="goodsData"/>
+            </el-tab-pane>
           </el-tabs>
         </el-tab-pane>
       </el-tabs>

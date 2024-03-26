@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.mapper.dboacc.AuctionMapper">
+    <resultMap type="com.cc.entity.Auction" id="AuctionResult">
+        <id property="id" column="id"/>
+        <result property="mallId" column="mall_id"/>
+        <result property="mallName" column="mall_name"/>
+        <result property="mallIcon" column="mall_icon"/>
+        <result property="startingPrice" column="starting_price"/>
+        <result property="currentPrice" column="current_price"/>
+        <result property="lowestMakeup" column="lowest_makeup"/>
+        <result property="shelfTime" column="shelf_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="accountID" column="AccountID"/>
+        <result property="status" column="status"/>
+        <result property="isGrant" column="is_grant"/>
+    </resultMap>
+
+    <insert id="adminSaveAuction">
+        insert into `auction`(`mall_id`, `mall_name`, `mall_icon`, `starting_price`, `current_price`,
+                              `lowest_makeup`, `shelf_time`, `end_time`, `status`)
+        values (#{mallId}, #{mallName}, #{mallIcon}, #{startingPrice}, #{currentPrice},
+                #{lowestMakeup}, #{shelfTime}, #{endTime}, #{status});
+    </insert>
+
+    <select id="adminGetAuctionList" resultMap="AuctionResult">
+        select `id`,
+               `mall_id`,
+               `mall_name`,
+               `mall_icon`,
+               `starting_price`,
+               `current_price`,
+               `lowest_makeup`,
+               `shelf_time`,
+               `end_time`,
+               `AccountID`,
+               `status`,
+               `is_grant`
+        from `auction`;
+    </select>
+
+    <update id="adminUpdateAuction">
+        update `auction`
+        set `mall_id` = #{mallId},
+            `mall_name` = #{mallName},
+            <if test="mallIcon != null">
+            `mall_icon` = #{mallIcon},
+            </if>
+            `starting_price` = #{startingPrice},
+            `current_price` = #{currentPrice},
+            `lowest_makeup` = #{lowestMakeup},
+            `shelf_time` = #{shelfTime},
+            `end_time` = #{endTime},
+            `status` = #{status}
+        where `id` = #{id};
+    </update>
+
+    <delete id="adminDeleteAuction">
+        delete
+        from `auction`
+        where `id` = #{id};
+    </delete>
+</mapper>

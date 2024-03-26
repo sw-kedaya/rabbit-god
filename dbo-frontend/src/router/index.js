@@ -13,6 +13,7 @@ import Signin from '@/views/Signin/index.vue'
 import Mall from '@/views/Mall/index.vue'
 import Admin from '@/views/Admin/index.vue'
 import Rank from '@/views/Rank/index.vue'
+import AuctionHouse from '@/views/AuctionHouse/index.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -73,6 +74,10 @@ const router = createRouter({
         {
           path: 'rank',
           component: Rank
+        },
+        {
+          path: 'auctionHouse',
+          component: AuctionHouse
         }
       ]
     },

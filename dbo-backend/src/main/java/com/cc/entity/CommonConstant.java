@@ -12,4 +12,7 @@ public class CommonConstant {
     public static final long MALL_LIST_TTL_HOURS = 2L;
     public static final String LOGIN_CODE_KEY = "login_code_key_";
     public static final long LOGIN_CODE_KEY_TTL = 1L;
+    public static final String AUCTION_STATUS_UNSTARTED = "unstarted";
+    public static final String AUCTION_STATUS_ONGOING = "ongoing";
+    public static final String AUCTION_STATUS_ENDING = "ending";
 }

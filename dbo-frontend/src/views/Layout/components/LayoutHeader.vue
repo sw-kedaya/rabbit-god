@@ -110,6 +110,9 @@ const checkQuest = async () => {
         <li>
           <RouterLink active-class="active" :to="`/rank`" @click="refreshPage('/rank')">排行榜</RouterLink>
         </li>
+        <li>
+          <RouterLink active-class="active" :to="`/auctionHouse`" @click="refreshPage('/auctionHouse')">拍卖行</RouterLink>
+        </li>
       </ul>
       <div class="container" style="justify-content: right">
         <ul class="app-nav-nav">
