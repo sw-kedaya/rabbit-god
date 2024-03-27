@@ -30,7 +30,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/category/list")
                 .excludePathPatterns("/event/list")
                 .excludePathPatterns("/char/rank/activity")
-                .excludePathPatterns("/char/rank/money");
+                .excludePathPatterns("/char/rank/money")
+                .excludePathPatterns("/auctions/user/list");
     }
 
 //    @Override

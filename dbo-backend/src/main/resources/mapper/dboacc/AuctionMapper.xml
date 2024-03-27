@@ -72,7 +72,28 @@
                `current_price`,
                `lowest_makeup`,
                `shelf_time`,
-               `end_time`
+               `end_time`,
+               `accountID`
         from `auction`;
     </select>
+
+    <select id="isBidSuccess" resultType="boolean">
+        select count(*)
+        from `auction`
+        where `id` = #{id}
+          and #{price} >= `current_price` + lowest_makeup;
+    </select>
+
+    <select id="getCurrentAccountID" resultMap="AuctionResult">
+        select `AccountID`, `current_price`
+        from `auction`
+        where `id` = #{id};
+    </select>
+
+    <update id="updateAccountID">
+        update `auction`
+        set `current_price` = #{price},
+            `AccountID`     = #{accountID}
+        where `id` = #{id};
+    </update>
 </mapper>

@@ -1,7 +1,7 @@
 package com.cc.mapper.dboacc;
 
 import com.cc.entity.CashKey;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ public interface CashKeyMapper {
 
     void deleteAllKey();
 
-    Long checkCdKey(@PathVariable("cdKey") String cdKey);
+    Long checkCdKey(@Param("cdKey") String cdKey);
 
     Integer useCdKey(CashKey cashKey);
 
-    List<CashKey> userOrder(@PathVariable("accountID") String accountID);
+    List<CashKey> userOrder(@Param("accountID") String accountID);
 }

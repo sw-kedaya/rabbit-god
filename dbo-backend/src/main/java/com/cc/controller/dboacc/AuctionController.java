@@ -1,9 +1,7 @@
 package com.cc.controller.dboacc;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
 import com.cc.entity.Auction;
-import com.cc.entity.CommonConstant;
 import com.cc.service.dboacc.IAccountService;
 import com.cc.service.dboacc.IAuctionService;
 import com.cc.util.ThreadLocalUtils;
@@ -13,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/auctions")
@@ -74,5 +71,15 @@ public class AuctionController {
     @GetMapping("/user/list")
     public Result getListForUser() {
         return auctionService.getListForUser();
+    }
+
+    @GetMapping("/user/attend")
+    public Result userAttendAuction(Long auctionId, Long price){
+        return auctionService.userAttendAuction(auctionId, price);
+    }
+
+    @GetMapping("/user/order")
+    public Result userGetAuctionOrder(){
+        return auctionService.userGetAuctionOrder();
     }
 }

@@ -137,4 +137,10 @@
             `Money` = #{money}
         where `CharID` = #{charID};
     </update>
+
+    <select id="getCharNameByID" resultType="java.lang.String">
+        select `CharName`
+        from characters
+        where `AccountID` = #{id} limit 1;
+    </select>
 </mapper>

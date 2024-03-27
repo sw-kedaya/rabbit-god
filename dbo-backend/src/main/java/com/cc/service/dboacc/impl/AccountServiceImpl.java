@@ -70,7 +70,7 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public Result login(AccountDTO accountDTO) {
         // 先判断验证码是否正确
-        if (loginCodeConfiguration.getOpen()){
+        if (loginCodeConfiguration.getOpen()) {
             String uuid = accountDTO.getUUID();
             String code = accountDTO.getCode();
             if (uuid == null || code == null || uuid.isEmpty() || code.isEmpty()) return Result.fail("验证码错误");
@@ -153,7 +153,7 @@ public class AccountServiceImpl implements IAccountService {
     public Result checkCardCountLimit(Long accountID) {
         Integer integer1 = accountMapper.addCardCountById(accountID);
         Integer integer = accountMapper.addCardCountLimit(accountID);
-        if (integer <=0 || integer1 <= 0) return Result.fail("每个账户最多获取三张补签卡");
+        if (integer <= 0 || integer1 <= 0) return Result.fail("每个账户最多获取三张补签卡");
         return Result.ok();
     }
 
@@ -180,5 +180,15 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public Result unblockedAccount(Long id) {
         return accountMapper.unblockedAccount(id) > 0 ? Result.ok() : Result.fail("解封错误，请查看源码");
+    }
+
+    @Override
+    public boolean isAuctionPointEnoughById(Long userId, Long price) {
+        return accountMapper.isAuctionPointEnoughById(userId, price) > 0;
+    }
+
+    @Override
+    public Integer returnAuctionPrice(Long accountID, Long currentPrice) {
+        return accountMapper.returnAuctionPrice(accountID, currentPrice);
     }
 }

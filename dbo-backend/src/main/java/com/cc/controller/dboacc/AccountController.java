@@ -38,17 +38,17 @@ public class AccountController {
         return accountService.forgetPassword(username);
     }
 
-    @PostMapping("/open/update")
+    @PostMapping("/update")
     public Result updatePwd(@RequestBody PasswordDTO passwordDTO) {
         return accountService.updatePwd(passwordDTO);
     }
 
-    @GetMapping("/open/latest")
+    @GetMapping("/latest")
     public Result getLatestMallPoints(Long id) {
         return accountService.getLatestMallPoints(id);
     }
 
-    @GetMapping("/open/cardCount")
+    @GetMapping("/cardCount")
     public Result getCardCount(Long id) {
         return accountService.getCardCount(id);
     }

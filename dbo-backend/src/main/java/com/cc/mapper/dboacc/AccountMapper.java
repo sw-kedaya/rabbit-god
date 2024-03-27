@@ -2,7 +2,7 @@ package com.cc.mapper.dboacc;
 
 import com.cc.dto.AccountManagementDTO;
 import com.cc.entity.Account;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,37 +19,43 @@ public interface AccountMapper {
 
     Account getPassword(String username);
 
-    Integer updatePwd(@PathVariable("newPassword") String newPassword,
-                      @PathVariable("username") String username,
-                      @PathVariable("md5") String md5);
+    Integer updatePwd(@Param("newPassword") String newPassword,
+                      @Param("username") String username,
+                      @Param("md5") String md5);
 
-    Integer addMallPoints(@PathVariable("accountID") Long accountID,
-                          @PathVariable("cash") Long cash);
+    Integer addMallPoints(@Param("accountID") Long accountID,
+                          @Param("cash") Long cash);
 
-    Integer isAdmin(@PathVariable("id") Long id);
+    Integer isAdmin(@Param("id") Long id);
 
-    Integer checkUserCashById(@PathVariable("id") Long id,
-                           @PathVariable("price") Long price);
+    Integer checkUserCashById(@Param("id") Long id,
+                           @Param("price") Long price);
 
-    Account getLatestMallPoints(@PathVariable("id") Long id);
+    Account getLatestMallPoints(@Param("id") Long id);
 
-    Account getCardCount(@PathVariable("id") Long id);
+    Account getCardCount(@Param("id") Long id);
 
-    Integer addCardCountById(@PathVariable("id") Long id);
+    Integer addCardCountById(@Param("id") Long id);
 
-    Integer subCardCountById(@PathVariable("id") Long id);
+    Integer subCardCountById(@Param("id") Long id);
 
-    Integer addCardCountLimit(@PathVariable("id") Long id);
+    Integer addCardCountLimit(@Param("id") Long id);
 
     void resetCardCount();
 
-    Integer isBlock(@PathVariable("id") Long id);
+    Integer isBlock(@Param("id") Long id);
 
     List<AccountManagementDTO> adminGetList();
 
     Integer adminUpdateBalance(AccountManagementDTO accountManagementDTO);
 
-    Integer blockedAccount(@PathVariable("id") Long id);
+    Integer blockedAccount(@Param("id") Long id);
 
-    Integer unblockedAccount(@PathVariable("id") Long id);
+    Integer unblockedAccount(@Param("id") Long id);
+
+    Integer isAuctionPointEnoughById(@Param("id") Long userId,
+                                     @Param("price") Long price);
+
+    Integer returnAuctionPrice(@Param("id") Long accountID,
+                               @Param("currentPrice") Long currentPrice);
 }

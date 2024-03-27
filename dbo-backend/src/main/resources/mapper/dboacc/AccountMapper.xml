@@ -189,4 +189,17 @@
         set `acc_status` = 'active'
         where `AccountID` = #{id};
     </update>
+
+    <update id="isAuctionPointEnoughById">
+        update `accounts`
+        set `auction_point` = `auction_point` - #{price}
+        where `AccountID` = #{id}
+        and `auction_point` >= #{price};
+    </update>
+
+    <update id="returnAuctionPrice">
+        update `accounts`
+        set `auction_point` = `auction_point` + #{currentPrice}
+        where `AccountID` = #{id};
+    </update>
 </mapper>

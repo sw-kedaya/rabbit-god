@@ -120,7 +120,7 @@ function updatePaginationBySelf() {
 // 赠送/购买后刷新c点
 const getLatestMallPointsQuest = async () => {
   const res = await getLatestMallPointsApi(user.value.accountID)
-  user.value.mallPoints = res.data
+  user.value.mallPoints = res.data.mallPoints
   localStorage.setItem("user-token", JSON.stringify(user.value))
 }
 

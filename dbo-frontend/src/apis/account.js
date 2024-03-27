@@ -39,7 +39,7 @@ export function forgetApi(username) {
 export function updateApi(data) {
     return instance({
         method: "post",
-        url: "/user/open/update",
+        url: "/user/update",
         data
     })
 }
@@ -47,7 +47,7 @@ export function updateApi(data) {
 export function getLatestMallPointsApi(id) {
     return instance({
         method: "get",
-        url: "/user/open/latest",
+        url: "/user/latest",
         params: {id}
     })
 }
@@ -55,7 +55,7 @@ export function getLatestMallPointsApi(id) {
 export function getCardCountApi(id) {
     return instance({
         method: "get",
-        url: "/user/open/cardCount",
+        url: "/user/cardCount",
         params: {id}
     })
 }

@@ -3,8 +3,7 @@ package com.cc.mapper.dbochar;
 import com.cc.dto.CharManagementDTO;
 import com.cc.entity.DBOChar;
 import com.cc.vo.DBOCharVO;
-import com.cc.vo.Result;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,21 +12,21 @@ public interface DBOCharMapper {
 
     List<DBOChar> getAllCharNameList();
 
-    DBOChar getCharIDByCharName(@PathVariable("roleName") String roleName);
+    DBOChar getCharIDByCharName(@Param("roleName") String roleName);
 
-    Integer setSign(@PathVariable("charName") String charName, @PathVariable("signNum") Long signNum);
+    Integer setSign(@Param("charName") String charName, @Param("signNum") Long signNum);
 
-    List<DBOChar> checkIsSign(@PathVariable("accountID") Long accountID, @PathVariable("signNum") Long signNum);
+    List<DBOChar> checkIsSign(@Param("accountID") Long accountID, @Param("signNum") Long signNum);
 
     void resetSign();
 
-    DBOChar getSignMessageByCharName(@PathVariable("roleName") String roleName);
+    DBOChar getSignMessageByCharName(@Param("roleName") String roleName);
 
-    List<DBOChar> checkActivity(@PathVariable("accountID") Long accountID);
+    List<DBOChar> checkActivity(@Param("accountID") Long accountID);
 
-    Integer setIsGetCardById(@PathVariable("charID") Long charID);
+    Integer setIsGetCardById(@Param("charID") Long charID);
 
-    Integer setReplacementSign(@PathVariable("charName") String charName, @PathVariable("signNum") Long signNum);
+    Integer setReplacementSign(@Param("charName") String charName, @Param("signNum") Long signNum);
 
     void resetIsGetCardById();
 
@@ -38,4 +37,6 @@ public interface DBOCharMapper {
     List<CharManagementDTO> adminGetCharacterList();
 
     Integer adminUpdateCharacter(CharManagementDTO dto);
+
+    String getCharNameByID(@Param("id") Long id);
 }

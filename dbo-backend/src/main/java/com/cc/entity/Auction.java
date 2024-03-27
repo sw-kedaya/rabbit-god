@@ -17,6 +17,7 @@ public class Auction {
     private LocalDateTime shelfTime;
     private LocalDateTime endTime;
     private Long accountID;
+    private String charName;
     private String status;
     private Byte isGrant;
 }

@@ -3,7 +3,7 @@ package com.cc.mapper.dboacc;
 import com.cc.dto.MallSignDTO;
 import com.cc.entity.Mall;
 import com.cc.vo.MallVO;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,21 +14,21 @@ public interface MallMapper {
 
     Integer updateMall(Mall mall);
 
-    Integer deleteMallById(@PathVariable("id") Long id);
+    Integer deleteMallById(@Param("id") Long id);
 
     Integer setSignRewardById(MallSignDTO mallSignDTO);
 
-    Integer cancelSignRewardById(@PathVariable("id") Long id);
+    Integer cancelSignRewardById(@Param("id") Long id);
 
     List<MallVO> getAdminEnableMallList();
 
     List<Mall> getAdminAllMallList();
 
-    Mall getMallById(@PathVariable("id") Long id);
+    Mall getMallById(@Param("id") Long id);
 
-    List<Mall> getSignRewardList(@PathVariable("signNum") Integer signNum);
+    List<Mall> getSignRewardList(@Param("signNum") Integer signNum);
 
     List<MallVO> getSignRewardListByList(List<Integer> list);
 
-    List<MallVO> getSignRewardListByDay(@PathVariable("signNum") Integer signNum);
+    List<MallVO> getSignRewardListByDay(@Param("signNum") Integer signNum);
 }

@@ -37,4 +37,8 @@ public interface IAccountService {
     Result blockedAccount(Long id);
 
     Result unblockedAccount(Long id);
+
+    boolean isAuctionPointEnoughById(Long userId, Long price);
+
+    Integer returnAuctionPrice(Long accountID, Long currentPrice);
 }

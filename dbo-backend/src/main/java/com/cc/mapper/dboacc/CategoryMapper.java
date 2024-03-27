@@ -1,7 +1,7 @@
 package com.cc.mapper.dboacc;
 
 import com.cc.entity.Category;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public interface CategoryMapper {
 
     Integer updateMallTypeById(Category category);
 
-    Integer deleteById(@PathVariable("id") Long id);
+    Integer deleteById(@Param("id") Long id);
 
     Integer saveMallType(Category category);
 }
