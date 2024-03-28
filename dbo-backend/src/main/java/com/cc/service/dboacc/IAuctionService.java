@@ -16,7 +16,7 @@ public interface IAuctionService {
 
     Result getListForUser();
 
-    Result userAttendAuction(Long auctionId, Long price);
+    Result userAttendAuction(Long auctionId, Long price, String charName);
 
     Result userGetAuctionOrder();
 }

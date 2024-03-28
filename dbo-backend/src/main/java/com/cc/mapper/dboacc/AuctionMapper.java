@@ -23,5 +23,13 @@ public interface AuctionMapper {
 
     Integer updateAccountID(@Param("id") Long auctionId,
                             @Param("accountID") Long userId,
-                            @Param("price") Long price);
+                            @Param("price") Long price,
+                            @Param("charName") String charName);
+
+    List<Auction> selectAllEndAndUnGrant();
+
+    Integer setGrant(@Param("id") Long id);
+
+    Auction selectNameAndPriceByID(@Param("auctionID") Long auctionID);
+
 }

@@ -154,6 +154,7 @@ const updateForm = ref({
   mallPoints: '',
   waguCoins: '',
   eventCoins: '',
+  auctionPoint: '',
   accountID: '',
 })
 const updateRules = {
@@ -172,6 +173,11 @@ const updateRules = {
       return value >= 0;
     }, message: '不能为负数'
   },],
+  auctionPoint: [{required: true, message: '请输入拍卖点数'}, {
+    validator: (rule, value) => {
+      return value >= 0;
+    }, message: '不能为负数'
+  },],
 };
 
 const dialogVisibleForUpdateRules = ref(false)
@@ -181,6 +187,7 @@ const showUpdateExchangeForm = (row) => {
   updateForm.value.mallPoints = row.mallPoints;
   updateForm.value.waguCoins = row.waguCoins;
   updateForm.value.eventCoins = row.eventCoins;
+  updateForm.value.auctionPoint = row.auctionPoint;
   updateForm.value.accountID = row.accountID;
 };
 const cancelUpdateExchange = () => {
@@ -234,6 +241,7 @@ const updateSubmit = () => {
     <el-table-column prop="mallPoints" label="C点" width="105"/>
     <el-table-column prop="waguCoins" label="现金扭蛋币" width="105"/>
     <el-table-column prop="eventCoins" label="活动扭蛋币" width="105"/>
+    <el-table-column prop="auctionPoint" label="拍卖点数" width="105"/>
     <el-table-column prop="regDate" label="注册时间" width="180"/>
     <el-table-column prop="regIp" label="注册IP" width="145"/>
     <el-table-column prop="lastLogin" label="游戏最后登录时间" width="180"/>
@@ -288,6 +296,13 @@ const updateSubmit = () => {
         <el-form-item class="mall-myInput" prop="eventCoins">
           <el-input style="height: 38px; width: 150px;" type="text" placeholder="请输入活动扭蛋币数量"
                     v-model="updateForm.eventCoins"></el-input>
+        </el-form-item>
+      </div>
+      <div class="mall-form-row">
+        <span class="mall-dialogLabel">拍卖点数</span>
+        <el-form-item class="mall-myInput" prop="auctionPoint">
+          <el-input style="height: 38px; width: 150px;" type="text" placeholder="请输入拍卖点数"
+                    v-model="updateForm.auctionPoint"></el-input>
         </el-form-item>
       </div>
       <div class="mall-form-row" style="justify-content: flex-end; margin-top: 20px;">

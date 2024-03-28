@@ -61,4 +61,18 @@ public class MailServiceImpl implements IMailService {
         mail.setCount(count);
         mailMapper.generateMail(mail);
     }
+
+    @Override
+    public void generateAuctionMail(String roleName, Long itemId, Long count) {
+        DBOChar dboChar = dboCharMapper.getCharIDByCharName(roleName);
+        if (dboChar == null || dboChar.getCharID() == null) return;
+        Mail mail = new Mail();
+        mail.setFromName("拍卖成功");
+        mail.setText("感谢使用Web在线拍卖功能，祝您游戏愉快！");
+        mail.setCharID(dboChar.getCharID());
+        mail.setTargetName(roleName);
+        mail.setItemId(itemId);
+        mail.setCount(count);
+        mailMapper.generateMail(mail);
+    }
 }

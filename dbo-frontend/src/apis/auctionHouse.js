@@ -7,11 +7,11 @@ export function getListForUser(){
     })
 }
 
-export function userAttendAuction(auctionId, price){
+export function userAttendAuction(auctionId, price, charName){
     return instance({
         method: "get",
         url: "/auctions/user/attend",
-        params: {auctionId, price}
+        params: {auctionId, price, charName}
     })
 }
 

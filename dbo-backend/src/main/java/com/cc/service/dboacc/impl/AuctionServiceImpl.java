@@ -48,6 +48,7 @@ public class AuctionServiceImpl implements IAuctionService {
         for (Auction auction : list) {
             parseStatus(auction); // 解析状态
             setImg(auction); // 解析图片
+            setCharName(auction); // 设置用户角色名
         }
         return Result.ok(list);
     }
@@ -78,6 +79,14 @@ public class AuctionServiceImpl implements IAuctionService {
         else auction.setStatus(CommonConstant.AUCTION_STATUS_ONGOING);
     }
 
+    private void setCharName(Auction auction) {
+        // 设置用户角色名
+        String charName = auction.getCharName();
+        if (charName == null || charName.isEmpty()) {
+            auction.setCharName("无");
+        }
+    }
+
     @Override
     public Result adminUpdateAuction(Auction auction) {
         return auctionMapper.adminUpdateAuction(auction) > 0 ? Result.ok() : Result.fail("修改拍卖商品失败..");
@@ -93,25 +102,20 @@ public class AuctionServiceImpl implements IAuctionService {
         List<Auction> list = auctionMapper.getListForUser();
         for (Auction auction : list) {
             setImg(auction); // 解析图片
-            // 设置用户角色名
-            String charName = dboCharMapper.getCharNameByID(auction.getAccountID());
-            if (charName == null || charName.isEmpty()) {
-                auction.setCharName("无");
-            } else {
-                auction.setCharName(charName);
-            }
+            setCharName(auction); // 设置用户角色名
         }
         return Result.ok(list);
     }
 
     @Transactional("dboAccTransactionManager")
     @Override
-    public Result userAttendAuction(Long auctionId, Long price) {
+    public Result userAttendAuction(Long auctionId, Long price, String charName) {
         // 加锁
         lock.lock();
         try {
             // 1.核对加价是否符合
-            if (!auctionMapper.isBidSuccess(auctionId, price)) return Result.fail("加价价格错误,请刷新页面");
+            if (!auctionMapper.isBidSuccess(auctionId, price))
+                return Result.fail("加价价格错误或竞拍已结束,请刷新页面");
             // 2.扣款
             if (!accountService.isAuctionPointEnoughById(ThreadLocalUtils.getUserId(), price)) {
                 return Result.fail("拍卖点数不足");
@@ -125,16 +129,22 @@ public class AuctionServiceImpl implements IAuctionService {
                 }
             }
             // 4.更新拍卖信息
-            if (auctionMapper.updateAccountID(auctionId, ThreadLocalUtils.getUserId(), price) <= 0) {
+            if (auctionMapper.updateAccountID(auctionId, ThreadLocalUtils.getUserId(), price, charName) <= 0) {
                 throw new RuntimeException("数据库出错");
             }
             // 5.创建订单
             if (auctionOrderMapper.isExist(auctionId, ThreadLocalUtils.getUserId()) <= 0) {
+                // 5.1 若不存在则创建新订单
                 AuctionOrder auctionOrder = new AuctionOrder();
                 auctionOrder.setAccountID(ThreadLocalUtils.getUserId());
                 auctionOrder.setAuctionID(auctionId);
+                auctionOrder.setCharName(charName);
+                auctionOrder.setPrice(price);
                 auctionOrder.setCreateTime(LocalDateTime.now());
                 auctionOrderMapper.createOrder(auctionOrder);
+            } else {
+                // 5.2 若存在则更新订单出价数据
+                auctionOrderMapper.updatePrice(auctionId, ThreadLocalUtils.getUserId(), price);
             }
         } finally {
             lock.unlock();
@@ -144,6 +154,17 @@ public class AuctionServiceImpl implements IAuctionService {
 
     @Override
     public Result userGetAuctionOrder() {
-        return Result.ok(auctionOrderMapper.userGetAuctionOrder(ThreadLocalUtils.getUserId()));
+        List<AuctionOrder> list = auctionOrderMapper.userGetAuctionOrder(ThreadLocalUtils.getUserId());
+        for (AuctionOrder order : list) {
+            Auction auction = auctionMapper.selectNameAndPriceByID(order.getAuctionID());
+            if (auction != null){
+                order.setMallName(auction.getMallName());
+                order.setSuccessPrice(auction.getCurrentPrice());
+            }else{
+                order.setMallName("商品已删除");
+                order.setSuccessPrice(0L);
+            }
+        }
+        return Result.ok(list);
     }
 }

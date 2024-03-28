@@ -12,6 +12,8 @@ public interface IAccountService {
 
     Result login(AccountDTO accountDTO);
 
+    Result logout(String token);
+
     Result forgetPassword(String username);
 
     Result updatePwd(PasswordDTO passwordDTO);

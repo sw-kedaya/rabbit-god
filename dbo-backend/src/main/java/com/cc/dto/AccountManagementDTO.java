@@ -17,4 +17,5 @@ public class AccountManagementDTO {
     private Long mallPoints;
     private Long waguCoins;
     private Long eventCoins;
+    private Long auctionPoint;
 }

@@ -9,4 +9,6 @@ public interface IMailService {
     void generateSignMail(String roleName, Long itemId, Long count);
 
     void generateReplacementSignMail(String roleName, Long itemId, Long count);
+
+    void generateAuctionMail(String roleName, Long itemId, Long count);
 }

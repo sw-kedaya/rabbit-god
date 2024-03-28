@@ -31,4 +31,6 @@ public interface MallMapper {
     List<MallVO> getSignRewardListByList(List<Integer> list);
 
     List<MallVO> getSignRewardListByDay(@Param("signNum") Integer signNum);
+
+    Mall selectMallByID(@Param("id") Long id);
 }

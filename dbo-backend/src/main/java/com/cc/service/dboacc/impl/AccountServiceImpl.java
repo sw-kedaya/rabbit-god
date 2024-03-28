@@ -22,6 +22,7 @@ import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class AccountServiceImpl implements IAccountService {
@@ -89,8 +90,14 @@ public class AccountServiceImpl implements IAccountService {
         User user = new User();
         BeanUtils.copyProperties(userAccount, user);
         String token = JwtUtils.generatorToken(user.getUsername());
+        redisTemplate.opsForValue().set(token, user.getAccountID().toString(), CommonConstant.TOKEN_TTL, TimeUnit.SECONDS);
         user.setToken(token);
         return Result.ok(user);
+    }
+
+    @Override
+    public Result logout(String token) {
+        return Boolean.TRUE.equals(redisTemplate.delete(token)) ? Result.ok() : Result.fail("账号已经登出。");
     }
 
     @Override

@@ -188,4 +188,10 @@
         from mall
         where `sign_reward` = #{signNum}
     </select>
+
+    <select id="selectMallByID" resultMap="MallResult">
+        select `tblidx`, `count`
+        from `mall`
+        where `id` = #{id};
+    </select>
 </mapper>

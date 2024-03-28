@@ -9,6 +9,7 @@ import Forget from '@/views/Forget/index.vue'
 import Me from '@/views/Me/index.vue'
 import OrderKey from '@/views/OrderKey/index.vue'
 import OrderMall from '@/views/OrderMall/index.vue'
+import OrderAuction from '@/views/OrderAuction/index.vue'
 import Signin from '@/views/Signin/index.vue'
 import Mall from '@/views/Mall/index.vue'
 import Admin from '@/views/Admin/index.vue'
@@ -54,6 +55,10 @@ const router = createRouter({
         {
           path: "orderMall",
           component: OrderMall
+        },
+        {
+          path: "orderAuction",
+          component: OrderAuction
         },
         {
           path: '/login',

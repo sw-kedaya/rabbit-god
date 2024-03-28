@@ -3,7 +3,7 @@ import {ref, computed, onMounted} from "vue";
 import {watch} from "vue";
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
-import {checkApi} from "@/apis/account";
+import {checkApi, logoutApi} from "@/apis/account";
 
 const router = useRouter()
 const user = ref()
@@ -38,15 +38,27 @@ onMounted(() => {
   checkQuest()
 })
 
+const logoutQuest = async ()=>{
+  const res = await logoutApi(user.value.token);
+  if (res.success) {
+    ElMessage({
+      message: '退出成功',
+      type: 'success'
+    });
+  }else {
+    ElMessage({
+      message: res.errorMsg,
+      type: 'error'
+    });
+  }
+  router.replace('/home')
+  user.value = null;
+}
+
 function logoutClick() {
+  logoutQuest()
   localStorage.removeItem("user-token")
   localStorage.removeItem("admin-token")
-  user.value = null;
-  router.replace('/home')
-  ElMessage({
-    message: '退出成功',
-    type: 'success'
-  });
 }
 
 const showDropdown = ref(false);
@@ -132,6 +144,9 @@ const checkQuest = async () => {
                   <li>
                     <RouterLink active-class="active" :to="`/orderMall`" @click="refreshPage('/orderMall')">商城订单</RouterLink>
                   </li>
+                  <li>
+                    <RouterLink active-class="active" :to="`/orderAuction`" @click="refreshPage('/orderAuction')">拍卖订单</RouterLink>
+                  </li>
                 </ul>
               </li>
             </template>
@@ -182,7 +197,7 @@ const checkQuest = async () => {
   border: 1px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   width: 105px; /* 设置下拉菜单的宽度 */
-  height: 105px; /* 设置下拉菜单的高度 */
+  height: 155px; /* 设置下拉菜单的高度 */
   left: -1px;
   li {
     margin-top: 15px;

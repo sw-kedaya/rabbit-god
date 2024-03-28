@@ -28,6 +28,11 @@ public class AccountController {
         return accountService.login(accountDTO);
     }
 
+    @GetMapping("/open/logout")
+    public Result logout(String token) {
+        return accountService.logout(token);
+    }
+
     @GetMapping("/open/check")
     public Result checkToken(String token) {
         return Result.ok(JwtUtils.checkToken(token));

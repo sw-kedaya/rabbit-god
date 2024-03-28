@@ -7,15 +7,24 @@
         <id property="id" column="id"/>
         <result property="accountID" column="AccountID"/>
         <result property="auctionID" column="auction_id"/>
+        <result property="charName" column="CharName"/>
+        <result property="price" column="price"/>
         <result property="createTime" column="create_time"/>
         <result property="status" column="status"/>
         <result property="isEnd" column="is_end"/>
     </resultMap>
 
     <insert id="createOrder">
-        insert into `auction_order`(`AccountID`, `auction_id`, `create_time`)
-        values (#{accountID}, #{auctionID}, #{createTime});
+        insert into `auction_order`(`AccountID`, `auction_id`, `CharName`, `price`, `create_time`)
+        values (#{accountID}, #{auctionID}, #{charName}, #{price}, #{createTime});
     </insert>
+
+    <update id="updatePrice">
+        update `auction_order`
+        set `price` = #{price}
+        where `auction_id` = #{auctionID}
+          and `AccountID` = #{accountID};
+    </update>
 
     <select id="isExist" resultType="java.lang.Integer">
         select count(*)
@@ -25,9 +34,23 @@
     </select>
 
     <select id="userGetAuctionOrder" resultMap="AuctionOrderResult">
-        select `id`, `AccountID`, `auction_id`, `createTime`, `status`, `isEnd`
+        select `id`, `auction_id`, `CharName`, `create_time`, `status`, `is_end`
         from `auction_order`
         where `AccountID` = #{accountID};
     </select>
 
+    <update id="setFailedStatus">
+        update `auction_order`
+        set `status` = 'failed',
+            `is_end`  = 1
+        where `auction_id` = #{auctionID};
+    </update>
+
+    <update id="setSuccessStatus">
+        update `auction_order`
+        set `status` = 'success',
+            `is_end`  = 1
+        where `auction_id` = #{auctionID}
+          and `AccountID` = #{accountID};
+    </update>
 </mapper>

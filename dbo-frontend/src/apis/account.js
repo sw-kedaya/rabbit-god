@@ -16,6 +16,14 @@ export function loginApi(data) {
     })
 }
 
+export function logoutApi(token) {
+    return instance({
+        method: "get",
+        url: "/user/open/logout",
+        params: {token}
+    })
+}
+
 export function checkApi(token) {
     return instance({
         method: "get",

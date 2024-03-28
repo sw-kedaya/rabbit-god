@@ -4,6 +4,7 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import {onMounted, ref} from "vue";
 import {getListForUser, userAttendAuction} from "@/apis/auctionHouse"
 import {getLatestMallPointsApi} from "@/apis/account";
+import {getDBOCharListApi} from "@/apis/dboChar";
 
 const router = useRouter()
 const user = ref()
@@ -11,6 +12,9 @@ const admin = ref()
 onMounted(() => {
   user.value = JSON.parse(localStorage.getItem("user-token"));
   getListForUserQuest();
+  if (user.value != null) {
+    getDBOCharListQuest(user.value.accountID);
+  }
 });
 
 // 获取拍卖列表
@@ -22,13 +26,21 @@ const getListForUserQuest = async () => {
   auctionData.value = res.data;
   loading.value = false;
 }
+// 获取角色列表
+const dboCharOptions = ref([])
+const getDBOCharListQuest = async (accountID) => {
+  const res = await getDBOCharListApi(accountID)
+  dboCharOptions.value = res.data;
+}
+
 // 获取用户已有的拍卖订单
 const userAuctionOrder = ref([]);
 
 // 参与竞拍
 const auctionForm = ref({
   auction: {},
-  price: ''
+  price: '',
+  charName: '',
 })
 const auctionRules = {
   price: [{required: true, message: '请输入竞拍价格'}, {
@@ -36,6 +48,7 @@ const auctionRules = {
       return value >= 0;
     }, message: '不能为负数'
   },],
+  charName: [{required: true, message: '请选择角色名'}],
 }
 const dialogVisibleForAttendAuction = ref(false)
 
@@ -49,8 +62,8 @@ const cancelAttendAuction = () => {
   auctionForm.value = {};
 }
 const auctionFormValidate = ref();
-const userAttendAuctionQuest = async (auctionId, price) => {
-  const res = await userAttendAuction(auctionId, price);
+const userAttendAuctionQuest = async (auctionId, price, charName) => {
+  const res = await userAttendAuction(auctionId, price, charName);
   if (res.success) {
     auctionForm.value = {};
     ElMessage.success("竞拍成功");
@@ -72,7 +85,9 @@ const submitAttendAuction = () => {
         return ElMessage.warning("拍卖点数不足");
       }
       dialogVisibleForAttendAuction.value = false;
-      userAttendAuctionQuest(auctionForm.value.auction.id, auctionForm.value.price);
+      userAttendAuctionQuest(auctionForm.value.auction.id, auctionForm.value.price, auctionForm.value.charName);
+    }else {
+      ElMessage.warning("请选择角色名并输入竞拍价");
     }
   });
 }
@@ -163,10 +178,19 @@ const getLatestMallPointsQuest = async () => {
     </el-table>
   </div>
   <!-- 参与竞拍窗口 -->
-  <!--  修改对话框  -->
   <el-dialog v-model="dialogVisibleForAttendAuction" title="参与竞拍" width="370">
     <el-form ref="auctionFormValidate" :model="auctionForm" label-position="top" :rules="auctionRules"
              @submit.prevent="">
+      <div class="auction-house-form-row">
+        <span class="auction-house-dialogLabel">角色</span>
+        <el-form-item class="auction-house-myInput" prop="charName">
+          <el-select v-model="auctionForm.charName" class="m-2" placeholder="请选择角色名称" size="large"
+                     style="height: 38px; width: 200px;">
+            <el-option
+                v-for="item in dboCharOptions" :key="item.charName" :label="item.charName" :value="item.charName"/>
+          </el-select>
+        </el-form-item>
+      </div>
       <div class="auction-house-form-row">
         <span class="auction-house-dialogLabel">竞拍价格</span>
         <el-form-item class="auction-house-myInput" prop="price">

@@ -74,8 +74,8 @@ public class AuctionController {
     }
 
     @GetMapping("/user/attend")
-    public Result userAttendAuction(Long auctionId, Long price){
-        return auctionService.userAttendAuction(auctionId, price);
+    public Result userAttendAuction(Long auctionId, Long price, String charName){
+        return auctionService.userAttendAuction(auctionId, price, charName);
     }
 
     @GetMapping("/user/order")

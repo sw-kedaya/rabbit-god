@@ -300,18 +300,30 @@ const adminDeleteAuctionQuest = async (id) => {
     ElMessage.error(res.errorMsg);
   }
 }
-const submitDeleteAuction = (id) => {
+const submitDeleteAuction = (row) => {
   ElMessageBox.confirm("确定要删除该拍卖商品吗？", "提示", {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    adminDeleteAuctionQuest(id);
+    if (Date.now() < new Date(row.endTime) || row.isGrant === 0) {
+      return ElMessage.error("竞拍未结束或未发放！")
+    }
+    adminDeleteAuctionQuest(row.id);
   }).catch(() => {
     ElMessage.info("取消")
   });
 }
-
+const submitForceDeleteAuction = (row) => {
+  ElMessageBox.confirm("确定要强制删除该拍卖商品吗？" +
+      "若当前商品有竞拍者将导致其扣除的拍卖点数丢失，但可利用账号管理补发拍卖点数给用户。丢失点数为：" + row.currentPrice,
+      "提示", {confirmButtonText: '确定', cancelButtonText: '取消', type: 'error',
+  }).then(() => {
+    adminDeleteAuctionQuest(row.id);
+  }).catch(() => {
+    ElMessage.info("取消")
+  });
+}
 </script>
 
 <template>
@@ -327,11 +339,11 @@ const submitDeleteAuction = (id) => {
                  :value="item.value"/>
     </el-select>
     <el-tooltip content="包含未开始/未结束的拍卖商品">
-    <el-select v-model="auctionGrant" size="large" class="m-2" placeholder="是否已发放" clearable
-               style="margin-right: 5px">
-      <el-option v-for="item in auctionGrantOptions" :key="item.id" :label="item.label"
-                 :value="item.value"/>
-    </el-select>
+      <el-select v-model="auctionGrant" size="large" class="m-2" placeholder="是否已发放" clearable
+                 style="margin-right: 5px">
+        <el-option v-for="item in auctionGrantOptions" :key="item.id" :label="item.label"
+                   :value="item.value"/>
+      </el-select>
     </el-tooltip>
   </div>
   <el-table :data="currentPageDataForAuction" border style="width: 100%;" max-height="618" size="large">
@@ -342,13 +354,14 @@ const submitDeleteAuction = (id) => {
           <img :src="row.mallIcon" alt=""/>
         </div>
       </template>
-    </el-table-column>>
+    </el-table-column>
+    >
     <el-table-column prop="startingPrice" label="起拍价格(P点)" width="145"/>
     <el-table-column prop="currentPrice" label="当前价格" width="145"/>
     <el-table-column prop="lowestMakeup" label="最低加价价格" width="145"/>
-    <el-table-column prop="shelfTime" label="上架时间" width="180"/>
-    <el-table-column prop="endTime" label="结束时间" width="180"/>
-    <el-table-column prop="accountID" label="竞拍得主" width="180"/>
+    <el-table-column prop="shelfTime" label="上架时间" width="180" sortable/>
+    <el-table-column prop="endTime" label="结束时间" width="180" sortable/>
+    <el-table-column prop="charName" label="当前竞拍者" width="180"/>
     <el-table-column prop="status" label="状态" width="80">
       <template #default="{ row }">
         <span v-if="row.status === 'unstarted'">未开始</span>
@@ -367,7 +380,9 @@ const submitDeleteAuction = (id) => {
       <template #default="scope">
         <el-button type="primary" size="default" @click="showUpdateExchangeForm(scope.row)">编辑
         </el-button>
-        <el-button type="danger" size="default" @click="submitDeleteAuction(scope.row.id)">删除
+        <el-button type="danger" size="default" @click="submitDeleteAuction(scope.row)">删除
+        </el-button>
+        <el-button type="danger" size="default" @click="submitForceDeleteAuction(scope.row)">强制删除
         </el-button>
       </template>
     </el-table-column>
@@ -406,7 +421,8 @@ const submitDeleteAuction = (id) => {
             <img v-if="saveForm.auction.mallIcon" :src="saveForm.auction.mallIcon" alt="" class="my-auction-icon">
             <el-icon v-else class="avatar-uploader-icon"
                      style="width: 35px; height: 35px;box-shadow: 2px 2px 4px #cccccc; margin-bottom: 10px">
-              +</el-icon>
+              +
+            </el-icon>
           </el-upload>
         </el-form-item>
       </div>
@@ -428,7 +444,7 @@ const submitDeleteAuction = (id) => {
         <span class="auction-dialogLabel">上架时间</span>
         <el-form-item class="auction-myInput" prop="auction.shelfTime">
           <el-date-picker v-model="saveForm.auction.shelfTime" type="datetime" placeholder="请选择上架时间"
-                          style="height: 38px; width: 200px;"
+                          style="height: 38px; width: 200px;" value-format="YYYY-MM-DD HH:mm:ss"
                           :shortcuts="shortcuts" size="large"/>
         </el-form-item>
       </div>
@@ -436,7 +452,7 @@ const submitDeleteAuction = (id) => {
         <span class="auction-dialogLabel">结束时间</span>
         <el-form-item class="auction-myInput" prop="auction.endTime">
           <el-date-picker v-model="saveForm.auction.endTime" type="datetime" placeholder="请选择结束时间"
-                          style="height: 38px; width: 200px;"
+                          style="height: 38px; width: 200px;" value-format="YYYY-MM-DD HH:mm:ss"
                           :shortcuts="shortcuts" size="large"/>
         </el-form-item>
       </div>
@@ -503,7 +519,7 @@ const submitDeleteAuction = (id) => {
         <span class="auction-dialogLabel">上架时间</span>
         <el-form-item class="auction-myInput" prop="auction.shelfTime">
           <el-date-picker v-model="updateForm.auction.shelfTime" type="datetime" placeholder="请选择上架时间"
-                          style="height: 38px; width: 200px;"
+                          style="height: 38px; width: 200px;" value-format="YYYY-MM-DD HH:mm:ss"
                           :shortcuts="shortcuts" size="large"/>
         </el-form-item>
       </div>
@@ -511,7 +527,7 @@ const submitDeleteAuction = (id) => {
         <span class="auction-dialogLabel">结束时间</span>
         <el-form-item class="auction-myInput" prop="auction.endTime">
           <el-date-picker v-model="updateForm.auction.endTime" type="datetime" placeholder="请选择结束时间"
-                          style="height: 38px; width: 200px;"
+                          style="height: 38px; width: 200px;" value-format="YYYY-MM-DD HH:mm:ss"
                           :shortcuts="shortcuts" size="large"/>
         </el-form-item>
       </div>

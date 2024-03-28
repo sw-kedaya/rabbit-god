@@ -4,6 +4,8 @@ import cn.hutool.json.JSONUtil;
 import com.cc.entity.User;
 import com.cc.util.JwtUtils;
 import com.cc.util.ThreadLocalUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -12,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class MyInterception implements HandlerInterceptor {
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String header = request.getHeader("Rg-Msg");
@@ -24,7 +29,13 @@ public class MyInterception implements HandlerInterceptor {
             return false;
         }
         User user = JSONUtil.toBean(json, User.class);
-        ThreadLocalUtils.setUserId(user.getAccountID());
+        String accountIDString = redisTemplate.opsForValue().get(user.getToken());
+        if (accountIDString != null && !accountIDString.isEmpty()) {
+            Long accountID = Long.parseLong(accountIDString);
+            ThreadLocalUtils.setUserId(accountID);
+        } else {
+            ThreadLocalUtils.setUserId(user.getAccountID());
+        }
         boolean isSuccess = JwtUtils.checkToken(user.getToken());
         if (!"Online".equals(header) || !isSuccess) {
             // 设置响应状态码为 401（未授权）

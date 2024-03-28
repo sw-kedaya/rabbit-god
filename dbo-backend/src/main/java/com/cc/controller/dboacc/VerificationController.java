@@ -50,8 +50,8 @@ public class VerificationController {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         // 验证码存储到redis，并设置5分钟过期时间
         redisTemplate.opsForValue().set(CommonConstant.CODE_KEY + uuid, code, 5, TimeUnit.MINUTES);
-        // TODO 发送邮件
-//        sendMailService.sendMailForRegister(email,code);
+        // 发送邮件
+        sendMailService.sendMailForRegister(email,code);
         System.out.println("验证码：" + code);
         // 把uuid发送到前端
         CodeMessage codeMessage = new CodeMessage();
